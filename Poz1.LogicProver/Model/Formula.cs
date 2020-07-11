@@ -1,10 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using Poz1.LogicProver.Model.World;
+using System.Collections.Generic;
 
 namespace Poz1.LogicProver.Model
 {
     public abstract class Formula
     {    
       public IList<WorldSymbol> WorldIndex { get; set; }
+
+        public Substitution Unify(Formula formula)
+        {
+
+        }
     }
 
     public class AtomicFormula : Formula
