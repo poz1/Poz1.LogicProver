@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace Poz1.LogicProver.Model.MGU
 {
     public class MostGeneralUnifier : IMostGeneralUnifier
     {
         private readonly List<TerminalEquation> equations = new List<TerminalEquation>();
-
         public void AddEquation(Terminal t1, Terminal t2)
         {
             //Rule 3 [x = x -> Cancel Equation]
@@ -14,13 +15,13 @@ namespace Poz1.LogicProver.Model.MGU
                 return;
 
             //Rule 4 [t = x -> x = t]
-            if (t1.GetType() == typeof(Variable) && t2.GetType() != typeof(Variable))
+            if (t1.GetType() == typeof(VariableTerminal) && t2.GetType() != typeof(VariableTerminal))
                 equations.Add(new TerminalEquation(t2, t1));
             else
                 equations.Add(new TerminalEquation(t1, t2));
         }
 
-        public void AddEquation(Function f1, Function f2)
+        public void AddEquation(FunctionTerminal f1, FunctionTerminal f2)
         {
             //Rule 2 [f!=g || different number of params -> Fail]
             if (f1.Arity != f2.Arity)
@@ -31,39 +32,42 @@ namespace Poz1.LogicProver.Model.MGU
             //Rule 1 [propagation to function terms]
             for (int j = 0; j < f1.Arity; j++)
             {
-                AddEquation(f1.Parameters[j], f2.Parameters[j]);
+                var f1p = f1.Parameters[j];
+                var f2p = f2.Parameters[j];
+
+                if(f1p is FunctionTerminal terminal1 && f2p is FunctionTerminal terminal2)
+                    AddEquation(terminal1, terminal2);
+                else
+                    AddEquation(f1p, f2p);
             }
         }
-
+       
         public Substitution Compute()
         {
-            var solution = new Substitution();
-
             foreach (var eq in equations)
             {
-                if (eq.terminal1.GetType() == typeof(Function) && eq.terminal2.GetType() == typeof(Function))
+                if(eq.Terminal1 is FunctionTerminal functionTerminal)
                 {
-                    var f1 = (Function)eq.terminal1;
-                    var f2 = (Function)eq.terminal2;
-
-                    if (f1.Arity != f2.Arity)
-                        throw new Exception("No MGU: different arity");
-                    if (f1.Value != f2.Value)
-                        throw new Exception("No MGU: different function");
-
-                    for (int j = 0; j < f1.Arity; j++)
+                    if (functionTerminal.Parameters.Any(x => x.Value == eq.Terminal2.Value))
                     {
-                        equations.Add(new TerminalEquation(f1.Parameters[j], f2.Parameters[j]));
+                        //Rule 6
+                        throw new Exception("No MGU: variable in function [occur check]");
+                    }
+                    else
+                    {
+                        solution.Add(eq.Terminal1, eq.Terminal2);
+                        foreach (var otherEq in equations)
+                        {
+                            if(otherEq != eq && otherEq.Terminal2.Value == eq.Terminal2.Value)
+                            {
+                                otherEq.Terminal2 = eq.Terminal1;
+                            }
+                        }
                     }
                 }
-
-                if (eq.terminal1.Value == eq.terminal2.Value)
-                    equations.Remove(eq);
-
-
             }
 
-            return null;
+            return new Substitution(equations);
         }
     }
 }

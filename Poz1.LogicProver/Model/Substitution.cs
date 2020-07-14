@@ -4,13 +4,26 @@ using System.Linq;
 
 namespace Poz1.LogicProver
 {
-    public class Substitution : Dictionary<Variable, Terminal>
+    public class Substitution : Dictionary<Terminal, Terminal>
     {
-        public List<Variable> Domain { get => Keys.ToList(); }
+        public Substitution(List<TerminalEquation> equations)
+        {
+            foreach(var eq in equations)
+            {
+                Add(eq.Terminal1, eq.Terminal2);
+            }
+        }
+
+        public List<Terminal> Domain { get => Keys.ToList(); }
         public List<Terminal> Range { get => Values.ToList(); }
 
         public bool IsPure { get => !Range.Any(x => Domain.Contains(x)); }
-        
+
         //Apply
+
+        public override string ToString()
+        {
+            return base.ToString();
+        }
     }
 }

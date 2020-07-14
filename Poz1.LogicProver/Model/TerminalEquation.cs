@@ -2,15 +2,15 @@
 {
     public class TerminalEquation
     {
-        public Terminal terminal1 { get; }
-        public Terminal terminal2 { get; }
+        public Terminal Terminal1 { get; set; }
+        public Terminal Terminal2 { get; set; }
 
         public TerminalType Type { get; }
 
         public TerminalEquation(Terminal terminal1, Terminal terminal2)
         {
-            this.terminal1 = terminal1;
-            this.terminal2 = terminal2;
+            Terminal1 = terminal1;
+            Terminal2 = terminal2;
         }
     }
 

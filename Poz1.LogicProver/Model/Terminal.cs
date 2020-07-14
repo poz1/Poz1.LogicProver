@@ -7,60 +7,29 @@ namespace Poz1.LogicProver.Model
     public abstract class Terminal
     {
         public string Value { get; set; }
-        public abstract IList<Variable> Variables { get; }
-
-        //internal Substitution FindMGU(Terminal terminal);
+        public abstract List<VariableTerminal> Variables { get; }
     }
 
-    public class Constant : Terminal
+    public class ConstantTerminal : Terminal
     {
-        public override IList<Variable> Variables { get => new List<Variable>(); }
-
-        //internal override Substitution FindMGU(Terminal terminal)
-        //{
-        //    if (Value == terminal.Value)
-        //    {
-
-        //    }
-        //}
+        public override List<VariableTerminal> Variables { get => new List<VariableTerminal>(); }
     }
 
-    public class Variable : Terminal
+    public class VariableTerminal : Terminal
     {
-        public override IList<Variable> Variables { get => new List<Variable>() { this }; }
-
-        //internal override string FindMGU(Substitution sub, Terminal terminal)
-        //{
-        //    throw new System.NotImplementedException();
-        //}
+        public override List<VariableTerminal> Variables { get => new List<VariableTerminal>() { this }; }
     }
 
-    public class Function : Terminal
+    public class FunctionTerminal : Terminal
     {
-        public IList<Terminal> Parameters { get; set; }
-        public int Arity => Variables.Count();
+        public List<Terminal> Parameters { get; set; }
+        public int Arity => Parameters.Count();
 
-        public override IList<Variable> Variables { get => ComputeVariables();}
+        public override List<VariableTerminal> Variables { get => ComputeVariables();}
 
-        //internal override string FindMGU(Substitution sub, Terminal terminal)
-        //{
-        //    var function = (Function)terminal;
-
-        //    if(Arity != function.Arity)
-        //        throw new System.Exception("No MGU: Different Arity");
-
-        //    if (Value != function.Value)
-        //        throw new System.Exception("No MGU: Different Function");
-
-        //    foreach (var param in Parameters)
-        //    {
-        //        param.FindUnification(function.Parameters[Parameters])
-        //    }
-        //}
-
-        private IList<Variable> ComputeVariables()
+        private List<VariableTerminal> ComputeVariables()
         {
-            var vars = new List<Variable>();
+            var vars = new List<VariableTerminal>();
             foreach (var terminal in Parameters)
             {
                 vars.AddRange(terminal.Variables);

@@ -8,7 +8,7 @@ namespace Poz1.LogicProver.Model
     {    
         public IList<WorldSymbol> WorldIndex { get; set; }
 
-        public abstract IList<Variable> FreeVariables { get; }
+        public abstract IList<VariableTerminal> FreeVariables { get; }
     }
 
     public class AtomicFormula : Formula
@@ -17,11 +17,11 @@ namespace Poz1.LogicProver.Model
         public IList<Terminal> Parameters { get; set; }
         public int Arity => Parameters.Count;
 
-        public override IList<Variable> FreeVariables => ComputeFreeVariables();
+        public override IList<VariableTerminal> FreeVariables => ComputeFreeVariables();
 
-        private IList<Variable> ComputeFreeVariables()
+        private IList<VariableTerminal> ComputeFreeVariables()
         {
-            var vars = new List<Variable>();
+            var vars = new List<VariableTerminal>();
             foreach (var terminal in Parameters)
             {
                 vars.AddRange(terminal.Variables);
@@ -33,28 +33,29 @@ namespace Poz1.LogicProver.Model
         //[Martelli, Montanari, 1982]
         public Substitution Unify(AtomicFormula formula)
         {
-            var equations = new List<TerminalEquation>();
+            throw new NotImplementedException();
+            //var equations = new List<TerminalEquation>();
 
-            for (int i = 0; i < Parameters.Count; i++)
-            {
-                var t1 = Parameters[i];
-                var t2 = formula.Parameters[i];
+            //for (int i = 0; i < Parameters.Count; i++)
+            //{
+            //    var t1 = Parameters[i];
+            //    var t2 = formula.Parameters[i];
 
                 
 
-                else
-                    equations.Add(new TerminalEquation(t1, t2));
-            }
+            //    else
+            //        equations.Add(new TerminalEquation(t1, t2));
+            //}
 
-            foreach(var eq in equations)
-            {
-                if(eq.terminal1.Value == eq.terminal2.Value) { }
-                //remove from list{
+            //foreach(var eq in equations)
+            //{
+            //    if(eq.terminal1.Value == eq.terminal2.Value) { }
+            //    //remove from list{
 
-                //IF t1 is func or const e t2 is x and x is not param of func i can replace x with func or const
+            //    //IF t1 is func or const e t2 is x and x is not param of func i can replace x with func or const
 
-                //if is part it fails
-            }
+            //    //if is part it fails
+            //}
 
             //var sub = new Substitution();
             //for (int i = 0; i < Parameters.Count; i++)
@@ -71,7 +72,7 @@ namespace Poz1.LogicProver.Model
         public UnaryConnective Connective { get; set; }
         public Formula Formula { get; set; }
 
-        public override IList<Variable> FreeVariables => Formula.FreeVariables;
+        public override IList<VariableTerminal> FreeVariables => Formula.FreeVariables;
     }
 
     public class BinaryFormula : Formula
@@ -80,11 +81,11 @@ namespace Poz1.LogicProver.Model
         public Formula LHSFormula { get; set; }
         public Formula RHSFormula { get; set; }
 
-        public override IList<Variable> FreeVariables => ComputeFreeVariables();
+        public override IList<VariableTerminal> FreeVariables => ComputeFreeVariables();
 
-        private IList<Variable> ComputeFreeVariables()
+        private IList<VariableTerminal> ComputeFreeVariables()
         {
-            var vars = new List<Variable>();
+            var vars = new List<VariableTerminal>();
             vars.AddRange(LHSFormula.FreeVariables);
             vars.AddRange(RHSFormula.FreeVariables);
             return vars;
@@ -94,14 +95,14 @@ namespace Poz1.LogicProver.Model
     public class QuantifierFormula : Formula
     {
         public Quantifier Quantifier { get; set; }
-        public Variable Variable { get; set; }
+        public VariableTerminal Variable { get; set; }
         public Formula Formula { get; set; }
 
-        public override IList<Variable> FreeVariables => ComputeFreeVariables();
+        public override IList<VariableTerminal> FreeVariables => ComputeFreeVariables();
 
-        private IList<Variable> ComputeFreeVariables()
+        private IList<VariableTerminal> ComputeFreeVariables()
         {
-            var vars = new List<Variable>();
+            var vars = new List<VariableTerminal>();
             vars.AddRange(Formula.FreeVariables);
             vars.Remove(Variable);
             return vars;

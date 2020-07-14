@@ -9,10 +9,10 @@ namespace Poz1.LogicProver.Model.Rule
     {
         public IList<Sequent> Apply(IList<Sequent> sequents)
         {
-            if (sequents.Count != 2)
-                throw new Exception();
+            //if (sequents.Count != 2)
+            //    throw new Exception();
 
-
+            throw new NotImplementedException();
         }
     }
 }
