@@ -9,11 +9,6 @@ namespace Poz1.LogicProver.Model
         public IList<WorldSymbol> WorldIndex { get; set; }
 
         public abstract IList<Variable> FreeVariables { get; }
-
-        public Substitution Unify(Formula formula)
-        {
-            throw new NotImplementedException();
-        }
     }
 
     public class AtomicFormula : Formula
@@ -33,6 +28,41 @@ namespace Poz1.LogicProver.Model
             }
 
             return vars;
+        }
+
+        //[Martelli, Montanari, 1982]
+        public Substitution Unify(AtomicFormula formula)
+        {
+            var equations = new List<TerminalEquation>();
+
+            for (int i = 0; i < Parameters.Count; i++)
+            {
+                var t1 = Parameters[i];
+                var t2 = formula.Parameters[i];
+
+                
+
+                else
+                    equations.Add(new TerminalEquation(t1, t2));
+            }
+
+            foreach(var eq in equations)
+            {
+                if(eq.terminal1.Value == eq.terminal2.Value) { }
+                //remove from list{
+
+                //IF t1 is func or const e t2 is x and x is not param of func i can replace x with func or const
+
+                //if is part it fails
+            }
+
+            //var sub = new Substitution();
+            //for (int i = 0; i < Parameters.Count; i++)
+            //{
+            //    var terminal = Parameters[i];
+            //    terminal.FindUnification(sub, formula.Parameters[i]);
+            //}
+            //return sub;
         }
     }
 
