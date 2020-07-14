@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Metadata.Ecma335;
 
-namespace Poz1.LogicProver.Model
+namespace Poz1.LogicProver.Model.Core
 {
     public abstract class Terminal
     {
@@ -34,7 +33,6 @@ namespace Poz1.LogicProver.Model
             {
                 vars.AddRange(terminal.Variables);
             }
-
             return vars;
         }
     }

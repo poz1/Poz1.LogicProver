@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Poz1.LogicProver.Model
+namespace Poz1.LogicProver.Model.Core
 {
     public abstract class Formula
     {    

@@ -1,9 +1,6 @@
-﻿using Poz1.LogicProver.Model.World;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Poz1.LogicProver.Model.Core;
 
-namespace Poz1.LogicProver
+namespace Poz1.LogicProver.Model.World
 {
     public abstract class AccessibilityRelation
     {

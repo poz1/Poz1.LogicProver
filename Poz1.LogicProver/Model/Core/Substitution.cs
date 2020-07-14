@@ -1,11 +1,16 @@
 ﻿using Poz1.LogicProver.Model;
+using Poz1.LogicProver.Model.MGU;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Poz1.LogicProver
+namespace Poz1.LogicProver.Model.Core
 {
     public class Substitution : Dictionary<Terminal, Terminal>
     {
+        public Substitution()
+        {
+        }
+
         public Substitution(List<TerminalEquation> equations)
         {
             foreach(var eq in equations)

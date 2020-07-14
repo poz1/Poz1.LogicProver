@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Poz1.LogicProver.Model.Core;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace Poz1.LogicProver.Model.MGU
@@ -55,7 +55,7 @@ namespace Poz1.LogicProver.Model.MGU
                     }
                     else
                     {
-                        solution.Add(eq.Terminal1, eq.Terminal2);
+                        //Rule 5
                         foreach (var otherEq in equations)
                         {
                             if(otherEq != eq && otherEq.Terminal2.Value == eq.Terminal2.Value)

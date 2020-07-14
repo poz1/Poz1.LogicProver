@@ -1,4 +1,4 @@
-﻿namespace Poz1.LogicProver.Model
+﻿namespace Poz1.LogicProver.Model.Core
 {
     public enum Quantifier
     {

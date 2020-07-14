@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Poz1.LogicProver.Model.Core;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
