@@ -39,7 +39,7 @@ namespace Poz1.LogicProver.Model.Core
             {
                 if (ContainsKey(item))
                 {
-                    this.[item] = substitutions[item];
+                    this[item] = substitutions[item];
                 } 
                 else
                 {

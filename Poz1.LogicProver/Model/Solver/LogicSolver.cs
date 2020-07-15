@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Poz1.LogicProver.Model
+namespace Poz1.LogicProver.Model.Solver
 {
-    public class LogicProver
+    public class LogicSolver
     {
         public IList<IInferenceRule> InferenceRules { get; set; }
         public bool IsVerbose { get; set; }
