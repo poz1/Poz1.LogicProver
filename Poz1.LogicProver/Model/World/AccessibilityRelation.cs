@@ -16,12 +16,12 @@ namespace Poz1.LogicProver.Model.World
 
         public AccessibilityRelation(List<IRelationProperty> properties = null, List<WorldIndex> worlds = null) : this()
         {
-            if(worlds != null)
+            if (properties != null)
+                this.properties = properties;
+
+            if (worlds != null)
                 foreach (var worldIndex in worlds)
                     AddWorldIndex(worldIndex);
-
-            if(properties != null)
-                this.properties = properties;
         }
 
         public AccessibilityRelation(List<WorldIndex> worlds) : this()

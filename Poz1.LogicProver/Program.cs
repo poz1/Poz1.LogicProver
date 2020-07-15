@@ -71,15 +71,7 @@ namespace Poz1.LogicProver
             //var lol = unifier.Compute();
 
             //TEST WUnificaton 1
-            //var baseWorld = new WorldSymbol("0");
-            //var num = new WorldIndex(new WorldSymbol("2", new WorldSymbol("1", baseWorld)));
-            //var var = new WorldIndex(new WorldSymbol("w",  baseWorld));
-
-            //var serialRelation = new SerialRelation(new List<WorldIndex>(){ num, var });
-            //var lol = serialRelation.WorldUnify(num, var);
-
-            //var reflexiveTransRel = new ReflexiveTransitiveSerialRelation(new List<WorldIndex>() { num, var });
-            //var lol2 = reflexiveTransRel.WorldUnify(num, var);
+          
 
             //TEST WUnificaton 2
             //var baseWorld = new WorldSymbol("0");
@@ -88,22 +80,39 @@ namespace Poz1.LogicProver
 
             //var serialRelation = new SerialRelation(new List<WorldIndex>() { num, var });
             //var lol = serialRelation.WorldUnify(num, var);
-            
+
             //TEST WUnificaton 3
+            //var baseWorld = new WorldSymbol("0");
+            //var num = new WorldIndex(new WorldSymbol("w", new WorldSymbol("1", baseWorld)));
+            //var var = new WorldIndex(new WorldSymbol("v", new WorldSymbol("2", baseWorld)));
+
+            //var rel = new AccessibilityRelation(
+            //    new List<IRelationProperty>()
+            //    {
+            //        new SerialProperty(),
+            //        new SimmetricProperty(),
+            //        new TransitiveProperty()
+            //    },
+            //    new List<WorldIndex>() { num, var }
+            //); 
+
+            //var lol = rel.WorldUnify(num, var);
+
+            //TEST WUnificaton 4
             var baseWorld = new WorldSymbol("0");
-            var num = new WorldIndex(new WorldSymbol("w", new WorldSymbol("1", baseWorld)));
-            var var = new WorldIndex(new WorldSymbol("v", new WorldSymbol("2", baseWorld)));
+            var num = new WorldIndex(new WorldSymbol("w", baseWorld));
+            var var = new WorldIndex(new WorldSymbol("v", new WorldSymbol("1", baseWorld)));
 
             var rel = new AccessibilityRelation(
                 new List<IRelationProperty>()
                 {
-                    new SimmetricProperty(),
-                    new TransitiveProperty()
+                    new SerialProperty(),
+                    new ReflexiveProperty(),
                 },
                 new List<WorldIndex>() { num, var }
-            ); ;
-            //var serialRelation = new TransitiveSimmetricRelation(new List<WorldIndex>() { num, var });
-            //var lol = serialRelation.WorldUnify(num, var);
+            );
+
+            var lol = rel.WorldUnify(num, var);
         }
     }
 }

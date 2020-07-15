@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.30225.117
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Poz1.LogicProver", "Poz1.LogicProver\Poz1.LogicProver.csproj", "{4B6DFC96-9C41-4616-9F0B-BBE6F7904292}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Poz1.LogicProver.Test", "Poz1.LogicProver.Test\Poz1.LogicProver.Test.csproj", "{CD226217-D85B-459B-8A4B-AC148DF5D051}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{4B6DFC96-9C41-4616-9F0B-BBE6F7904292}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4B6DFC96-9C41-4616-9F0B-BBE6F7904292}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4B6DFC96-9C41-4616-9F0B-BBE6F7904292}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CD226217-D85B-459B-8A4B-AC148DF5D051}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD226217-D85B-459B-8A4B-AC148DF5D051}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD226217-D85B-459B-8A4B-AC148DF5D051}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD226217-D85B-459B-8A4B-AC148DF5D051}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
