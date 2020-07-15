@@ -7,7 +7,7 @@ namespace Poz1.LogicProver.Model.MGU
 {
     public class MostGeneralUnifier : IMostGeneralUnifier
     {
-        private readonly List<TerminalEquation> equations = new List<TerminalEquation>();
+        private readonly List<Equation<Terminal>> equations = new List<Equation<Terminal>>();
         public void AddEquation(Terminal t1, Terminal t2)
         {
             //Rule 3 [x = x -> Cancel Equation]
@@ -16,9 +16,9 @@ namespace Poz1.LogicProver.Model.MGU
 
             //Rule 4 [t = x -> x = t]
             if (t1.GetType() == typeof(VariableTerminal) && t2.GetType() != typeof(VariableTerminal))
-                equations.Add(new TerminalEquation(t2, t1));
+                equations.Add(new Equation<Terminal>(t2, t1));
             else
-                equations.Add(new TerminalEquation(t1, t2));
+                equations.Add(new Equation<Terminal>(t1, t2));
         }
 
         public void AddEquation(FunctionTerminal f1, FunctionTerminal f2)
@@ -42,7 +42,7 @@ namespace Poz1.LogicProver.Model.MGU
             }
         }
        
-        public Substitution Compute()
+        public Substitution<Terminal> Compute()
         {
             foreach (var eq in equations)
             {
@@ -67,7 +67,7 @@ namespace Poz1.LogicProver.Model.MGU
                 }
             }
 
-            return new Substitution(equations);
+            return new Substitution<Terminal>(equations);
         }
     }
 }

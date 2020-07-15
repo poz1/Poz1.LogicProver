@@ -1,27 +1,55 @@
 ﻿using Poz1.LogicProver.Model.Core;
 using System;
+using System.Collections.Generic;
 
 namespace Poz1.LogicProver.Model.World
 {
     public class SerialRelation : AccessibilityRelation
     {
-        protected override Substitution AbstractWorldUnify(WorldIndex i, WorldIndex j)
+        public override void Add(WorldSymbol x, WorldSymbol y)
         {
-            //2b
+            if (y == null)
+                throw new Exception("Relation is serial, y cannot be null");
+
+            if (!relations.ContainsKey(x))
+                relations.Add(x, new List<WorldSymbol>());
+
+            relations[x].Add(y);
+        }
+
+        protected override Substitution<WorldSymbol> AbstractWorldUnify(WorldIndex i, WorldIndex j)
+        {
+            //2b -> one is ground and the other world variable
             if (i.EndSymbol.IsGround || j.EndSymbol.IsGround)
             {
                 //Need to verify if n is accessible from the parent of w
                 var n = i.EndSymbol.IsGround ? i.EndSymbol : j.EndSymbol;
                 var w = !i.EndSymbol.IsGround ? i.EndSymbol : j.EndSymbol;
 
-                return new Substitution() { { w.Symbol, n.Symbol } };
+                if (Belongs(w.ParentSymbol, n))
+                    return new Substitution<WorldSymbol>(){ { n, w } };
+                else 
+                    return null;
             }
-            ////2c
-            //else
-            //{
-            //    //Misses a lot of things
-            //    return new Substitution() { { i.EndSymbol.Symbol, j.EndSymbol.Symbol } };
-            //}
+            //2c -> both are world variables
+            else
+            {
+                //(i)
+                if (Belongs(i.EndSymbol.ParentSymbol, j.EndSymbol) || Belongs(j.EndSymbol.ParentSymbol, i.EndSymbol))
+                    return new Substitution<WorldSymbol>() { { i.EndSymbol, j.EndSymbol } };
+                //(ii)
+                else
+                {
+                    var parentUnification = WorldUnify(i.ParentIndex, j.ParentIndex);
+                    if (parentUnification == null)
+                        return null;
+                    else
+                    {
+                        parentUnification.Compose(new Substitution<WorldSymbol>() { { i.EndSymbol, j.EndSymbol } });
+                        return parentUnification;
+                    }
+                }
+            }
         }
     }
 }

@@ -31,40 +31,40 @@ namespace Poz1.LogicProver.Model.Core
         }
 
         //[Martelli, Montanari, 1982]
-        public Substitution Unify(AtomicFormula formula)
-        {
-            throw new NotImplementedException();
-            //var equations = new List<TerminalEquation>();
+        //public Substitution Unify(AtomicFormula formula)
+        //{
+        //    throw new NotImplementedException();
+        //    //var equations = new List<TerminalEquation>();
 
-            //for (int i = 0; i < Parameters.Count; i++)
-            //{
-            //    var t1 = Parameters[i];
-            //    var t2 = formula.Parameters[i];
+        //    //for (int i = 0; i < Parameters.Count; i++)
+        //    //{
+        //    //    var t1 = Parameters[i];
+        //    //    var t2 = formula.Parameters[i];
 
                 
 
-            //    else
-            //        equations.Add(new TerminalEquation(t1, t2));
-            //}
+        //    //    else
+        //    //        equations.Add(new TerminalEquation(t1, t2));
+        //    //}
 
-            //foreach(var eq in equations)
-            //{
-            //    if(eq.terminal1.Value == eq.terminal2.Value) { }
-            //    //remove from list{
+        //    //foreach(var eq in equations)
+        //    //{
+        //    //    if(eq.terminal1.Value == eq.terminal2.Value) { }
+        //    //    //remove from list{
 
-            //    //IF t1 is func or const e t2 is x and x is not param of func i can replace x with func or const
+        //    //    //IF t1 is func or const e t2 is x and x is not param of func i can replace x with func or const
 
-            //    //if is part it fails
-            //}
+        //    //    //if is part it fails
+        //    //}
 
-            //var sub = new Substitution();
-            //for (int i = 0; i < Parameters.Count; i++)
-            //{
-            //    var terminal = Parameters[i];
-            //    terminal.FindUnification(sub, formula.Parameters[i]);
-            //}
-            //return sub;
-        }
+        //    //var sub = new Substitution();
+        //    //for (int i = 0; i < Parameters.Count; i++)
+        //    //{
+        //    //    var terminal = Parameters[i];
+        //    //    terminal.FindUnification(sub, formula.Parameters[i]);
+        //    //}
+        //    //return sub;
+        //}
     }
 
     public class UnaryFormula : Formula
