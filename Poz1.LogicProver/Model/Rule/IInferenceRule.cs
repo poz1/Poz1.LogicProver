@@ -6,6 +6,6 @@ namespace Poz1.LogicProver.Model.Rule
 {
     public interface IInferenceRule
     {
-        public IList<Sequent> Apply(IList<Sequent> sequents);
+        public List<Sequent> Apply(IList<Sequent> sequents);
     }
 }

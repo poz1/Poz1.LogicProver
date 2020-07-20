@@ -30,7 +30,7 @@ namespace Poz1.LogicProver.Model.World
                 AddWorldIndex(worldIndex);
         }
 
-        public Substitution<WorldSymbol> WorldUnify(WorldIndex i, WorldIndex j)
+        public Substitution<Terminal> WorldUnify(WorldIndex i, WorldIndex j)
         {
             //By convention "0" is the actual world
             if (i.StartSymbol.Symbol != "0" || j.StartSymbol.Symbol != "0")
@@ -39,14 +39,14 @@ namespace Poz1.LogicProver.Model.World
             if (i.EndSymbol.IsGround && j.EndSymbol.IsGround)
             {
                 if (i.EndSymbol.Symbol == j.EndSymbol.Symbol)
-                    return new Substitution<WorldSymbol>();
+                    return new Substitution<Terminal>();
                 else
                     return null;
             }
 
             //return AbstractWorldUnify(i, j);
 
-            var unifications = new List<Substitution<WorldSymbol>>();
+            var unifications = new List<Substitution<Terminal>>();
             foreach (var property in properties)
             {
                 var unification = property.WorldUnify(this, i, j);
@@ -91,7 +91,5 @@ namespace Poz1.LogicProver.Model.World
         {
             return Relations[x].Contains(y);
         }
-
-        //protected abstract Substitution<WorldSymbol> AbstractWorldUnify(WorldIndex i, WorldIndex j);
     }
 }

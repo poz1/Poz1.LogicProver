@@ -5,7 +5,7 @@ namespace Poz1.LogicProver.Model.World
 {
     public interface IRelationProperty
     {
-        Substitution<WorldSymbol> WorldUnify(AccessibilityRelation relation, WorldIndex i, WorldIndex j);
+        Substitution<Terminal> WorldUnify(AccessibilityRelation relation, WorldIndex i, WorldIndex j);
         void AddRelation(AccessibilityRelation relation, WorldSymbol x, WorldSymbol y);
     }
 }

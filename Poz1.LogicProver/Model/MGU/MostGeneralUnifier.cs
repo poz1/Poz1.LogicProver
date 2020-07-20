@@ -1,12 +1,16 @@
 ﻿using Poz1.LogicProver.Model.Core;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 
 namespace Poz1.LogicProver.Model.MGU
 {
+    //[Martelli, Montanari, 1982]
     public class MostGeneralUnifier : IMostGeneralUnifier
     {
+        //public static MostGeneralUnifier Instance;
+
         private readonly List<Equation<Terminal>> equations = new List<Equation<Terminal>>();
         public void AddEquation(Terminal t1, Terminal t2)
         {
@@ -41,7 +45,22 @@ namespace Poz1.LogicProver.Model.MGU
                     AddEquation(f1p, f2p);
             }
         }
-       
+
+        public void Clear()
+        {
+            equations.Clear();
+        }
+
+        public Substitution<Terminal> Unify(IList<Equation<Terminal>> equations)
+        {
+            foreach (var eq in equations)
+            {
+                AddEquation(eq.Terminal1, eq.Terminal2);
+            }
+
+            return Compute();
+        }
+
         public Substitution<Terminal> Compute()
         {
             foreach (var eq in equations)

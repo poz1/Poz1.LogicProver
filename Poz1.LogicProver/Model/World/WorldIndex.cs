@@ -23,5 +23,19 @@ namespace Poz1.LogicProver.Model.World
                 AddRange(ParentIndex);
             }
         }
+
+        public override string ToString()
+        {
+            var builder = new StringBuilder();
+            builder.Append(this[0]);
+
+            for(int i = 1; i < Count; i++)
+            {
+                builder.Append(":");
+                builder.Append(this[i]);
+            }
+
+            return builder.ToString();
+        }
     }
 }

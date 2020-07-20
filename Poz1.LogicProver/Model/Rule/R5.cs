@@ -6,28 +6,26 @@ using System.Text;
 
 namespace Poz1.LogicProver.Model.Rule
 {
-    public class R2 : IInferenceRule
+    public class R5 : IInferenceRule
     {
-        // R2: If S, |(p->q)|i <- T then S, |q|i <-|p|i, T
         public List<Sequent> Apply(IList<Sequent> sequents)
         {
             var sequent = sequents[0];
 
-            BinaryFormula implicationFormula = (BinaryFormula)sequent.LeftHandSide.UnreducedFormulas.Where(
-                x => x is BinaryFormula formula && formula.Connective == BinaryConnective.Implication
+            UnaryFormula implicationFormula = (UnaryFormula)sequent.LeftHandSide.UnreducedFormulas.Where(
+                x => x is UnaryFormula formula && formula.Connective == UnaryConnective.Negation
                 ).FirstOrDefault();
-            
-            if(implicationFormula != null)
+
+            if (implicationFormula != null)
             {
                 sequent.LeftHandSide.UnreducedFormulas.Remove(implicationFormula);
 
                 var result = new Sequent();
 
                 result.LeftHandSide.UnreducedFormulas.AddRange(sequent.LeftHandSide.UnreducedFormulas);
-                result.LeftHandSide.UnreducedFormulas.Add(implicationFormula.RHSFormula);
 
                 result.RightHandSide.UnreducedFormulas.AddRange(sequent.RightHandSide.UnreducedFormulas);
-                result.RightHandSide.UnreducedFormulas.Add(implicationFormula.LHSFormula);
+                result.RightHandSide.UnreducedFormulas.Add(implicationFormula.Formula);
 
                 return new List<Sequent>() { result };
             }

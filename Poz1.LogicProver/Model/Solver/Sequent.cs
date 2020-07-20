@@ -14,12 +14,18 @@ namespace Poz1.LogicProver.Model
 
         public bool IsReduced => !LeftHandSide.HasUnreducedFormulas && !RightHandSide.HasUnreducedFormulas;
         public bool IsEmpty => LeftHandSide.Count == 0 && RightHandSide.Count == 0;
+
+        public Sequent()
+        {
+            LeftHandSide = new SequentSide();
+            RightHandSide = new SequentSide();
+        }
     }
 
     public class SequentSide
     {
-        public IList<Formula> UnreducedFormulas { get; set; }
-        public IList<Formula> ReducedFormulas { get; set; }
+        public List<Formula> UnreducedFormulas = new List<Formula>();
+        public List<Formula> ReducedFormulas = new List<Formula>();
         public bool HasUnreducedFormulas => UnreducedFormulas.Count != 0;
         public int Count => UnreducedFormulas.Count + ReducedFormulas.Count;
     }

@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Poz1.LogicProver.Model.Core
 {
-    public abstract class Terminal
+    public abstract class Terminal 
     {
         public string Value { get; set; }
         public abstract List<VariableTerminal> Variables { get; }

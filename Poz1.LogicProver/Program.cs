@@ -70,49 +70,19 @@ namespace Poz1.LogicProver
 
             //var lol = unifier.Compute();
 
-            //TEST WUnificaton 1
-          
-
-            //TEST WUnificaton 2
-            //var baseWorld = new WorldSymbol("0");
-            //var num = new WorldIndex(new WorldSymbol("w", new WorldSymbol("v", baseWorld)));
-            //var var = new WorldIndex(new WorldSymbol("k", new WorldSymbol("u", baseWorld)));
-
-            //var serialRelation = new SerialRelation(new List<WorldIndex>() { num, var });
-            //var lol = serialRelation.WorldUnify(num, var);
-
-            //TEST WUnificaton 3
-            //var baseWorld = new WorldSymbol("0");
-            //var num = new WorldIndex(new WorldSymbol("w", new WorldSymbol("1", baseWorld)));
-            //var var = new WorldIndex(new WorldSymbol("v", new WorldSymbol("2", baseWorld)));
-
-            //var rel = new AccessibilityRelation(
-            //    new List<IRelationProperty>()
-            //    {
-            //        new SerialProperty(),
-            //        new SimmetricProperty(),
-            //        new TransitiveProperty()
-            //    },
-            //    new List<WorldIndex>() { num, var }
-            //); 
-
-            //var lol = rel.WorldUnify(num, var);
-
-            //TEST WUnificaton 4
             var baseWorld = new WorldSymbol("0");
-            var num = new WorldIndex(new WorldSymbol("w", baseWorld));
-            var var = new WorldIndex(new WorldSymbol("v", new WorldSymbol("1", baseWorld)));
+            var wi1 = new WorldIndex(new WorldSymbol("f(w)", new WorldSymbol("w", baseWorld)));
+            var wi2 = new WorldIndex(new WorldSymbol("w1", baseWorld));
 
-            var rel = new AccessibilityRelation(
-                new List<IRelationProperty>()
-                {
-                    new SerialProperty(),
-                    new ReflexiveProperty(),
-                },
-                new List<WorldIndex>() { num, var }
+            var relation = new AccessibilityRelation(
+              new List<IRelationProperty>()
+              {
+                    new SerialProperty()
+              },
+              new List<WorldIndex>() { wi1, wi2 }
             );
 
-            var lol = rel.WorldUnify(num, var);
+            var t = relation.WorldUnify(wi1, wi2);
         }
     }
 }

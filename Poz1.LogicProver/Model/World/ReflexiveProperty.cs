@@ -11,7 +11,7 @@ namespace Poz1.LogicProver.Model.World
             relation.AddRelation(y, y);
         }
 
-        public Substitution<WorldSymbol> WorldUnify(AccessibilityRelation relations, WorldIndex i, WorldIndex j)
+        public Substitution<Terminal> WorldUnify(AccessibilityRelation relations, WorldIndex i, WorldIndex j)
         {
             return null;
         }

@@ -1,5 +1,7 @@
 ﻿using Poz1.LogicProver.Model.Core;
+using Poz1.LogicProver.Model.MGU;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Poz1.LogicProver.Model.World
 {
@@ -9,7 +11,7 @@ namespace Poz1.LogicProver.Model.World
         {
         }
 
-        public Substitution<WorldSymbol> WorldUnify(AccessibilityRelation relation, WorldIndex i, WorldIndex j)
+        public Substitution<Terminal> WorldUnify(AccessibilityRelation relation, WorldIndex i, WorldIndex j)
         {
             //2b -> one is ground and the other world variable
             if (i.EndSymbol.IsGround || j.EndSymbol.IsGround)
@@ -19,16 +21,41 @@ namespace Poz1.LogicProver.Model.World
                 var w = !i.EndSymbol.IsGround ? i.EndSymbol : j.EndSymbol;
 
                 if (relation.Contains(w.ParentSymbol, n))
-                    return new Substitution<WorldSymbol>() { { n, w } };
-                else
-                    return null;
+                    return new Substitution<Terminal>() { { n, w } };
+                return null;
+
+                //var possibleUnifications = relation.Relations.Where(x => x.Value.Contains(n) && x.Value.Contains(w)).Select(x => x.Key);
+
+                //var MGU = new MostGeneralUnifier();
+
+                //foreach (var pos in possibleUnifications)
+                //{
+                //    MGU.AddEquation(new VariableTerminal() { Value = w.ParentSymbol.Symbol }, new ConstantTerminal() { Value = pos.Symbol });
+
+                //    var unification = MGU.Unify(new List<Equation<Terminal>>()
+                //    {
+                //        new Equation<Terminal>(new VariableTerminal() { Value = w.ParentSymbol.Symbol }, new ConstantTerminal() { Value = pos.Symbol })
+                //    });
+
+                //    if (unification != null)
+                //    {
+                //        //Need to merge subs
+                //        //var result = new Substitution<WorldSymbol>() { { n, w } }.Compose(unification);
+                //        return null;
+                //    }
+                //    MGU.Clear();
+                //    //Must be true
+                //    //if (relation.Contains(s[0].Value, n))
+                //    //    return new Substitution<WorldSymbol>() { { n, w } };
+
+                //}
             }
             //2c -> both are world variables
             else
             {
                 //(i)
                 if (relation.Contains(i.EndSymbol.ParentSymbol, j.EndSymbol) || relation.Contains(j.EndSymbol.ParentSymbol, i.EndSymbol))
-                    return new Substitution<WorldSymbol>() { { i.EndSymbol, j.EndSymbol } };
+                    return new Substitution<Terminal>() { { i.EndSymbol, j.EndSymbol } };
                 //(ii)
                 else
                 {
@@ -37,7 +64,7 @@ namespace Poz1.LogicProver.Model.World
                         return null;
                     else
                     {
-                        parentUnification.Compose(new Substitution<WorldSymbol>() { { i.EndSymbol, j.EndSymbol } });
+                        new Substitution<Terminal>() { { i.EndSymbol, j.EndSymbol } }.Compose(parentUnification);
                         return parentUnification;
                     }
                 }

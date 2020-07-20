@@ -1,25 +1,65 @@
-﻿using Poz1.LogicProver.Model.World;
+﻿using Poz1.LogicProver.Model.MGU;
+using Poz1.LogicProver.Model.World;
 using System;
 using System.Collections.Generic;
 
 namespace Poz1.LogicProver.Model.Core
 {
-    public abstract class Formula
+    public abstract class Formula 
     {    
-        public IList<WorldSymbol> WorldIndex { get; set; }
+        public WorldIndex WorldIndex { get; set; }
 
-        public abstract IList<VariableTerminal> FreeVariables { get; }
+        public abstract List<VariableTerminal> FreeVariables { get; }
+
+        public Substitution<Terminal> Unify(Formula formula)
+        {
+            var mgu = new MostGeneralUnifier();
+
+            var itemsCount = FreeVariables.Count < formula.FreeVariables.Count ? FreeVariables.Count : formula.FreeVariables.Count;
+
+            for (int i = 0; i < itemsCount; i++)
+            {
+                mgu.AddEquation(FreeVariables[i], formula.FreeVariables[i]);
+            }
+
+            return mgu.Compute();
+        }
+
+        public Substitution<Terminal> MUnify(AccessibilityRelation relation, Formula formula)
+        {
+            var unif = Unify(formula);
+            var eta = relation.WorldUnify(WorldIndex, formula.WorldIndex);
+
+            unif.Compose(eta);
+            return unif;
+        }
+
+        public void ApplySubstitution(Substitution<Terminal> substitution) { }
     }
 
     public class AtomicFormula : Formula
     {
         public string Predicate { get; set; }
-        public IList<Terminal> Parameters { get; set; }
+        public List<Terminal> Parameters { get; set; }
         public int Arity => Parameters.Count;
 
-        public override IList<VariableTerminal> FreeVariables => ComputeFreeVariables();
+        public override List<VariableTerminal> FreeVariables => ComputeFreeVariables();
 
-        private IList<VariableTerminal> ComputeFreeVariables()
+        //public override Substitution<Terminal> MUnify(Formula formula)
+        //{
+        //    var mgu = new MostGeneralUnifier();
+
+        //    var itemsCount = FreeVariables.Count < formula.FreeVariables.Count ? FreeVariables.Count : formula.FreeVariables.Count;
+
+        //    for(int i = 0; i< itemsCount; i++)
+        //    {
+        //        mgu.AddEquation(FreeVariables[i], formula.FreeVariables[i]);
+        //    }
+
+        //    return mgu.Compute();
+        //}
+
+        private List<VariableTerminal> ComputeFreeVariables()
         {
             var vars = new List<VariableTerminal>();
             foreach (var terminal in Parameters)
@@ -29,42 +69,6 @@ namespace Poz1.LogicProver.Model.Core
 
             return vars;
         }
-
-        //[Martelli, Montanari, 1982]
-        //public Substitution Unify(AtomicFormula formula)
-        //{
-        //    throw new NotImplementedException();
-        //    //var equations = new List<TerminalEquation>();
-
-        //    //for (int i = 0; i < Parameters.Count; i++)
-        //    //{
-        //    //    var t1 = Parameters[i];
-        //    //    var t2 = formula.Parameters[i];
-
-                
-
-        //    //    else
-        //    //        equations.Add(new TerminalEquation(t1, t2));
-        //    //}
-
-        //    //foreach(var eq in equations)
-        //    //{
-        //    //    if(eq.terminal1.Value == eq.terminal2.Value) { }
-        //    //    //remove from list{
-
-        //    //    //IF t1 is func or const e t2 is x and x is not param of func i can replace x with func or const
-
-        //    //    //if is part it fails
-        //    //}
-
-        //    //var sub = new Substitution();
-        //    //for (int i = 0; i < Parameters.Count; i++)
-        //    //{
-        //    //    var terminal = Parameters[i];
-        //    //    terminal.FindUnification(sub, formula.Parameters[i]);
-        //    //}
-        //    //return sub;
-        //}
     }
 
     public class UnaryFormula : Formula
@@ -72,7 +76,12 @@ namespace Poz1.LogicProver.Model.Core
         public UnaryConnective Connective { get; set; }
         public Formula Formula { get; set; }
 
-        public override IList<VariableTerminal> FreeVariables => Formula.FreeVariables;
+        public override List<VariableTerminal> FreeVariables => Formula.FreeVariables;
+
+        //public override Substitution<Terminal> MUnify(Formula formula)
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 
     public class BinaryFormula : Formula
@@ -81,9 +90,14 @@ namespace Poz1.LogicProver.Model.Core
         public Formula LHSFormula { get; set; }
         public Formula RHSFormula { get; set; }
 
-        public override IList<VariableTerminal> FreeVariables => ComputeFreeVariables();
+        public override List<VariableTerminal> FreeVariables => ComputeFreeVariables();
 
-        private IList<VariableTerminal> ComputeFreeVariables()
+        //public override Substitution<Terminal> MUnify(Formula formula)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        private List<VariableTerminal> ComputeFreeVariables()
         {
             var vars = new List<VariableTerminal>();
             vars.AddRange(LHSFormula.FreeVariables);
@@ -98,9 +112,9 @@ namespace Poz1.LogicProver.Model.Core
         public VariableTerminal Variable { get; set; }
         public Formula Formula { get; set; }
 
-        public override IList<VariableTerminal> FreeVariables => ComputeFreeVariables();
+        public override List<VariableTerminal> FreeVariables => ComputeFreeVariables();
 
-        private IList<VariableTerminal> ComputeFreeVariables()
+        private List<VariableTerminal> ComputeFreeVariables()
         {
             var vars = new List<VariableTerminal>();
             vars.AddRange(Formula.FreeVariables);
