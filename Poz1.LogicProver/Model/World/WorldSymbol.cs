@@ -13,8 +13,6 @@ namespace Poz1.LogicProver.Model.World
 
         public bool IsGround => Type == WorldSymbolType.Numeral;
 
-        public override List<VariableTerminal> Variables => throw new System.NotImplementedException();
-
         public WorldSymbol(string name, WorldSymbol parent) : this(name)
         {
             ParentSymbol = parent;
@@ -30,6 +28,9 @@ namespace Poz1.LogicProver.Model.World
         {
             return Symbol;
         }
+
+        public override List<VariableTerminal> Variables => throw new System.NotImplementedException();
+
     }
 
     public enum WorldSymbolType
