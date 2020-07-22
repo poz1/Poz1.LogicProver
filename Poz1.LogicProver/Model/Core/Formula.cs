@@ -47,6 +47,10 @@ namespace Poz1.LogicProver.Model.Core
             WorldIndex = index;
         }
 
+        public Formula()
+        {
+        }
+
         public string ToWorldString()
         {
             return "|" + ToString() + "|" + WorldIndex.ToString();
@@ -61,6 +65,11 @@ namespace Poz1.LogicProver.Model.Core
         public override List<VariableTerminal> FreeVariables => ComputeFreeVariables();
 
         public AtomicFormula(Terminal terminal, WorldIndex index) : base(index)
+        {
+            Terminal = terminal;
+        }
+
+        public AtomicFormula(Terminal terminal)
         {
             Terminal = terminal;
         }
@@ -222,9 +231,10 @@ namespace Poz1.LogicProver.Model.Core
 
         public override List<VariableTerminal> FreeVariables => ComputeFreeVariables();
 
-        public QuantifierFormula(Formula formula, string quantifier, WorldIndex index) : base(index)
+        public QuantifierFormula(Formula formula, VariableTerminal variable, string quantifier, WorldIndex index) : base(index)
         {
             Formula = formula;
+            Variable = variable;
             Quantifier = quantifier;
         }
 
@@ -240,8 +250,11 @@ namespace Poz1.LogicProver.Model.Core
         {
             var stringBuilder = new StringBuilder();
 
-
+            stringBuilder.Append('(');
             stringBuilder.Append(Quantifier);
+            stringBuilder.Append(Variable);
+            stringBuilder.Append(')');
+
             stringBuilder.Append(Formula.ToString());
 
             return stringBuilder.ToString();

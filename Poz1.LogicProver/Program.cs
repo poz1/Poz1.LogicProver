@@ -1,6 +1,4 @@
-﻿using Poz1.LogicProver.Model;
-using Poz1.LogicProver.Model.Core;
-using Poz1.LogicProver.Model.MGU;
+﻿using Poz1.LogicProver.Model.Core;
 using Poz1.LogicProver.Model.Solver;
 using Poz1.LogicProver.Model.World;
 using System;
@@ -91,8 +89,17 @@ namespace Poz1.LogicProver
                     new UnaryFormula(atomicFormula, UnaryConnective.Necessity, baseIndex), UnaryConnective.Necessity, baseIndex),
                 BinaryConnective.Implication, baseIndex);
 
+
+            var varia = new VariableTerminal("x");
+            var atomicFormula8 = new AtomicFormula(new FunctionTerminal("p", new List<Terminal>() { varia }), baseIndex);
+            var formulaEX8 = new BinaryFormula(
+             new QuantifierFormula( new UnaryFormula(atomicFormula8, UnaryConnective.Necessity, baseIndex), varia, QuantifierConnective.ForAll, baseIndex),
+              new UnaryFormula(new QuantifierFormula(atomicFormula8, varia,  QuantifierConnective.ForAll, baseIndex), UnaryConnective.Necessity, baseIndex),
+              BinaryConnective.Implication, baseIndex);
+
+            Console.WriteLine(formulaEX8.ToWorldString());
             var solver = new LogicSolver();
-            solver.Solve(formulaEX1);
+            solver.Solve(formulaEX8);
         }
     }
 }

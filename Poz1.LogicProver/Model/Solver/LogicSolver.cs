@@ -1,6 +1,7 @@
 ﻿using Poz1.LogicProver.Model.Core;
 using Poz1.LogicProver.Model.Rule;
 using Poz1.LogicProver.Model.World;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -16,10 +17,10 @@ namespace Poz1.LogicProver.Model.Solver
 
         private WorldSymbol baseWorld = new WorldSymbol("0");
 
-        private IResolutionRule resolutionRule;
-        private List<IInferenceRule> rules = new List<IInferenceRule>();
+        private readonly IResolutionRule resolutionRule;
+        private readonly List<IInferenceRule> rules = new List<IInferenceRule>();
 
-        private List<string> Log = new List<string>();
+        private readonly List<string> Log = new List<string>();
 
         public LogicSolver() {
 
@@ -41,7 +42,7 @@ namespace Poz1.LogicProver.Model.Solver
             sequentCounter++;
 
             queue.Enqueue(initialSequent);
-            var sequentList = new List<Sequent>() { initialSequent };
+            var sequentList = new List<Sequent>();
 
             while (queue.Count != 0) {
 
@@ -55,7 +56,12 @@ namespace Poz1.LogicProver.Model.Solver
                         result.Name = sequentCounter.ToString();
                         sequentCounter++;
                         queue.Enqueue(result);
-                        sequentList.Add(result);
+
+                        Log.Add(result.ToString());
+                        Console.WriteLine(result);
+
+                        if(result.IsReduced)
+                            sequentList.Add(result);
                     }
                 });
             }

@@ -10,33 +10,31 @@ namespace Poz1.LogicProver.Model.Rule
     {
         public Sequent Apply(Sequent sequent)
         {
-            QuantifierFormula implicationFormula = (QuantifierFormula)sequent.RightHandSide.Formulas.Where(
-                x => x is QuantifierFormula formula && formula.Quantifier == QuantifierConnective.ForAll
+            QuantifierFormula implicationFormula = (QuantifierFormula)sequent.RightHandSide.Formulas.Where
+                (
+                    x => x is QuantifierFormula formula && formula.Quantifier == QuantifierConnective.ForAll
                 ).FirstOrDefault();
 
             if (implicationFormula == null)
                 return null;
 
+            var formula = implicationFormula.Formula.Clone();
+
+            Terminal a;
+
+            if (implicationFormula.Formula.FreeVariables.Count == 0 && implicationFormula.WorldIndex.IsGround)
+                a = new ConstantTerminal("T"); //TODO fix name
+            else
+                a = new FunctionTerminal("T", new List<Terminal>()); //Skolem di blalbal
+
+
+            formula.ApplySubstitution(new Substitution<Terminal>(
+                new List<MGU.Equation<Terminal>>() { new MGU.Equation<Terminal>(a, implicationFormula.Variable) }));
+
             sequent.RightHandSide.Formulas.Remove(implicationFormula);
-
-
-
-                Terminal a;
-
-                if (implicationFormula.Formula.FreeVariables.Count == 0 && implicationFormula.WorldIndex.IsGround)
-                    a = new ConstantTerminal("T"); //TODO fix name
-                else
-                    a = new FunctionTerminal("T", new List<Terminal> ()); //Skolem di blalbal
-
-
-                implicationFormula.Formula.ApplySubstitution(new Substitution<Terminal>(
-                    new List<MGU.Equation<Terminal>>() {new MGU.Equation<Terminal>(a, implicationFormula.Variable) }));
-
-
-            sequent.RightHandSide.Formulas.Add(implicationFormula);
+            sequent.RightHandSide.Formulas.Add(formula);
 
             sequent.Justification = "R9 (" + sequent.Name + ")";
-
             return sequent;
 
         }
