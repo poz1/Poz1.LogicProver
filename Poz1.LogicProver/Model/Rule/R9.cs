@@ -8,17 +8,15 @@ namespace Poz1.LogicProver.Model.Rule
 {
     public class R9 : IInferenceRule
     {
-        public List<Sequent> Apply(IList<Sequent> sequents)
+        public Sequent Apply(Sequent sequent)
         {
-            var sequent = sequents[0];
-
-            QuantifierFormula implicationFormula = (QuantifierFormula)sequent.RightHandSide.UnreducedFormulas.Where(
-                x => x is QuantifierFormula formula && formula.Quantifier == Quantifier.ForAll
+            QuantifierFormula implicationFormula = (QuantifierFormula)sequent.RightHandSide.Formulas.Where(
+                x => x is QuantifierFormula formula && formula.Quantifier == QuantifierConnective.ForAll
                 ).FirstOrDefault();
 
             if (implicationFormula != null)
             {
-                sequent.RightHandSide.UnreducedFormulas.Remove(implicationFormula);
+                sequent.RightHandSide.Formulas.Remove(implicationFormula);
 
                 var result = new Sequent();
 
@@ -26,21 +24,21 @@ namespace Poz1.LogicProver.Model.Rule
                 Terminal a;
 
                 if (implicationFormula.Formula.FreeVariables.Count == 0 && implicationFormula.WorldIndex.IsGround)
-                    a = new ConstantTerminal(); //TODO fix name
+                    a = new ConstantTerminal("T"); //TODO fix name
                 else
-                    a = new FunctionTerminal(); //Skolem di blalbal
+                    a = new FunctionTerminal("T", new List<Terminal> ()); //Skolem di blalbal
 
 
                 implicationFormula.Formula.ApplySubstitution(new Substitution<Terminal>(
                     new List<MGU.Equation<Terminal>>() {new MGU.Equation<Terminal>(a, implicationFormula.Variable) }));
 
-                result.LeftHandSide.UnreducedFormulas.AddRange(sequent.LeftHandSide.UnreducedFormulas);
+                result.LeftHandSide.Formulas.AddRange(sequent.LeftHandSide.Formulas);
 
-                result.RightHandSide.UnreducedFormulas.AddRange(sequent.RightHandSide.UnreducedFormulas);
-                result.RightHandSide.UnreducedFormulas.Add(implicationFormula);
+                result.RightHandSide.Formulas.AddRange(sequent.RightHandSide.Formulas);
+                result.RightHandSide.Formulas.Add(implicationFormula);
                   
 
-                return new List<Sequent>() { result };
+                return result;
             }
 
             return null;

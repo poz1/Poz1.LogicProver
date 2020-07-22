@@ -9,17 +9,15 @@ namespace Poz1.LogicProver.Model.Rule
 {
     public class R7 : IInferenceRule
     {
-        public List<Sequent> Apply(IList<Sequent> sequents)
+        public Sequent Apply(Sequent sequent)
         {
-            var sequent = sequents[0];
-
-            UnaryFormula implicationFormula = (UnaryFormula)sequent.RightHandSide.UnreducedFormulas.Where(
+            UnaryFormula implicationFormula = (UnaryFormula)sequent.RightHandSide.Formulas.Where(
                 x => x is UnaryFormula formula && formula.Connective == UnaryConnective.Necessity
                 ).FirstOrDefault();
 
             if (implicationFormula != null)
             {
-                sequent.RightHandSide.UnreducedFormulas.Remove(implicationFormula);
+                sequent.RightHandSide.Formulas.Remove(implicationFormula);
 
                 var result = new Sequent();
 
@@ -28,12 +26,12 @@ namespace Poz1.LogicProver.Model.Rule
                 else
                     implicationFormula.WorldIndex.Add(new WorldSymbol("skolem function with blabla"));
                 
-                result.LeftHandSide.UnreducedFormulas.AddRange(sequent.LeftHandSide.UnreducedFormulas);
-                result.LeftHandSide.UnreducedFormulas.Add(implicationFormula.Formula);
+                result.LeftHandSide.Formulas.AddRange(sequent.LeftHandSide.Formulas);
+                result.LeftHandSide.Formulas.Add(implicationFormula.Formula);
 
-                result.RightHandSide.UnreducedFormulas.AddRange(sequent.RightHandSide.UnreducedFormulas);
+                result.RightHandSide.Formulas.AddRange(sequent.RightHandSide.Formulas);
 
-                return new List<Sequent>() { result };
+                return result ;
             }
 
             return null;

@@ -18,7 +18,7 @@ namespace Poz1.LogicProver.Model.World
             ParentSymbol = parent;
         }
 
-        public WorldSymbol(string name)
+        public WorldSymbol(string name) : base(name)
         {
             Symbol = name;
             Type = int.TryParse(name, out _) ? WorldSymbolType.Numeral : WorldSymbolType.WorldVariable;

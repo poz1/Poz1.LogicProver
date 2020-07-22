@@ -4,18 +4,24 @@ using System.Text;
 
 namespace Poz1.LogicProver.Model.Core
 {
-    public enum UnaryConnective
+    public static class UnaryConnective
     {
-        Negation,
-        Necessity,
-        Possibility
+        public static string Negation = "~";
+        public static string Necessity = "◻";
+        public static string Possibility = "◊";
     }
 
-    public enum BinaryConnective
+    public static class BinaryConnective
     {
-        Conjunction,
-        Disjunction,
-        Implication,
-        Equivalence
+        public static string Conjunction = "∧";
+        public static string Disjunction = "∨";
+        public static string Implication = "→";
+        public static string Equivalence = "=";
+    }
+
+    public static class QuantifierConnective
+    {
+        public static string Exist = "∃";
+        public static string ForAll = "∀";
     }
 }

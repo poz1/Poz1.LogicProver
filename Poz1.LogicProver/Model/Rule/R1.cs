@@ -7,7 +7,7 @@ using System.Linq;
 namespace Poz1.LogicProver.Model.Rule
 {
     // R1: If S,|p|i <- T and S' <- |q|j, T' and |p|i and |q|j m-unify with unification σ then Sσ U S'σ <- Tσ U T'σ
-    public class R1 : IInferenceRule
+    public class R1 : IResolutionRule
     {
         public List<Sequent> Apply(IList<Sequent> sequents)
         {
@@ -29,8 +29,8 @@ namespace Poz1.LogicProver.Model.Rule
             var leftS = sequents[0];
             var rightS = sequents[1];
 
-            var ps = leftS.LeftHandSide.UnreducedFormulas.Where(y => y.GetType() == typeof(AtomicFormula)).ToList();
-            var qs = rightS.RightHandSide.UnreducedFormulas.Where(y => y.GetType() == typeof(AtomicFormula)).ToList();
+            var ps = leftS.LeftHandSide.Formulas.Where(y => y.GetType() == typeof(AtomicFormula)).ToList();
+            var qs = rightS.RightHandSide.Formulas.Where(y => y.GetType() == typeof(AtomicFormula)).ToList();
 
             foreach(var formulaP in ps)
             {
@@ -40,19 +40,19 @@ namespace Poz1.LogicProver.Model.Rule
                     if (unification == null)
                         continue;
 
-                    leftS.LeftHandSide.UnreducedFormulas.ForEach(x => x.ApplySubstitution(unification));
-                    rightS.LeftHandSide.UnreducedFormulas.ForEach(x => x.ApplySubstitution(unification));
+                    leftS.LeftHandSide.Formulas.ForEach(x => x.ApplySubstitution(unification));
+                    rightS.LeftHandSide.Formulas.ForEach(x => x.ApplySubstitution(unification));
 
-                    leftS.RightHandSide.UnreducedFormulas.ForEach(x => x.ApplySubstitution(unification));
-                    rightS.RightHandSide.UnreducedFormulas.ForEach(x => x.ApplySubstitution(unification));
+                    leftS.RightHandSide.Formulas.ForEach(x => x.ApplySubstitution(unification));
+                    rightS.RightHandSide.Formulas.ForEach(x => x.ApplySubstitution(unification));
 
                     var result = new Sequent();
 
-                    result.LeftHandSide.UnreducedFormulas.AddRange(leftS.LeftHandSide.UnreducedFormulas);
-                    result.LeftHandSide.UnreducedFormulas.AddRange(rightS.LeftHandSide.UnreducedFormulas);
+                    result.LeftHandSide.Formulas.AddRange(leftS.LeftHandSide.Formulas);
+                    result.LeftHandSide.Formulas.AddRange(rightS.LeftHandSide.Formulas);
 
-                    result.RightHandSide.UnreducedFormulas.AddRange(leftS.RightHandSide.UnreducedFormulas);
-                    result.RightHandSide.UnreducedFormulas.AddRange(rightS.RightHandSide.UnreducedFormulas);
+                    result.RightHandSide.Formulas.AddRange(leftS.RightHandSide.Formulas);
+                    result.RightHandSide.Formulas.AddRange(rightS.RightHandSide.Formulas);
 
                     return new List<Sequent>() { result };
                 }
