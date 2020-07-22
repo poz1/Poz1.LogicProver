@@ -15,23 +15,19 @@ namespace Poz1.LogicProver.Model.Rule
                 x => x is UnaryFormula formula && formula.Connective == UnaryConnective.Necessity
                 ).FirstOrDefault();
 
-            if (implicationFormula != null)
-            {
-                sequent.LeftHandSide.Formulas.Remove(implicationFormula);
+            if (implicationFormula == null)
+                return null;
 
-                var result = new Sequent();
+            sequent.LeftHandSide.Formulas.Remove(implicationFormula);
+
 
                 implicationFormula.WorldIndex.Add(new WorldSymbol("new world var"));
 
-                result.LeftHandSide.Formulas.AddRange(sequent.LeftHandSide.Formulas);
-                result.LeftHandSide.Formulas.Add(implicationFormula.Formula);
+            sequent.LeftHandSide.Formulas.Add(implicationFormula.Formula);
 
-                result.RightHandSide.Formulas.AddRange(sequent.RightHandSide.Formulas);
 
-                return result;
-            }
-
-            return null;
+                return sequent;
+         
         }
     }
 }

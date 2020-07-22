@@ -10,26 +10,17 @@ namespace Poz1.LogicProver.Model.Rule
     {
         public Sequent Apply(Sequent sequent)
         {
-
             UnaryFormula implicationFormula = (UnaryFormula)sequent.RightHandSide.Formulas.Where(
                 x => x is UnaryFormula formula && formula.Connective == UnaryConnective.Negation
                 ).FirstOrDefault();
 
-            if (implicationFormula != null)
-            {
-                sequent.LeftHandSide.Formulas.Remove(implicationFormula);
+            if (implicationFormula == null)
+                return null;
 
-                var result = new Sequent();
+            sequent.LeftHandSide.Formulas.Remove(implicationFormula);
+            sequent.LeftHandSide.Formulas.Add(implicationFormula.Formula);
 
-                result.LeftHandSide.Formulas.AddRange(sequent.LeftHandSide.Formulas);
-                result.LeftHandSide.Formulas.Add(implicationFormula.Formula);
-
-                result.RightHandSide.Formulas.AddRange(sequent.RightHandSide.Formulas);
-
-                return result;
-            }
-
-            return null;
+            return sequent;
         }
     }
 }

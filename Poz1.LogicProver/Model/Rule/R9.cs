@@ -14,11 +14,11 @@ namespace Poz1.LogicProver.Model.Rule
                 x => x is QuantifierFormula formula && formula.Quantifier == QuantifierConnective.ForAll
                 ).FirstOrDefault();
 
-            if (implicationFormula != null)
-            {
-                sequent.RightHandSide.Formulas.Remove(implicationFormula);
+            if (implicationFormula == null)
+                return null;
 
-                var result = new Sequent();
+            sequent.RightHandSide.Formulas.Remove(implicationFormula);
+
 
 
                 Terminal a;
@@ -32,16 +32,12 @@ namespace Poz1.LogicProver.Model.Rule
                 implicationFormula.Formula.ApplySubstitution(new Substitution<Terminal>(
                     new List<MGU.Equation<Terminal>>() {new MGU.Equation<Terminal>(a, implicationFormula.Variable) }));
 
-                result.LeftHandSide.Formulas.AddRange(sequent.LeftHandSide.Formulas);
 
-                result.RightHandSide.Formulas.AddRange(sequent.RightHandSide.Formulas);
-                result.RightHandSide.Formulas.Add(implicationFormula);
+            sequent.RightHandSide.Formulas.Add(implicationFormula);
                   
 
-                return result;
-            }
+                return sequent;
 
-            return null;
         }
     }
 }

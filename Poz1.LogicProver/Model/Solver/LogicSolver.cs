@@ -43,7 +43,7 @@ namespace Poz1.LogicProver.Model.Solver
 
                 Parallel.ForEach(rules, x =>
                 {
-                    var result = x.Apply(sequent);
+                    var result = x.Apply(sequent.Clone());
                     if (result != null)
                         queue.Enqueue(result);
                 });

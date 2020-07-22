@@ -14,21 +14,17 @@ namespace Poz1.LogicProver.Model.Rule
                 x => x is BinaryFormula formula && formula.Connective == BinaryConnective.Implication
                 ).FirstOrDefault();
 
-            if (implicationFormula != null)
-            {
-                sequent.RightHandSide.Formulas.Remove(implicationFormula);
+            if (implicationFormula == null)
+                return null;
 
-                var result = new Sequent();
+            sequent.RightHandSide.Formulas.Remove(implicationFormula);
 
-                result.LeftHandSide.Formulas.AddRange(sequent.LeftHandSide.Formulas);
 
-                result.RightHandSide.Formulas.AddRange(sequent.RightHandSide.Formulas);
-                result.RightHandSide.Formulas.Add(implicationFormula.RHSFormula);
 
-                return result ;
-            }
+            sequent.RightHandSide.Formulas.Add(implicationFormula.RHSFormula);
 
-            return null;
+                return sequent;
+
         }
     }
 }

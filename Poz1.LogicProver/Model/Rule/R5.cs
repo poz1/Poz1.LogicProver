@@ -14,21 +14,14 @@ namespace Poz1.LogicProver.Model.Rule
                 x => x is UnaryFormula formula && formula.Connective == UnaryConnective.Negation
                 ).FirstOrDefault();
 
-            if (implicationFormula != null)
-            {
-                sequent.LeftHandSide.Formulas.Remove(implicationFormula);
+            if (implicationFormula == null)
+                return null;
 
-                var result = new Sequent();
+            sequent.LeftHandSide.Formulas.Remove(implicationFormula);
+            sequent.RightHandSide.Formulas.Add(implicationFormula.Formula);
 
-                result.LeftHandSide.Formulas.AddRange(sequent.LeftHandSide.Formulas);
+            return sequent;
 
-                result.RightHandSide.Formulas.AddRange(sequent.RightHandSide.Formulas);
-                result.RightHandSide.Formulas.Add(implicationFormula.Formula);
-
-                return result ;
-            }
-
-            return null;
         }
     }
 }

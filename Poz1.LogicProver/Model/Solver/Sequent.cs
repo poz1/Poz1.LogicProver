@@ -31,6 +31,15 @@ namespace Poz1.LogicProver.Model
             return LeftHandSide.ToString() + " ← " + RightHandSide.ToString();
         }
 
+        public Sequent Clone()
+        {
+            var clone = (Sequent)MemberwiseClone();
+            clone.LeftHandSide = LeftHandSide.Clone();
+            clone.RightHandSide = RightHandSide.Clone();
+
+            return clone;
+        }
+
         public class SequentSide
         {
             /// <summary>
@@ -46,6 +55,13 @@ namespace Poz1.LogicProver.Model
 
             //public bool HasUnreducedFormulas => UnreducedFormulas.Count != 0;
             public int Count => Formulas.Count;
+
+            public SequentSide Clone()
+            {
+                var clone =  (SequentSide)MemberwiseClone();
+                clone.Formulas = new List<Formula>(Formulas);
+                return clone;
+            }
 
             public override string ToString()
             {

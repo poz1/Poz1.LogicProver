@@ -15,26 +15,21 @@ namespace Poz1.LogicProver.Model.Rule
                 x => x is UnaryFormula formula && formula.Connective == UnaryConnective.Necessity
                 ).FirstOrDefault();
 
-            if (implicationFormula != null)
-            {
-                sequent.RightHandSide.Formulas.Remove(implicationFormula);
+            if (implicationFormula == null)
+                return null;
 
-                var result = new Sequent();
+            sequent.RightHandSide.Formulas.Remove(implicationFormula);
 
-                if (implicationFormula.WorldIndex.IsGround && implicationFormula.Formula.FreeVariables.Count == 0)
-                    implicationFormula.WorldIndex.Add(new WorldSymbol("nuovo"));
-                else
-                    implicationFormula.WorldIndex.Add(new WorldSymbol("skolem function with blabla"));
-                
-                result.LeftHandSide.Formulas.AddRange(sequent.LeftHandSide.Formulas);
-                result.LeftHandSide.Formulas.Add(implicationFormula.Formula);
+            if (implicationFormula.WorldIndex.IsGround && implicationFormula.Formula.FreeVariables.Count == 0)
+                implicationFormula.WorldIndex.Add(new WorldSymbol("nuovo"));
+            else
+                implicationFormula.WorldIndex.Add(new WorldSymbol("skolem function with blabla"));
 
-                result.RightHandSide.Formulas.AddRange(sequent.RightHandSide.Formulas);
+            sequent.LeftHandSide.Formulas.Add(implicationFormula.Formula);
 
-                return result ;
-            }
 
-            return null;
+            return sequent;
+
         }
     }
 }
