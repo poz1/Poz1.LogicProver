@@ -22,9 +22,9 @@ namespace Poz1.LogicProver.Model.Rule
             var formula = implicationFormula.Formula.Clone();
 
             if (formula.WorldIndex.IsGround && formula.FreeVariables.Count == 0)
-                formula.WorldIndex.Add(new WorldSymbol("nuovo"));
+                formula.WorldIndex.Symbols.Add(new WorldSymbol("1"));
             else
-                formula.WorldIndex.Add(new WorldSymbol("skolem function with blabla"));
+                formula.WorldIndex.Symbols.Add(new WorldSymbol("skolem function with blabla"));
 
             sequent.RightHandSide.Formulas.Remove(implicationFormula);
             sequent.RightHandSide.Formulas.Add(formula);

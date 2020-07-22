@@ -21,10 +21,10 @@ namespace Poz1.LogicProver.Model.Rule
 
             sequent.LeftHandSide.Formulas.Remove(implicationFormula);
 
+            var formula = implicationFormula.Formula.Clone();
 
-                implicationFormula.WorldIndex.Add(new WorldSymbol("new world var"));
-
-            sequent.LeftHandSide.Formulas.Add(implicationFormula.Formula);
+            formula.WorldIndex.Symbols.Add(new WorldSymbol("new world var"));
+            sequent.LeftHandSide.Formulas.Add(formula);
 
             sequent.Justification = "R8 (" + sequent.Name + ")";
 

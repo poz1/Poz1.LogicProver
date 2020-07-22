@@ -81,7 +81,7 @@ namespace Poz1.LogicProver.Model
                 if(Formulas.Count != 0)
                     for (int i = 0; i < Formulas.Count; i++)
                     {
-                        stringBuilder.Append(Formulas[i]);
+                        stringBuilder.Append(Formulas[i].ToWorldString());
 
                         if (i != Formulas.Count - 1)
                             stringBuilder.Append("; ");

@@ -10,6 +10,8 @@ namespace Poz1.LogicProver.Model.Core
     {    
         public WorldIndex WorldIndex { get; set; }
 
+        public abstract void ChangeWorldIndex(WorldIndex value);
+
         public abstract List<VariableTerminal> FreeVariables { get; }
 
         public Substitution<Terminal> Unify(Formula formula)
@@ -26,10 +28,8 @@ namespace Poz1.LogicProver.Model.Core
             return mgu.Compute();
         }
 
-        public Formula Clone()
-        {
-            return (Formula)MemberwiseClone();
-        }
+        public abstract Formula Clone();
+       
 
         public Substitution<Terminal> MUnify(AccessibilityRelation relation, Formula formula)
         {
@@ -45,6 +45,11 @@ namespace Poz1.LogicProver.Model.Core
         public Formula(WorldIndex index)
         {
             WorldIndex = index;
+        }
+
+        public string ToWorldString()
+        {
+            return "|" + ToString() + "|" + WorldIndex.ToString();
         }
     }
 
@@ -79,12 +84,32 @@ namespace Poz1.LogicProver.Model.Core
         {
             return Terminal.ToString();
         }
+
+        public override void ChangeWorldIndex(WorldIndex value)
+        {
+            WorldIndex = value;
+        }
+
+        public override Formula Clone()
+        {
+            var clone = (Formula)MemberwiseClone();
+            clone.WorldIndex = WorldIndex.Clone();
+            clone.ChangeWorldIndex(clone.WorldIndex);
+            return clone;
+        }
     }
 
     public class UnaryFormula : Formula
     {
         public string Connective { get; set; }
-        public Formula Formula { get; set; }
+
+        private Formula formula;
+        public Formula Formula { get => formula; 
+            set {
+                formula = value;
+                formula.WorldIndex = WorldIndex;
+            }
+        }
 
         public override List<VariableTerminal> FreeVariables => Formula.FreeVariables;
 
@@ -98,18 +123,50 @@ namespace Poz1.LogicProver.Model.Core
         {
             var stringBuilder = new StringBuilder();
 
-                stringBuilder.Append(Connective);
-                stringBuilder.Append(Formula.ToString());
-            
+            stringBuilder.Append(Connective);
+            stringBuilder.Append(Formula.ToString());
+
             return stringBuilder.ToString();
+        }
+
+        public override void ChangeWorldIndex(WorldIndex value)
+        {
+            WorldIndex = value;
+            Formula.ChangeWorldIndex(value);
+        }
+        public override Formula Clone()
+        {
+            var clone = (UnaryFormula)MemberwiseClone();
+            clone.Formula = Formula.Clone();
+            clone.WorldIndex = WorldIndex.Clone();
+            clone.ChangeWorldIndex(clone.WorldIndex);
+            return clone;
         }
     }
 
     public class BinaryFormula : Formula
     {
         public string Connective { get; set; }
-        public Formula LHSFormula { get; set; }
-        public Formula RHSFormula { get; set; }
+
+        private Formula lHSFormula;
+        public Formula LHSFormula
+        {
+            get => lHSFormula; set
+            {
+                lHSFormula = value;
+                lHSFormula.WorldIndex = WorldIndex;
+            }
+        }
+
+        private Formula rHSFormula;
+        public Formula RHSFormula
+        {
+            get => rHSFormula; set
+            {
+                rHSFormula = value;
+                rHSFormula.WorldIndex = WorldIndex;
+            }
+        }
 
         public override List<VariableTerminal> FreeVariables => ComputeFreeVariables();
 
@@ -137,6 +194,23 @@ namespace Poz1.LogicProver.Model.Core
 
 
             return stringBuilder.ToString();
+        }
+
+        public override void ChangeWorldIndex(WorldIndex value)
+        {
+            WorldIndex = value;
+            LHSFormula.ChangeWorldIndex(value);
+            RHSFormula.ChangeWorldIndex(value);
+        }
+
+        public override Formula Clone()
+        {
+            var clone = (BinaryFormula)MemberwiseClone();
+            clone.LHSFormula = LHSFormula.Clone();
+            clone.RHSFormula = RHSFormula.Clone();
+            clone.WorldIndex = WorldIndex.Clone();
+            clone.ChangeWorldIndex(clone.WorldIndex);
+            return clone;
         }
     }
 
@@ -171,6 +245,21 @@ namespace Poz1.LogicProver.Model.Core
             stringBuilder.Append(Formula.ToString());
 
             return stringBuilder.ToString();
+        }
+
+        public override void ChangeWorldIndex(WorldIndex value)
+        {
+            WorldIndex = value;
+            Formula.ChangeWorldIndex(value);
+        }
+
+        public override Formula Clone()
+        {
+            var clone = (QuantifierFormula)MemberwiseClone();
+            clone.Formula = Formula.Clone();
+            clone.WorldIndex = WorldIndex.Clone();
+            clone.ChangeWorldIndex(clone.WorldIndex);
+            return clone;
         }
     }
 }

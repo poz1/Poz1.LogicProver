@@ -5,34 +5,43 @@ using System.Text;
 
 namespace Poz1.LogicProver.Model.World
 {
-    public class WorldIndex : List<WorldSymbol>
+    public class WorldIndex 
     {
-        public bool IsGround => this.All(x => x.IsGround);
+        public bool IsGround => Symbols.All(x => x.IsGround);
 
-        public WorldIndex ParentIndex { get; }
-        public WorldSymbol EndSymbol => this.First();
-        public WorldSymbol StartSymbol => this.Last();
+        public List<WorldSymbol> Symbols = new List<WorldSymbol>();
+
+        public WorldIndex ParentIndex { get; private set; }
+        public WorldSymbol EndSymbol => Symbols.First();
+        public WorldSymbol StartSymbol => Symbols.Last();
 
         public WorldIndex(WorldSymbol symbol)
         {
-            Add(symbol);
+            Symbols.Add(symbol);
 
             if(symbol.ParentSymbol != null)
             {
                 ParentIndex = new WorldIndex(symbol.ParentSymbol);
-                AddRange(ParentIndex);
+                Symbols.AddRange(ParentIndex.Symbols);
             }
         }
 
+        public WorldIndex Clone()
+        {
+            var clone = (WorldIndex)MemberwiseClone();
+            clone.ParentIndex = ParentIndex?.Clone();
+            clone.Symbols = new List<WorldSymbol>(Symbols);
+            return clone;
+        }
         public override string ToString()
         {
             var builder = new StringBuilder();
-            builder.Append(this[0]);
+            builder.Append(Symbols[0]);
 
-            for(int i = 1; i < Count; i++)
+            for(int i = 1; i < Symbols.Count; i++)
             {
                 builder.Append(":");
-                builder.Append(this[i]);
+                builder.Append(Symbols[i]);
             }
 
             return builder.ToString();

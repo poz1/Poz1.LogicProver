@@ -62,7 +62,7 @@ namespace Poz1.LogicProver.Model.World
 
         public void AddWorldIndex(WorldIndex worldIndex)
         {
-            foreach (var symbol in worldIndex)
+            foreach (var symbol in worldIndex.Symbols)
             {
                 if (symbol.ParentSymbol != null)
                 {
