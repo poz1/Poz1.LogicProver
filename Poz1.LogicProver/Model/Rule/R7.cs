@@ -18,15 +18,18 @@ namespace Poz1.LogicProver.Model.Rule
             if (implicationFormula == null)
                 return null;
 
-            sequent.RightHandSide.Formulas.Remove(implicationFormula);
 
-            if (implicationFormula.WorldIndex.IsGround && implicationFormula.Formula.FreeVariables.Count == 0)
-                implicationFormula.WorldIndex.Add(new WorldSymbol("nuovo"));
+            var formula = implicationFormula.Formula.Clone();
+
+            if (formula.WorldIndex.IsGround && formula.FreeVariables.Count == 0)
+                formula.WorldIndex.Add(new WorldSymbol("nuovo"));
             else
-                implicationFormula.WorldIndex.Add(new WorldSymbol("skolem function with blabla"));
+                formula.WorldIndex.Add(new WorldSymbol("skolem function with blabla"));
 
-            sequent.LeftHandSide.Formulas.Add(implicationFormula.Formula);
+            sequent.RightHandSide.Formulas.Remove(implicationFormula);
+            sequent.RightHandSide.Formulas.Add(formula);
 
+            sequent.Justification = "R7 (" + sequent.Name + ")";
 
             return sequent;
 

@@ -35,7 +35,13 @@ namespace Poz1.LogicProver.Model.Solver
             var initialSequent = new Sequent(formula);
 
             var queue = new Queue<Sequent>() ;
+
+            var sequentCounter = 0;
+            initialSequent.Name = sequentCounter.ToString();
+            sequentCounter++;
+
             queue.Enqueue(initialSequent);
+            var sequentList = new List<Sequent>() { initialSequent };
 
             while (queue.Count != 0) {
 
@@ -45,16 +51,14 @@ namespace Poz1.LogicProver.Model.Solver
                 {
                     var result = x.Apply(sequent.Clone());
                     if (result != null)
+                    {
+                        result.Name = sequentCounter.ToString();
+                        sequentCounter++;
                         queue.Enqueue(result);
+                        sequentList.Add(result);
+                    }
                 });
             }
         }
-
-        //public Task SolveSequent(Sequent sequent, IInferenceRule rule)
-        //{
-        //    var sequents = new List<Sequent> { initialSequent };
-
-
-        //}
     }
 }

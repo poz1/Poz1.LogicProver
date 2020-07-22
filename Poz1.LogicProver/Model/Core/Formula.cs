@@ -1,5 +1,6 @@
 ﻿using Poz1.LogicProver.Model.MGU;
 using Poz1.LogicProver.Model.World;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -23,6 +24,11 @@ namespace Poz1.LogicProver.Model.Core
             }
 
             return mgu.Compute();
+        }
+
+        public Formula Clone()
+        {
+            return (Formula)MemberwiseClone();
         }
 
         public Substitution<Terminal> MUnify(AccessibilityRelation relation, Formula formula)

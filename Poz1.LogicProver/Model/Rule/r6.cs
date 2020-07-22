@@ -19,6 +19,7 @@ namespace Poz1.LogicProver.Model.Rule
 
             sequent.LeftHandSide.Formulas.Remove(implicationFormula);
             sequent.LeftHandSide.Formulas.Add(implicationFormula.Formula);
+            sequent.Justification = "R6 (" + sequent.Name + ")";
 
             return sequent;
         }

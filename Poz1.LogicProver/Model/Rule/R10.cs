@@ -24,6 +24,7 @@ namespace Poz1.LogicProver.Model.Rule
                 new List<MGU.Equation<Terminal>>() { new MGU.Equation<Terminal>(new VariableTerminal("T"), implicationFormula.Variable) }));
 
             sequent.LeftHandSide.Formulas.Add(implicationFormula);
+            sequent.Justification = "R10 (" + sequent.Name + ")";
 
             return sequent;
         }

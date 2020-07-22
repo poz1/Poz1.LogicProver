@@ -28,7 +28,18 @@ namespace Poz1.LogicProver.Model
 
         public override string ToString()
         {
-            return LeftHandSide.ToString() + " ← " + RightHandSide.ToString();
+            var stringBuilder = new StringBuilder();
+            stringBuilder.Append(LeftHandSide.ToString());
+            stringBuilder.Append(" ← ");
+            stringBuilder.Append(RightHandSide.ToString());
+
+            if (Justification != null)
+            {
+                stringBuilder.Append("  :: ");
+                stringBuilder.Append(Justification);
+            }
+
+            return stringBuilder.ToString();
         }
 
         public Sequent Clone()
@@ -67,15 +78,16 @@ namespace Poz1.LogicProver.Model
             {
                 var stringBuilder = new StringBuilder();
 
-                for (int i = 0; i < Formulas.Count; i++)
-                {
-                    stringBuilder.Append(Formulas[i]);
+                if(Formulas.Count != 0)
+                    for (int i = 0; i < Formulas.Count; i++)
+                    {
+                        stringBuilder.Append(Formulas[i]);
 
-                    if (i != Formulas.Count - 1)
-                        stringBuilder.Append("; ");
-                }
-
-                
+                        if (i != Formulas.Count - 1)
+                            stringBuilder.Append("; ");
+                    }
+                else
+                    stringBuilder.Append(" -- ");
 
                 return stringBuilder.ToString();
             }

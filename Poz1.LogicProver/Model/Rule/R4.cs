@@ -10,21 +10,19 @@ namespace Poz1.LogicProver.Model.Rule
     {
         public Sequent Apply(Sequent sequent)
         {
-            BinaryFormula implicationFormula = (BinaryFormula)sequent.RightHandSide.Formulas.Where(
-                x => x is BinaryFormula formula && formula.Connective == BinaryConnective.Implication
+            BinaryFormula implicationFormula = (BinaryFormula)sequent.RightHandSide.Formulas.Where
+                (
+                    x => x is BinaryFormula formula && formula.Connective == BinaryConnective.Implication
                 ).FirstOrDefault();
 
             if (implicationFormula == null)
                 return null;
 
             sequent.RightHandSide.Formulas.Remove(implicationFormula);
-
-
             sequent.LeftHandSide.Formulas.Add(implicationFormula.LHSFormula);
+            sequent.Justification = "R4 (" + sequent.Name + ")";
 
-
-                return sequent;
-           
+            return sequent;
         }
     }
 }

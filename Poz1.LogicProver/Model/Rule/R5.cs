@@ -19,6 +19,7 @@ namespace Poz1.LogicProver.Model.Rule
 
             sequent.LeftHandSide.Formulas.Remove(implicationFormula);
             sequent.RightHandSide.Formulas.Add(implicationFormula.Formula);
+            sequent.Justification = "R5 (" + sequent.Name + ")";
 
             return sequent;
 

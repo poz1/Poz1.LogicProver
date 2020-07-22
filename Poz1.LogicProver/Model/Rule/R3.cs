@@ -22,8 +22,9 @@ namespace Poz1.LogicProver.Model.Rule
 
 
             sequent.RightHandSide.Formulas.Add(implicationFormula.RHSFormula);
+            sequent.Justification = "R3 (" + sequent.Name + ")";
 
-                return sequent;
+            return sequent;
 
         }
     }
