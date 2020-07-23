@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Poz1.LogicProver.Model.Core
+﻿namespace Poz1.LogicProver.Model.Core
 {
     public static class UnaryConnective
     {

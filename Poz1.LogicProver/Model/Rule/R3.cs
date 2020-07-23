@@ -19,13 +19,12 @@ namespace Poz1.LogicProver.Model.Rule
 
             sequent.RightHandSide.Formulas.Remove(implicationFormula);
 
+            var formula = implicationFormula.Clone() as BinaryFormula;
 
-
-            sequent.RightHandSide.Formulas.Add(implicationFormula.RHSFormula);
+            sequent.RightHandSide.Formulas.Add(formula.RHSFormula);
             sequent.Justification = "R3 (" + sequent.Name + ")";
 
             return sequent;
-
         }
     }
 }

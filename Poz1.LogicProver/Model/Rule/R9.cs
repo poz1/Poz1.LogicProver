@@ -1,13 +1,17 @@
 ﻿using Poz1.LogicProver.Model.Core;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Poz1.LogicProver.Model.Rule
 {
     public class R9 : IInferenceRule
     {
+        private readonly ITermNamer termNamer;
+        public R9(ITermNamer termNamer)
+        {
+            this.termNamer = termNamer;
+        }
+
         public Sequent Apply(Sequent sequent)
         {
             QuantifierFormula implicationFormula = (QuantifierFormula)sequent.RightHandSide.Formulas.Where
@@ -23,10 +27,13 @@ namespace Poz1.LogicProver.Model.Rule
             Terminal a;
 
             if (implicationFormula.Formula.FreeVariables.Count == 0 && implicationFormula.WorldIndex.IsGround)
-                a = new ConstantTerminal("T"); //TODO fix name
+                a = new ConstantTerminal(termNamer.GetNewConstant());
             else
-                a = new FunctionTerminal("T", new List<Terminal>()); //Skolem di blalbal
-
+            {
+                var skolemVariables = new List<Terminal>(formula.WorldIndex.Symbols);
+                skolemVariables.AddRange(formula.FreeVariables);
+                a = new FunctionTerminal(termNamer.GetNewFunction(), skolemVariables); 
+            }
 
             formula.ApplySubstitution(new Substitution<Terminal>(
                 new List<MGU.Equation<Terminal>>() { new MGU.Equation<Terminal>(a, implicationFormula.Variable) }));

@@ -11,11 +11,10 @@ namespace Poz1.LogicProver.Model.Solver
     {
         public bool LogEnabled { get; set; }
 
-        private int VariablesCount = 0;
-        private int ConstantsCount = 0;
-        private int FunctionsCount = 0;
+        public IWorldNamer WorldNamer { get; set; }
+        public ITermNamer TermNamer { get; set; }
 
-        private WorldSymbol baseWorld = new WorldSymbol("0");
+        private WorldSymbol baseWorld;
 
         private readonly IResolutionRule resolutionRule;
         private readonly List<IInferenceRule> rules = new List<IInferenceRule>();
@@ -24,11 +23,15 @@ namespace Poz1.LogicProver.Model.Solver
 
         public LogicSolver() {
 
+            WorldNamer = new SimpleWorldNamer();
+            TermNamer = new SimpleTermNamer();
+            baseWorld = new WorldSymbol(WorldNamer.GetNewWorldConstant());
+
             //Only used on reduced sequents
             resolutionRule = new R1();
 
             // These are applied as long as sequents have unreduced formulas
-            rules.AddRange(new List<IInferenceRule>() { new R2(), new R3(), new R4(), new R5(), new R6(), new R7(), new R8(), new R9(), new R10() });
+            rules.AddRange(new List<IInferenceRule>() { new R2(), new R3(), new R4(), new R5(), new R6(), new R7(WorldNamer), new R8(WorldNamer), new R9(TermNamer), new R10() });
         }
 
         public void Solve(Formula formula)

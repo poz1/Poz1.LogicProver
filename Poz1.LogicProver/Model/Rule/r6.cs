@@ -17,8 +17,11 @@ namespace Poz1.LogicProver.Model.Rule
             if (implicationFormula == null)
                 return null;
 
-            sequent.LeftHandSide.Formulas.Remove(implicationFormula);
-            sequent.LeftHandSide.Formulas.Add(implicationFormula.Formula);
+            sequent.RightHandSide.Formulas.Remove(implicationFormula);
+
+            var formula = implicationFormula.Formula.Clone();
+
+            sequent.LeftHandSide.Formulas.Add(formula);
             sequent.Justification = "R6 (" + sequent.Name + ")";
 
             return sequent;

@@ -9,6 +9,12 @@ namespace Poz1.LogicProver.Model.Rule
 {
     public class R7 : IInferenceRule
     {
+        private readonly IWorldNamer worldNamer;
+        public R7(IWorldNamer worldNamer)
+        {
+            this.worldNamer = worldNamer;
+        }
+
         public Sequent Apply(Sequent sequent)
         {
             UnaryFormula implicationFormula = (UnaryFormula)sequent.RightHandSide.Formulas.Where(
@@ -22,7 +28,7 @@ namespace Poz1.LogicProver.Model.Rule
             var formula = implicationFormula.Formula.Clone();
 
             if (formula.WorldIndex.IsGround && formula.FreeVariables.Count == 0)
-                formula.WorldIndex.Symbols.Add(new WorldSymbol("1"));
+                formula.WorldIndex.Symbols.Add(new WorldSymbol(worldNamer.GetNewWorldConstant()));
             else
                 formula.WorldIndex.Symbols.Add(new WorldSymbol("skolem function with blabla"));
 

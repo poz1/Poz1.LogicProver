@@ -20,10 +20,10 @@ namespace Poz1.LogicProver.Model.Rule
 
             sequent.LeftHandSide.Formulas.Remove(implicationFormula);
 
+            var formula = implicationFormula.Clone() as BinaryFormula;
 
-            sequent.LeftHandSide.Formulas.Add(implicationFormula.RHSFormula);
-
-            sequent.RightHandSide.Formulas.Add(implicationFormula.LHSFormula);
+            sequent.LeftHandSide.Formulas.Add(formula.RHSFormula);
+            sequent.RightHandSide.Formulas.Add(formula.LHSFormula);
 
             sequent.Justification = "R2 (" + sequent.Name + ")";
 

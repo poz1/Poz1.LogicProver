@@ -9,6 +9,12 @@ namespace Poz1.LogicProver.Model.Rule
 {
     public class R8 : IInferenceRule
     {
+        private readonly IWorldNamer worldNamer;
+        public R8(IWorldNamer worldNamer)
+        {
+            this.worldNamer = worldNamer;
+        }
+
         public Sequent Apply(Sequent sequent)
         {
             UnaryFormula implicationFormula = (UnaryFormula)sequent.LeftHandSide.Formulas.Where
@@ -23,7 +29,7 @@ namespace Poz1.LogicProver.Model.Rule
 
             var formula = implicationFormula.Formula.Clone();
 
-            formula.WorldIndex.Symbols.Add(new WorldSymbol("new world var"));
+            formula.WorldIndex.Symbols.Add(new WorldSymbol(worldNamer.GetNewWorldVariable()));
             sequent.LeftHandSide.Formulas.Add(formula);
 
             sequent.Justification = "R8 (" + sequent.Name + ")";
