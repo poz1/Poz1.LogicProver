@@ -39,10 +39,10 @@ namespace Poz1.LogicProver.Model.Core
             var builder = new StringBuilder();
             builder.Append(Symbols[0]);
 
-            for(int i = 1; i < Symbols.Count; i++)
+            for(int i = Symbols.Count; i > 0; i--)
             {
                 builder.Append(":");
-                builder.Append(Symbols[i]);
+                builder.Append(Symbols[i - 1]);
             }
 
             return builder.ToString();
