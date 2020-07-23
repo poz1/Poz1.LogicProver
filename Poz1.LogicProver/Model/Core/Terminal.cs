@@ -47,30 +47,37 @@ namespace Poz1.LogicProver.Model.Core
         public override List<VariableTerminal> FreeVariables { get => new List<VariableTerminal>() { this }; }
     }
 
-    public class FunctionTerminal : Terminal<Function>
+    public class FunctionTerminal : Terminal<Function<Terminal>>
     {
-        public int Arity => ((Function)BaseElement).Arity;
+        public int Arity => ((Function<Terminal>)BaseElement).Arity;
 
         public override List<VariableTerminal> FreeVariables { get => ComputeVariables();}
-        public IEnumerable<LogicElement> Parameters { get => ((Function)BaseElement).Parameters; }
+        public IEnumerable<Terminal> Parameters { get => ((Function<Terminal>)BaseElement).Parameters; }
 
-        public FunctionTerminal(string value, IList<ILogicElement> parameters) : 
-            base(new Function(value, (List<ILogicElement>)parameters))
+        public FunctionTerminal(string value, IList<Terminal> parameters) : 
+            base(new Function<Terminal>(value, (List<Terminal>)parameters))
         {
         }
 
-        public FunctionTerminal(string value, params ILogicElement[] parameters) :
-           base(new Function(value, (IList<LogicElement>)parameters))
+        public FunctionTerminal(string value, IList<ILogicElement> parameters) :
+           base(new Function<Terminal>(value, (List<Terminal>)parameters))
         {
         }
+
+
+        public FunctionTerminal(string value, params Terminal[] parameters) :
+           base(new Function<Terminal>(value, parameters))
+        {
+        }
+
+
 
         private List<VariableTerminal> ComputeVariables()
         {
             var vars = new List<VariableTerminal>();
-            foreach (var terminal in ((Function)BaseElement).Parameters)
+            foreach (var terminal in ((Function<Terminal>)BaseElement).Parameters)
             {
-                var t = ((Terminal)terminal);
-               // vars.AddRange 
+                vars.AddRange(terminal.FreeVariables);
             }
             return vars;
         }

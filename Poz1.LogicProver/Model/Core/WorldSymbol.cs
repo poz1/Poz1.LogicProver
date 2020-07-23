@@ -57,14 +57,19 @@ namespace Poz1.LogicProver.Model.Core
         }
     }
 
-    public class FunctionWorldSymbol : WorldSymbol<Function>
+    public class FunctionWorldSymbol : WorldSymbol<Function<WorldSymbol>>
     {
-        public int Arity => ((Function)BaseElement).Parameters.Count();
+        public int Arity => ((Function<WorldSymbol>)BaseElement).Parameters.Count();
 
         public override bool IsGround => throw new System.NotImplementedException();
 
         public FunctionWorldSymbol(string value, IList<WorldSymbol> parameters) :
-            base(new Function(value, (List<ILogicElement>)parameters))
+            base(new Function<WorldSymbol>(value, (List<WorldSymbol>)parameters))
+        {
+        }
+
+        public FunctionWorldSymbol(string value, params WorldSymbol[] parameters) :
+           base(new Function<WorldSymbol>(value, parameters))
         {
         }
     }

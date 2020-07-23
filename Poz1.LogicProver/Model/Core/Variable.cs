@@ -33,17 +33,12 @@ namespace Poz1.LogicProver.Model.Core
         public Variable(string name) : base(name) { }
     }
 
-    public class Function: LogicElement
+    public class Function<T>: LogicElement
     {
-        public List<LogicElement> Parameters = new List<LogicElement>();
+        public List<T> Parameters = new List<T>();
         public int Arity => Parameters.Count;
 
-        public Function(string name, List<ILogicElement> parameters) :base(name)
-        {
-            parameters.ForEach(x => Parameters.Add(x.ToLogicElement()));   
-        }
-
-        public Function(string name, IList<LogicElement> parameters) : base(name)
+        public Function(string name, IList<T> parameters) : base(name)
         {
             Parameters.AddRange(parameters);
         }

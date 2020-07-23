@@ -14,7 +14,7 @@ namespace Poz1.LogicProver.Model.Core
             Elements = new Dictionary<LogicElement, LogicElement>();
         }
 
-        public Substitution(params ILogicElement[] elements)
+        public Substitution(params ILogicElement[] elements) : this()
         {
             if (elements.Length % 2 != 0)
                 throw new Exception("We need an even count of symbols");
@@ -25,7 +25,7 @@ namespace Poz1.LogicProver.Model.Core
             }
         }
 
-        public Substitution(IList<Equation<LogicElement>> equations)
+        public Substitution(IList<Equation<LogicElement>> equations) : this()
         {
             foreach (var equation in equations)
             {

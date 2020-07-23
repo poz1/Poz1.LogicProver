@@ -17,8 +17,14 @@ namespace Poz1.LogicProver.Model.MGU
             LogicElement t1 = x1.ToLogicElement();
             LogicElement t2 = x2.ToLogicElement();
 
-            if (t1 is Function f1 && t2 is Function f2)
+            if (t1 is Function<WorldSymbol> f1 && t2 is Function<WorldSymbol> f2)
+            {
                 AddFunctionEquation(f1, f2);
+            }
+            else if (t1 is Function<Terminal> f3 && t2 is Function<Terminal> f4)
+            {
+                AddFunctionEquation(f3, f4);
+            }
 
             //Rule 3 [x = x -> Cancel Equation]
             if (t1.Name == t2.Name)
@@ -31,7 +37,7 @@ namespace Poz1.LogicProver.Model.MGU
                 equations.Add(new Equation<LogicElement>(t1, t2));
         }
 
-        public void AddFunctionEquation(Function f1, Function f2)
+        public void AddFunctionEquation<T>(Function<T> f1, Function<T> f2) where T :ILogicElement
         {
             //Rule 2 [f!=g || different number of params -> Fail]
             if (f1.Arity != f2.Arity)
@@ -45,7 +51,7 @@ namespace Poz1.LogicProver.Model.MGU
                 var f1p = f1.Parameters[j];
                 var f2p = f2.Parameters[j];
 
-                if(f1p is Function terminal1 && f2p is Function terminal2)
+                if(f1p is Function<T> terminal1 && f2p is Function<T> terminal2)
                     AddEquation(terminal1, terminal2);
                 else
                     AddEquation(f1p, f2p);
@@ -71,9 +77,9 @@ namespace Poz1.LogicProver.Model.MGU
         {
             foreach (var eq in equations)
             {
-                if(eq.Terminal1 is Function functionTerminal)
+                if(eq.Terminal1 is Function<ILogicElement> functionTerminal)
                 {
-                    if (functionTerminal.Parameters.Any(x => x.Name == eq.Terminal2.Name))
+                    if (functionTerminal.Parameters.Any(x => x.ToLogicElement().Name == eq.Terminal2.Name))
                     {
                         //Rule 6
                         throw new Exception("No MGU: variable in function [occur check]");
