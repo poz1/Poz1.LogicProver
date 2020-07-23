@@ -14,6 +14,8 @@ namespace Poz1.LogicProver.Model.Core
         {
             return BaseElement;
         }
+
+        public abstract Terminal ToTerminal();
     }
 
     public abstract class WorldSymbol<T> : WorldSymbol where T : LogicElement
@@ -41,6 +43,11 @@ namespace Poz1.LogicProver.Model.Core
         {
             return BaseElement.Name;
         }
+
+        public override Terminal ToTerminal()
+        {
+            return new ConstantTerminal(BaseElement.Name);
+        }
     }
 
     public class VariableWorldSymbol : WorldSymbol<Variable>
@@ -54,6 +61,11 @@ namespace Poz1.LogicProver.Model.Core
         public override string ToString()
         {
             return BaseElement.Name;
+        }
+
+        public override Terminal ToTerminal()
+        {
+            return new  VariableTerminal(BaseElement.Name);
         }
     }
 
@@ -71,6 +83,12 @@ namespace Poz1.LogicProver.Model.Core
         public FunctionWorldSymbol(string value, params WorldSymbol[] parameters) :
            base(new Function<WorldSymbol>(value, parameters))
         {
+        }
+
+        public override Terminal ToTerminal()
+        {
+            return new FunctionTerminal(BaseElement.Name, 
+                ((Function<WorldSymbol>)BaseElement).Parameters.Select(x => x.ToTerminal()).ToList()); 
         }
     }
 }

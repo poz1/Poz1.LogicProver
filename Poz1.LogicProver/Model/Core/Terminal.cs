@@ -64,7 +64,6 @@ namespace Poz1.LogicProver.Model.Core
         {
         }
 
-
         public FunctionTerminal(string value, params Terminal[] parameters) :
            base(new Function<Terminal>(value, parameters))
         {
