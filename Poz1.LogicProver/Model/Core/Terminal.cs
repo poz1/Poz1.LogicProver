@@ -1,64 +1,64 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
 namespace Poz1.LogicProver.Model.Core
 {
-    public abstract class Terminal 
+    public abstract class Terminal<T> 
     {
-        public Terminal(string value) 
+        public Terminal(T baseItem) 
         {
-            Value = value;
+            BaseItem = baseItem;
         }
 
-        public string Value { get; set; }
-        public abstract List<VariableTerminal> Variables { get; }
+        public T BaseItem { protected get; set; }
+        public abstract List<VariableTerminal> FreeVariables { get; }
     }
 
-    public class ConstantTerminal : Terminal
+    public class ConstantTerminal : Terminal<Constant>
     {
-        public ConstantTerminal(string value) : base(value)
+        public ConstantTerminal(string value) : base(new Constant(value))
         {
         }
 
-        public override List<VariableTerminal> Variables { get => new List<VariableTerminal>(); }
+        public override List<VariableTerminal> FreeVariables { get => new List<VariableTerminal>(); }
         public override string ToString()
         {
-            return Value;
+            return BaseItem.Name;
         }
     }
 
-    public class VariableTerminal : Terminal
+    public class VariableTerminal : Terminal<Variable>
     {
-        public VariableTerminal(string value) : base(value)
+        public VariableTerminal(string value) : base(new Variable(value))
         {
         }
 
-        public override List<VariableTerminal> Variables { get => new List<VariableTerminal>() { this }; }
+        public override List<VariableTerminal> FreeVariables { get => new List<VariableTerminal>() { this }; }
         public override string ToString()
         {
-            return Value;
+            return BaseItem.Name;
         }
     }
 
-    public class FunctionTerminal : Terminal
+    public class FunctionTerminal : Terminal<Function<Terminal<LogicElement>>>
     {
-        public List<Terminal> Parameters { get; set; }
-        public int Arity => Parameters.Count();
+        public int Arity => BaseItem.Parameters.Count();
 
-        public override List<VariableTerminal> Variables { get => ComputeVariables();}
+        public override List<VariableTerminal> FreeVariables { get => ComputeVariables();}
 
-        public FunctionTerminal(string value, IList<Terminal> parameters) : base(value)
+        public FunctionTerminal(string value, IList<Terminal<LogicElement>> parameters) : 
+            base(new Function<Terminal<LogicElement>>(value, parameters))
         {
-            Parameters = new List<Terminal>(parameters);
         }
 
         private List<VariableTerminal> ComputeVariables()
         {
             var vars = new List<VariableTerminal>();
-            foreach (var terminal in Parameters)
+            foreach (var terminal in BaseItem.Parameters)
             {
-                vars.AddRange(terminal.Variables);
+                vars.AddRange(terminal.FreeVariables);
             }
             return vars;
         }
@@ -67,14 +67,14 @@ namespace Poz1.LogicProver.Model.Core
         {
             var stringBuilder = new StringBuilder();
 
-            stringBuilder.Append(Value);
+            stringBuilder.Append(BaseItem);
             stringBuilder.Append('(');
 
-            for(int i = 0; i < Parameters.Count; i++)
+            for(int i = 0; i < BaseItem.Parameters.Count; i++)
             {
-                stringBuilder.Append(Parameters[i]);
+                stringBuilder.Append(BaseItem.Parameters[i]);
                 
-                if(i != Parameters.Count - 1)
+                if(i != BaseItem.Parameters.Count - 1)
                     stringBuilder.Append(',');
             }
 
