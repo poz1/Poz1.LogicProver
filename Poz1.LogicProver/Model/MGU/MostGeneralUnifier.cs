@@ -12,8 +12,14 @@ namespace Poz1.LogicProver.Model.MGU
         //public static MostGeneralUnifier Instance;
 
         private readonly List<Equation<LogicElement>> equations = new List<Equation<LogicElement>>();
-        public void AddEquation(LogicElement t1, LogicElement t2)
+        public void AddEquation(ILogicElement x1, ILogicElement x2)
         {
+            LogicElement t1 = x1.ToLogicElement();
+            LogicElement t2 = x2.ToLogicElement();
+
+            if (t1 is Function f1 && t2 is Function f2)
+                AddFunctionEquation(f1, f2);
+
             //Rule 3 [x = x -> Cancel Equation]
             if (t1.Name == t2.Name)
                 return;
@@ -25,7 +31,7 @@ namespace Poz1.LogicProver.Model.MGU
                 equations.Add(new Equation<LogicElement>(t1, t2));
         }
 
-        public void AddEquation(Function<LogicElement> f1, Function<LogicElement> f2)
+        public void AddFunctionEquation(Function f1, Function f2)
         {
             //Rule 2 [f!=g || different number of params -> Fail]
             if (f1.Arity != f2.Arity)
@@ -39,7 +45,7 @@ namespace Poz1.LogicProver.Model.MGU
                 var f1p = f1.Parameters[j];
                 var f2p = f2.Parameters[j];
 
-                if(f1p is Function<LogicElement> terminal1 && f2p is Function<LogicElement> terminal2)
+                if(f1p is Function terminal1 && f2p is Function terminal2)
                     AddEquation(terminal1, terminal2);
                 else
                     AddEquation(f1p, f2p);
@@ -51,7 +57,7 @@ namespace Poz1.LogicProver.Model.MGU
             equations.Clear();
         }
 
-        public Substitution<LogicElement> Unify(IList<Equation<LogicElement>> equations)
+        public Substitution Unify(IList<Equation<LogicElement>> equations)
         {
             foreach (var eq in equations)
             {
@@ -61,11 +67,11 @@ namespace Poz1.LogicProver.Model.MGU
             return Compute();
         }
 
-        public Substitution<LogicElement> Compute()
+        public Substitution Compute()
         {
             foreach (var eq in equations)
             {
-                if(eq.Terminal1 is Function<LogicElement> functionTerminal)
+                if(eq.Terminal1 is Function functionTerminal)
                 {
                     if (functionTerminal.Parameters.Any(x => x.Name == eq.Terminal2.Name))
                     {
@@ -86,7 +92,7 @@ namespace Poz1.LogicProver.Model.MGU
                 }
             }
 
-            return new Substitution<LogicElement>(equations);
+            return new Substitution(equations);
         }
     }
 }

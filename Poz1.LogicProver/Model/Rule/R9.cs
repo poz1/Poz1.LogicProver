@@ -30,12 +30,12 @@ namespace Poz1.LogicProver.Model.Rule
                 a = new ConstantTerminal(termNamer.GetNewConstant());
             else
             {
-                var skolemVariables = new List<Terminal>(formula.WorldIndex.Symbols);
+                var skolemVariables = new List<ILogicElement>(formula.WorldIndex.Symbols);
                 skolemVariables.AddRange(formula.FreeVariables);
                 a = new FunctionTerminal(termNamer.GetNewFunction(), skolemVariables); 
             }
 
-            formula.ApplySubstitution(new Substitution(new List<MGU.Equation<Terminal>>() { new MGU.Equation<Terminal>(a, implicationFormula.Variable) }));
+            formula.ApplySubstitution(new Substitution(a, implicationFormula.Variable));
 
             sequent.RightHandSide.Formulas.Remove(implicationFormula);
             sequent.RightHandSide.Formulas.Add(formula);

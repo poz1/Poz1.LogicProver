@@ -1,6 +1,5 @@
 ﻿using Poz1.LogicProver.Model.Core;
 using Poz1.LogicProver.Model.Solver;
-using Poz1.LogicProver.Model.World;
 using System;
 using System.Collections.Generic;
 
@@ -91,7 +90,7 @@ namespace Poz1.LogicProver
 
 
             var varia = new VariableTerminal("x");
-            var atomicFormula8 = new AtomicFormula(new FunctionTerminal("p", new List<Terminal>() { varia }), baseIndex);
+            var atomicFormula8 = new AtomicFormula(new FunctionTerminal("p",  varia ), baseIndex);
             var formulaEX8 = new BinaryFormula(
              new QuantifierFormula( new UnaryFormula(atomicFormula8, UnaryConnective.Necessity, baseIndex), varia, QuantifierConnective.ForAll, baseIndex),
               new UnaryFormula(new QuantifierFormula(atomicFormula8, varia,  QuantifierConnective.ForAll, baseIndex), UnaryConnective.Necessity, baseIndex),

@@ -13,9 +13,4 @@ namespace Poz1.LogicProver.Model.MGU
             Terminal2 = terminal2;
         }
     }
-
-    public class LogicEquation : Equation<LogicElement>
-    {
-
-    }
 }

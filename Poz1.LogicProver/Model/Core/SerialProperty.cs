@@ -20,8 +20,12 @@ namespace Poz1.LogicProver.Model.Core
                 var n = i.EndSymbol.IsGround ? i.EndSymbol : j.EndSymbol;
                 var w = !i.EndSymbol.IsGround ? i.EndSymbol : j.EndSymbol;
 
-                if (relation.Contains(w.ParentSymbol, n))
-                    return new Substitution() {{ n, w } };
+                if (relation.Contains(w.ParentSymbol, n)) {
+                    var sub = new Substitution();
+                    sub.Add(n, w);
+                    return sub;
+                }
+
                 return null;
 
                 //var possibleUnifications = relation.Relations.Where(x => x.Value.Contains(n) && x.Value.Contains(w)).Select(x => x.Key);
@@ -55,7 +59,7 @@ namespace Poz1.LogicProver.Model.Core
             {
                 //(i)
                 if (relation.Contains(i.EndSymbol.ParentSymbol, j.EndSymbol) || relation.Contains(j.EndSymbol.ParentSymbol, i.EndSymbol))
-                    return new Substitution( { i.EndSymbol, j.EndSymbol } );
+                    return new Substitution(  i.EndSymbol, j.EndSymbol  );
                 //(ii)
                 else
                 {
@@ -64,7 +68,7 @@ namespace Poz1.LogicProver.Model.Core
                         return null;
                     else
                     {
-                        new Substitution() { { i.EndSymbol, j.EndSymbol } }.Compose(parentUnification);
+                        new Substitution( i.EndSymbol, j.EndSymbol ).Compose(parentUnification);
                         return parentUnification;
                     }
                 }

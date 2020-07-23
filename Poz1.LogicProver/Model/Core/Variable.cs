@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Poz1.LogicProver.Model.Core
 {
-    public abstract class LogicElement {
+    public abstract class LogicElement : ILogicElement {
         public string Name { get; }
 
         public LogicElement(string name)
@@ -15,6 +15,11 @@ namespace Poz1.LogicProver.Model.Core
         public override string ToString()
         {
             return Name;
+        }
+
+        public LogicElement ToLogicElement()
+        {
+            return this;
         }
     }
 
@@ -28,12 +33,17 @@ namespace Poz1.LogicProver.Model.Core
         public Variable(string name) : base(name) { }
     }
 
-    public class Function<T>: LogicElement
+    public class Function: LogicElement
     {
-        public List<T> Parameters = new List<T>();
+        public List<LogicElement> Parameters = new List<LogicElement>();
         public int Arity => Parameters.Count;
 
-        public Function(string name, IList<T> parameters) :base(name)
+        public Function(string name, List<ILogicElement> parameters) :base(name)
+        {
+            parameters.ForEach(x => Parameters.Add(x.ToLogicElement()));   
+        }
+
+        public Function(string name, IList<LogicElement> parameters) : base(name)
         {
             Parameters.AddRange(parameters);
         }

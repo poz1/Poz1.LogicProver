@@ -1,4 +1,5 @@
 ﻿using Poz1.LogicProver.Model.MGU;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -13,17 +14,23 @@ namespace Poz1.LogicProver.Model.Core
             Elements = new Dictionary<LogicElement, LogicElement>();
         }
 
-        public Substitution(List<Equation<LogicElement>> equations)
+        public Substitution(params ILogicElement[] elements)
         {
-            foreach(var eq in equations)
+            if (elements.Length % 2 != 0)
+                throw new Exception("We need an even count of symbols");
+
+            for (int i = 0; i < elements.Length; i += 2)
             {
-                Elements.Add(eq.Terminal1, eq.Terminal2);
+                Add(elements[i], elements[i + 1]);
             }
         }
 
-        public Substitution(Equation<LogicElement> eq)
+        public Substitution(IList<Equation<LogicElement>> equations)
         {
-            Elements.Add(eq.Terminal1, eq.Terminal2);
+            foreach (var equation in equations)
+            {
+                Add(equation.Terminal1, equation.Terminal2);
+            }
         }
 
         public List<LogicElement> Domain { get => Elements.Keys.ToList(); }
@@ -33,17 +40,12 @@ namespace Poz1.LogicProver.Model.Core
 
         //Apply
 
-        public void Add(WorldSymbol x, WorldSymbol y)
+        public void Add(ILogicElement x, ILogicElement y)
         {
-            Add(x.BaseElement, y.BaseElement);
+            Add(x.ToLogicElement(), y.ToLogicElement());
         }
 
-        public void Add(Terminal x, Terminal y)
-        {
-            Add(x.BaseElement, y.BaseElement);
-        }
-
-        private void Add(LogicElement x, LogicElement y)
+        public void Add(LogicElement x, LogicElement y)
         {
             Elements.Add(x, y);
         }

@@ -1,5 +1,4 @@
 ﻿using Poz1.LogicProver.Model.Core;
-using Poz1.LogicProver.Model.World;
 using System;
 using System.Collections.Generic;
 using System.Linq;

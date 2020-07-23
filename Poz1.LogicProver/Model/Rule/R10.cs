@@ -21,8 +21,7 @@ namespace Poz1.LogicProver.Model.Rule
             var formula = implicationFormula.Formula.Clone();
 
 
-            formula.ApplySubstitution(new Substitution<Terminal>(
-                new List<MGU.Equation<Terminal>>() { new MGU.Equation<Terminal>(new VariableTerminal("T"), implicationFormula.Variable) }));
+            formula.ApplySubstitution(new Substitution(new VariableTerminal("T"), implicationFormula.Variable));
 
             sequent.LeftHandSide.Formulas.Remove(implicationFormula);
             sequent.LeftHandSide.Formulas.Add(formula);

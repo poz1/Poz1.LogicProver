@@ -4,13 +4,16 @@ using System.Linq;
 
 namespace Poz1.LogicProver.Model.Core
 {
-    public abstract class WorldSymbol
+    public abstract class WorldSymbol : ILogicElement
     {
         internal LogicElement BaseElement { get; set; }
-
         public WorldSymbol<LogicElement> ParentSymbol { get; }
-
         public abstract bool IsGround { get; }
+
+        LogicElement ILogicElement.ToLogicElement()
+        {
+            return BaseElement;
+        }
     }
 
     public abstract class WorldSymbol<T> : WorldSymbol where T : LogicElement
@@ -54,14 +57,14 @@ namespace Poz1.LogicProver.Model.Core
         }
     }
 
-    public class FunctionWorldSymbol : WorldSymbol<Function<WorldSymbol>>
+    public class FunctionWorldSymbol : WorldSymbol<Function>
     {
-        public int Arity => ((Function<WorldSymbol>)BaseElement).Parameters.Count();
+        public int Arity => ((Function)BaseElement).Parameters.Count();
 
         public override bool IsGround => throw new System.NotImplementedException();
 
         public FunctionWorldSymbol(string value, IList<WorldSymbol> parameters) :
-            base(new Function<WorldSymbol>(value, parameters))
+            base(new Function(value, (List<ILogicElement>)parameters))
         {
         }
     }

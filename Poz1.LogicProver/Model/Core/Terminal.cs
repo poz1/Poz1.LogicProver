@@ -5,10 +5,15 @@ using System.Text;
 
 namespace Poz1.LogicProver.Model.Core
 {
-    public abstract class Terminal
+    public abstract class Terminal : ILogicElement
     {
         internal LogicElement BaseElement { get; set; }
         public abstract List<VariableTerminal> FreeVariables { get; }
+
+        LogicElement ILogicElement.ToLogicElement()
+        {
+            return BaseElement;
+        }
     }
 
     public abstract class Terminal<T> : Terminal where T : LogicElement
@@ -42,24 +47,30 @@ namespace Poz1.LogicProver.Model.Core
         public override List<VariableTerminal> FreeVariables { get => new List<VariableTerminal>() { this }; }
     }
 
-    public class FunctionTerminal : Terminal<Function<Terminal>>
+    public class FunctionTerminal : Terminal<Function>
     {
-        public int Arity => BaseElement.Arity;
+        public int Arity => ((Function)BaseElement).Arity;
 
         public override List<VariableTerminal> FreeVariables { get => ComputeVariables();}
-        public IEnumerable<Terminal> Parameters { get => BaseElement.Parameters; }
+        public IEnumerable<LogicElement> Parameters { get => ((Function)BaseElement).Parameters; }
 
-        public FunctionTerminal(string value, IList<Terminal> parameters) : 
-            base(new Function<Terminal>(value, parameters))
+        public FunctionTerminal(string value, IList<ILogicElement> parameters) : 
+            base(new Function(value, (List<ILogicElement>)parameters))
+        {
+        }
+
+        public FunctionTerminal(string value, params ILogicElement[] parameters) :
+           base(new Function(value, (IList<LogicElement>)parameters))
         {
         }
 
         private List<VariableTerminal> ComputeVariables()
         {
             var vars = new List<VariableTerminal>();
-            foreach (var terminal in BaseElement.Parameters)
+            foreach (var terminal in ((Function)BaseElement).Parameters)
             {
-                vars.AddRange(terminal.FreeVariables);
+                var t = ((Terminal)terminal);
+               // vars.AddRange 
             }
             return vars;
         }
