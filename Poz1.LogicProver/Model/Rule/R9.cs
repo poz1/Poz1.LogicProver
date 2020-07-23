@@ -35,8 +35,7 @@ namespace Poz1.LogicProver.Model.Rule
                 a = new FunctionTerminal(termNamer.GetNewFunction(), skolemVariables); 
             }
 
-            formula.ApplySubstitution(new Substitution<Terminal>(
-                new List<MGU.Equation<Terminal>>() { new MGU.Equation<Terminal>(a, implicationFormula.Variable) }));
+            formula.ApplySubstitution(new Substitution(new List<MGU.Equation<Terminal>>() { new MGU.Equation<Terminal>(a, implicationFormula.Variable) }));
 
             sequent.RightHandSide.Formulas.Remove(implicationFormula);
             sequent.RightHandSide.Formulas.Add(formula);

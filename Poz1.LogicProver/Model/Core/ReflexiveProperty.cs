@@ -1,7 +1,7 @@
 ﻿using Poz1.LogicProver.Model.Core;
 using System.Collections.Generic;
 
-namespace Poz1.LogicProver.Model.World
+namespace Poz1.LogicProver.Model.Core
 {
     public class ReflexiveProperty : IRelationProperty
     {
@@ -11,7 +11,7 @@ namespace Poz1.LogicProver.Model.World
             relation.AddRelation(y, y);
         }
 
-        public Substitution<Terminal> WorldUnify(AccessibilityRelation relations, WorldIndex i, WorldIndex j)
+        public Substitution WorldUnify(AccessibilityRelation relations, WorldIndex i, WorldIndex j)
         {
             return null;
         }

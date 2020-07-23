@@ -14,16 +14,17 @@ namespace Poz1.LogicProver.Model.Rule
             if (sequents.Count != 2)
                 throw new Exception();
 
-            var baseWorld = new WorldSymbol("0");
-            var wi1 = new WorldIndex(new WorldSymbol("f(w)", new WorldSymbol("w", baseWorld)));
-            var wi2 = new WorldIndex(new WorldSymbol("w1", baseWorld));
+            //var baseWorld = new WorldSymbol("0");
+            //var wi1 = new WorldIndex(new WorldSymbol("f(w)", new WorldSymbol("w", baseWorld)));
+            //var wi2 = new WorldIndex(new WorldSymbol("w1", baseWorld));
 
             var relation = new AccessibilityRelation(
                new List<IRelationProperty>()
                {
                     new SerialProperty()
-               },
-               new List<WorldIndex>() { wi1, wi2 }
+               }
+               //,
+               //new List<WorldIndex>() { wi1, wi2 }
              );
 
             var leftS = sequents[0];

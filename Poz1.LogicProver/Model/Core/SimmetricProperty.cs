@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Poz1.LogicProver.Model.World
+namespace Poz1.LogicProver.Model.Core
 {
     public class SimmetricProperty : IRelationProperty
     {
@@ -12,7 +12,7 @@ namespace Poz1.LogicProver.Model.World
             relation.AddRelation(y, x);
         }
 
-        public Substitution<Terminal> WorldUnify(AccessibilityRelation relation, WorldIndex i, WorldIndex j)
+        public Substitution WorldUnify(AccessibilityRelation relation, WorldIndex i, WorldIndex j)
         {
             return null;
         }

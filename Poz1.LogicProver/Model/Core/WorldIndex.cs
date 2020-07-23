@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Poz1.LogicProver.Model.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Poz1.LogicProver.Model.World
+namespace Poz1.LogicProver.Model.Core
 {
     public class WorldIndex 
     {

@@ -1,14 +1,11 @@
-﻿using Poz1.LogicProver.Model.World;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Poz1.LogicProver.Model.Core
 {
     public class AtomicFormula : Formula
     {
         public Terminal Terminal { get; }
-        public int Arity => Terminal is FunctionTerminal functionTerminal ? functionTerminal.Parameters.Count : 0;
+        public int Arity => Terminal is FunctionTerminal functionTerminal ? functionTerminal.Arity : 0;
 
         public override List<VariableTerminal> FreeVariables => ComputeFreeVariables();
 
@@ -30,7 +27,7 @@ namespace Poz1.LogicProver.Model.Core
             {
                 foreach (var terminal in functionTerminal.Parameters)
                 {
-                    vars.AddRange(terminal.Variables);
+                    vars.AddRange(terminal.FreeVariables);
                 }
             }
 

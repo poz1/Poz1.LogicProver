@@ -69,9 +69,9 @@ namespace Poz1.LogicProver
 
             //var lol = unifier.Compute();
 
-            var baseWorld = new WorldSymbol("0");
+            var baseWorld = new ConstantWorldSymbol("0");
             //var wi1 = new WorldIndex(new WorldSymbol("f(w)", new WorldSymbol("w", baseWorld)));
-            var baseIndex = new WorldIndex( baseWorld);
+            var baseIndex = new WorldIndex(baseWorld);
 
             //var relation = new AccessibilityRelation(
             //  new List<IRelationProperty>()

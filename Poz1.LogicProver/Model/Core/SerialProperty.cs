@@ -3,7 +3,7 @@ using Poz1.LogicProver.Model.MGU;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Poz1.LogicProver.Model.World
+namespace Poz1.LogicProver.Model.Core
 {
     public class SerialProperty : IRelationProperty
     {
@@ -11,7 +11,7 @@ namespace Poz1.LogicProver.Model.World
         {
         }
 
-        public Substitution<Terminal> WorldUnify(AccessibilityRelation relation, WorldIndex i, WorldIndex j)
+        public Substitution WorldUnify(AccessibilityRelation relation, WorldIndex i, WorldIndex j)
         {
             //2b -> one is ground and the other world variable
             if (i.EndSymbol.IsGround || j.EndSymbol.IsGround)
@@ -21,7 +21,7 @@ namespace Poz1.LogicProver.Model.World
                 var w = !i.EndSymbol.IsGround ? i.EndSymbol : j.EndSymbol;
 
                 if (relation.Contains(w.ParentSymbol, n))
-                    return new Substitution<Terminal>() { { n, w } };
+                    return new Substitution() {{ n, w } };
                 return null;
 
                 //var possibleUnifications = relation.Relations.Where(x => x.Value.Contains(n) && x.Value.Contains(w)).Select(x => x.Key);
@@ -55,7 +55,7 @@ namespace Poz1.LogicProver.Model.World
             {
                 //(i)
                 if (relation.Contains(i.EndSymbol.ParentSymbol, j.EndSymbol) || relation.Contains(j.EndSymbol.ParentSymbol, i.EndSymbol))
-                    return new Substitution<Terminal>() { { i.EndSymbol, j.EndSymbol } };
+                    return new Substitution( { i.EndSymbol, j.EndSymbol } );
                 //(ii)
                 else
                 {
@@ -64,7 +64,7 @@ namespace Poz1.LogicProver.Model.World
                         return null;
                     else
                     {
-                        new Substitution<Terminal>() { { i.EndSymbol, j.EndSymbol } }.Compose(parentUnification);
+                        new Substitution() { { i.EndSymbol, j.EndSymbol } }.Compose(parentUnification);
                         return parentUnification;
                     }
                 }

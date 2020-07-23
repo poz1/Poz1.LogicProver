@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 
-namespace Poz1.LogicProver.Model.World
+namespace Poz1.LogicProver.Model.Core
 {
     public class AccessibilityRelation
     {
         internal Dictionary<WorldSymbol, List<WorldSymbol>> Relations { get; }
 
         protected readonly List<IRelationProperty> properties = new List<IRelationProperty>();
+
+        private WorldSymbol baseWorld;
 
         public AccessibilityRelation() {
             Relations = new Dictionary<WorldSymbol, List<WorldSymbol>>();
@@ -30,23 +32,23 @@ namespace Poz1.LogicProver.Model.World
                 AddWorldIndex(worldIndex);
         }
 
-        public Substitution<Terminal> WorldUnify(WorldIndex i, WorldIndex j)
+        public Substitution WorldUnify(WorldIndex i, WorldIndex j)
         {
             //By convention "0" is the actual world
-            if (i.StartSymbol.Symbol != "0" || j.StartSymbol.Symbol != "0")
+            if (i.StartSymbol != baseWorld || j.StartSymbol != baseWorld)
                 return null;
 
             if (i.EndSymbol.IsGround && j.EndSymbol.IsGround)
             {
-                if (i.EndSymbol.Symbol == j.EndSymbol.Symbol)
-                    return new Substitution<Terminal>();
+                if (i.EndSymbol == j.EndSymbol)
+                    return new Substitution();
                 else
                     return null;
             }
 
             //return AbstractWorldUnify(i, j);
 
-            var unifications = new List<Substitution<Terminal>>();
+            var unifications = new List<Substitution>();
             foreach (var property in properties)
             {
                 var unification = property.WorldUnify(this, i, j);

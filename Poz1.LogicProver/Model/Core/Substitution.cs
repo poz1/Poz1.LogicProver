@@ -1,49 +1,69 @@
-﻿using Poz1.LogicProver.Model;
-using Poz1.LogicProver.Model.MGU;
-using Poz1.LogicProver.Model.World;
-using System;
+﻿using Poz1.LogicProver.Model.MGU;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Poz1.LogicProver.Model.Core
 {
-    public class Substitution<T> : Dictionary<T, T>
+    public class Substitution 
     {
+        Dictionary<LogicElement, LogicElement> Elements;
+
         public Substitution()
         {
+            Elements = new Dictionary<LogicElement, LogicElement>();
         }
 
-        public Substitution(List<Equation<T>> equations)
+        public Substitution(List<Equation<LogicElement>> equations)
         {
             foreach(var eq in equations)
             {
-                Add(eq.Terminal1, eq.Terminal2);
+                Elements.Add(eq.Terminal1, eq.Terminal2);
             }
         }
 
-        public List<T> Domain { get => Keys.ToList(); }
-        public List<T> Range { get => Values.ToList(); }
+        public Substitution(Equation<LogicElement> eq)
+        {
+            Elements.Add(eq.Terminal1, eq.Terminal2);
+        }
+
+        public List<LogicElement> Domain { get => Elements.Keys.ToList(); }
+        public List<LogicElement> Range { get => Elements.Values.ToList(); }
 
         public bool IsPure { get => !Range.Any(x => Domain.Contains(x)); }
 
         //Apply
+
+        public void Add(WorldSymbol x, WorldSymbol y)
+        {
+            Add(x.BaseElement, y.BaseElement);
+        }
+
+        public void Add(Terminal x, Terminal y)
+        {
+            Add(x.BaseElement, y.BaseElement);
+        }
+
+        private void Add(LogicElement x, LogicElement y)
+        {
+            Elements.Add(x, y);
+        }
 
         public override string ToString()
         {
             return base.ToString();
         }
 
-        internal void Compose(Substitution<T> substitutions)
+        internal void Compose(Substitution substitutions)
         {
-            foreach(var item in substitutions.Keys)
+            foreach(var item in substitutions.Elements.Keys)
             {
-                if (ContainsKey(item))
+                if (Elements.ContainsKey(item))
                 {
-                    this[item] = substitutions[item];
+                    Elements[item] = substitutions.Elements[item];
                 } 
                 else
                 {
-                    Add(item, substitutions[item]);
+                    Add(item, substitutions.Elements[item]);
                 }
             }
         }

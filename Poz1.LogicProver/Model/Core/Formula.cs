@@ -1,5 +1,4 @@
 ﻿using Poz1.LogicProver.Model.MGU;
-using Poz1.LogicProver.Model.World;
 using System.Collections.Generic;
 
 namespace Poz1.LogicProver.Model.Core
@@ -12,7 +11,7 @@ namespace Poz1.LogicProver.Model.Core
 
         public abstract List<VariableTerminal> FreeVariables { get; }
 
-        public Substitution<Terminal> Unify(Formula formula)
+        public Substitution Unify(Formula formula)
         {
             var mgu = new MostGeneralUnifier();
 
@@ -29,7 +28,7 @@ namespace Poz1.LogicProver.Model.Core
         public abstract Formula Clone();
        
 
-        public Substitution<Terminal> MUnify(AccessibilityRelation relation, Formula formula)
+        public Substitution MUnify(AccessibilityRelation relation, Formula formula)
         {
             var unif = Unify(formula);
             var eta = relation.WorldUnify(WorldIndex, formula.WorldIndex);
@@ -38,7 +37,7 @@ namespace Poz1.LogicProver.Model.Core
             return unif;
         }
 
-        public void ApplySubstitution(Substitution<Terminal> substitution) { }
+        public void ApplySubstitution(Substitution substitution) { }
 
         public Formula(WorldIndex index)
         {

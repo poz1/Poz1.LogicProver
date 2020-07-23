@@ -5,15 +5,23 @@ using System.Text;
 
 namespace Poz1.LogicProver.Model.Core
 {
-    public abstract class Terminal<T> 
+    public abstract class Terminal
     {
-        public Terminal(T baseItem) 
+        internal LogicElement BaseElement { get; set; }
+        public abstract List<VariableTerminal> FreeVariables { get; }
+    }
+
+    public abstract class Terminal<T> : Terminal where T : LogicElement
+    {
+        public Terminal(T baseElement)
         {
-            BaseItem = baseItem;
+            BaseElement = baseElement;
         }
 
-        public T BaseItem { protected get; set; }
-        public abstract List<VariableTerminal> FreeVariables { get; }
+        public override string ToString()
+        {
+            return BaseElement.ToString();
+        }
     }
 
     public class ConstantTerminal : Terminal<Constant>
@@ -23,10 +31,6 @@ namespace Poz1.LogicProver.Model.Core
         }
 
         public override List<VariableTerminal> FreeVariables { get => new List<VariableTerminal>(); }
-        public override string ToString()
-        {
-            return BaseItem.Name;
-        }
     }
 
     public class VariableTerminal : Terminal<Variable>
@@ -36,50 +40,28 @@ namespace Poz1.LogicProver.Model.Core
         }
 
         public override List<VariableTerminal> FreeVariables { get => new List<VariableTerminal>() { this }; }
-        public override string ToString()
-        {
-            return BaseItem.Name;
-        }
     }
 
-    public class FunctionTerminal : Terminal<Function<Terminal<LogicElement>>>
+    public class FunctionTerminal : Terminal<Function<Terminal>>
     {
-        public int Arity => BaseItem.Parameters.Count();
+        public int Arity => BaseElement.Arity;
 
         public override List<VariableTerminal> FreeVariables { get => ComputeVariables();}
+        public IEnumerable<Terminal> Parameters { get => BaseElement.Parameters; }
 
-        public FunctionTerminal(string value, IList<Terminal<LogicElement>> parameters) : 
-            base(new Function<Terminal<LogicElement>>(value, parameters))
+        public FunctionTerminal(string value, IList<Terminal> parameters) : 
+            base(new Function<Terminal>(value, parameters))
         {
         }
 
         private List<VariableTerminal> ComputeVariables()
         {
             var vars = new List<VariableTerminal>();
-            foreach (var terminal in BaseItem.Parameters)
+            foreach (var terminal in BaseElement.Parameters)
             {
                 vars.AddRange(terminal.FreeVariables);
             }
             return vars;
-        }
-
-        public override string ToString()
-        {
-            var stringBuilder = new StringBuilder();
-
-            stringBuilder.Append(BaseItem);
-            stringBuilder.Append('(');
-
-            for(int i = 0; i < BaseItem.Parameters.Count; i++)
-            {
-                stringBuilder.Append(BaseItem.Parameters[i]);
-                
-                if(i != BaseItem.Parameters.Count - 1)
-                    stringBuilder.Append(',');
-            }
-
-            stringBuilder.Append(')');
-            return stringBuilder.ToString();
         }
     }
 }

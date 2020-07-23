@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Poz1.LogicProver.Model.World
+namespace Poz1.LogicProver.Model.Core
 {
     public class TransitiveProperty : IRelationProperty
     {
@@ -28,7 +28,7 @@ namespace Poz1.LogicProver.Model.World
             }
         }
 
-        public Substitution<Terminal> WorldUnify(AccessibilityRelation relation, WorldIndex i, WorldIndex j)
+        public Substitution WorldUnify(AccessibilityRelation relation, WorldIndex i, WorldIndex j)
         {
             return null;
         }

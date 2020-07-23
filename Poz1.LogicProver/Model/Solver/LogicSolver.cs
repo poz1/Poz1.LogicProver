@@ -14,7 +14,7 @@ namespace Poz1.LogicProver.Model.Solver
         public IWorldNamer WorldNamer { get; set; }
         public ITermNamer TermNamer { get; set; }
 
-        private WorldSymbol baseWorld;
+        private ConstantWorldSymbol baseWorld;
 
         private readonly IResolutionRule resolutionRule;
         private readonly List<IInferenceRule> rules = new List<IInferenceRule>();
@@ -25,7 +25,7 @@ namespace Poz1.LogicProver.Model.Solver
 
             WorldNamer = new SimpleWorldNamer();
             TermNamer = new SimpleTermNamer();
-            baseWorld = new WorldSymbol(WorldNamer.GetNewWorldConstant());
+            baseWorld = new ConstantWorldSymbol(WorldNamer.GetNewWorldConstant());
 
             //Only used on reduced sequents
             resolutionRule = new R1();

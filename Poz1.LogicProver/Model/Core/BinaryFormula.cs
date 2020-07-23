@@ -1,5 +1,4 @@
-﻿using Poz1.LogicProver.Model.World;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text;
 
 namespace Poz1.LogicProver.Model.Core
