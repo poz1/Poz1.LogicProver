@@ -1,8 +1,4 @@
-﻿using Poz1.LogicProver.Model.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 
 namespace Poz1.LogicProver.Model.Core
 {

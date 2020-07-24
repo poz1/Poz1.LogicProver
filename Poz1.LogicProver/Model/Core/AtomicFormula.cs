@@ -9,6 +9,8 @@ namespace Poz1.LogicProver.Model.Core
 
         public override List<VariableTerminal> FreeVariables => ComputeFreeVariables();
 
+        public override List<Terminal> Variables => Terminal.Variables;
+
         public AtomicFormula(Terminal terminal, WorldIndex index) : base(index)
         {
             Terminal = terminal;

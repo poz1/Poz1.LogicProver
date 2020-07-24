@@ -29,11 +29,21 @@ namespace Poz1.LogicProver.Model.Core
 
         public override List<VariableTerminal> FreeVariables => ComputeFreeVariables();
 
+        public override List<Terminal> Variables => ComputeVariables();
+
         public BinaryFormula(Formula leftFormula, Formula rightFormula, string connective, WorldIndex index) : base(index)
         {
             LHSFormula = leftFormula;
             RHSFormula = rightFormula;
             Connective = connective;
+        }
+
+        private List<Terminal> ComputeVariables()
+        {
+            var vars = new List<Terminal>();
+            vars.AddRange(LHSFormula.Variables);
+            vars.AddRange(RHSFormula.Variables);
+            return vars;
         }
 
         private List<VariableTerminal> ComputeFreeVariables()

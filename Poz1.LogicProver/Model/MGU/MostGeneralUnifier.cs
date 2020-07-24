@@ -11,7 +11,7 @@ namespace Poz1.LogicProver.Model.MGU
     {
         //public static MostGeneralUnifier Instance;
 
-        private readonly List<Equation<LogicElement>> equations = new List<Equation<LogicElement>>();
+        private readonly List<Equation<ILogicElement>> equations = new List<Equation<ILogicElement>>();
         public void AddEquation(ILogicElement x1, ILogicElement x2)
         {
             LogicElement t1 = x1.ToLogicElement();
@@ -32,9 +32,9 @@ namespace Poz1.LogicProver.Model.MGU
 
             //Rule 4 [t = x -> x = t]
             if (t1.GetType() == typeof(Variable) && t2.GetType() != typeof(Variable))
-                equations.Add(new Equation<LogicElement>(t2, t1));
+                equations.Add(new Equation<ILogicElement>(x2, x1));
             else
-                equations.Add(new Equation<LogicElement>(t1, t2));
+                equations.Add(new Equation<ILogicElement>(x1, x2));
         }
 
         public void AddFunctionEquation<T>(Function<T> f1, Function<T> f2) where T :ILogicElement
@@ -79,7 +79,7 @@ namespace Poz1.LogicProver.Model.MGU
             {
                 if(eq.Terminal1 is Function<ILogicElement> functionTerminal)
                 {
-                    if (functionTerminal.Parameters.Any(x => x.ToLogicElement().Name == eq.Terminal2.Name))
+                    if (functionTerminal.Parameters.Any(x => x.ToLogicElement().Name == eq.Terminal2.ToLogicElement().Name))
                     {
                         //Rule 6
                         throw new Exception("No MGU: variable in function [occur check]");
@@ -89,7 +89,7 @@ namespace Poz1.LogicProver.Model.MGU
                         //Rule 5
                         foreach (var otherEq in equations)
                         {
-                            if(otherEq != eq && otherEq.Terminal2.Name == eq.Terminal2.Name)
+                            if(otherEq != eq && otherEq.Terminal2.ToLogicElement().Name == eq.Terminal2.ToLogicElement().Name)
                             {
                                 otherEq.Terminal2 = eq.Terminal1;
                             }

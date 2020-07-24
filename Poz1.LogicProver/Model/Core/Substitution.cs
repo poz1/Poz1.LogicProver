@@ -25,7 +25,7 @@ namespace Poz1.LogicProver.Model.Core
             }
         }
 
-        public Substitution(IList<Equation<LogicElement>> equations) : this()
+        public Substitution(IList<Equation<ILogicElement>> equations) : this()
         {
             foreach (var equation in equations)
             {

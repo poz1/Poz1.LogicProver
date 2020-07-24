@@ -10,6 +10,9 @@ namespace Poz1.LogicProver.Model.Core
         internal LogicElement BaseElement { get; set; }
         public abstract List<VariableTerminal> FreeVariables { get; }
 
+        public abstract List<Terminal> Variables { get; }
+
+
         LogicElement ILogicElement.ToLogicElement()
         {
             return BaseElement;
@@ -46,6 +49,8 @@ namespace Poz1.LogicProver.Model.Core
 
         public override List<VariableTerminal> FreeVariables { get => new List<VariableTerminal>(); }
 
+        public override List<Terminal> Variables { get => new List<Terminal>() { this }; }
+
         public override WorldSymbol ToWorldSymbol()
         {
             return new ConstantWorldSymbol(BaseElement.Name);
@@ -60,6 +65,8 @@ namespace Poz1.LogicProver.Model.Core
 
         public override List<VariableTerminal> FreeVariables { get => new List<VariableTerminal>() { this }; }
 
+        public override List<Terminal> Variables { get => new List<Terminal>() { this }; }
+
         public override WorldSymbol ToWorldSymbol()
         {
             return new VariableWorldSymbol(BaseElement.Name);
@@ -70,7 +77,10 @@ namespace Poz1.LogicProver.Model.Core
     {
         public int Arity => ((Function<Terminal>)BaseElement).Arity;
 
-        public override List<VariableTerminal> FreeVariables { get => ComputeVariables();}
+        public override List<VariableTerminal> FreeVariables { get => ComputeFreeVariables();}
+
+        public override List<Terminal> Variables { get => ComputeVariables(); }
+
         public IEnumerable<Terminal> Parameters { get => ((Function<Terminal>)BaseElement).Parameters; }
 
         public FunctionTerminal(string value, IList<Terminal> parameters) : 
@@ -94,12 +104,22 @@ namespace Poz1.LogicProver.Model.Core
                 ((Function<Terminal>)BaseElement).Parameters.Select(x => x.ToWorldSymbol()).ToList());
         }
 
-        private List<VariableTerminal> ComputeVariables()
+        private List<VariableTerminal> ComputeFreeVariables()
         {
             var vars = new List<VariableTerminal>();
             foreach (var terminal in ((Function<Terminal>)BaseElement).Parameters)
             {
                 vars.AddRange(terminal.FreeVariables);
+            }
+            return vars;
+        }
+
+        private List<Terminal> ComputeVariables()
+        {
+            var vars = new List<Terminal>();
+            foreach (var terminal in ((Function<Terminal>)BaseElement).Parameters)
+            {
+                vars.AddRange(terminal.Variables);
             }
             return vars;
         }

@@ -26,12 +26,12 @@ namespace Poz1.LogicProver.Model.Rule
 
             Terminal a;
 
-            if (implicationFormula.Formula.FreeVariables.Count == 0 && implicationFormula.WorldIndex.IsGround)
+            if (implicationFormula.FreeVariables.Count == 0 && implicationFormula.WorldIndex.IsGround)
                 a = termNamer.GetNewConstant();
             else
             {
                 var skolemVariables = new List<Terminal>(formula.WorldIndex.Symbols.Select(x => x.ToTerminal()));
-                skolemVariables.AddRange(formula.FreeVariables);
+                skolemVariables.AddRange(implicationFormula.FreeVariables);
                 a = termNamer.GetNewFunction(skolemVariables); 
             }
 

@@ -10,6 +10,7 @@ namespace Poz1.LogicProver.Model.Core
         public Formula Formula { get; set; }
 
         public override List<VariableTerminal> FreeVariables => ComputeFreeVariables();
+        public override List<Terminal> Variables => Formula.Variables;
 
         public QuantifierFormula(Formula formula, VariableTerminal variable, string quantifier, WorldIndex index) : base(index)
         {

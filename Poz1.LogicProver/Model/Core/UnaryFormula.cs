@@ -20,6 +20,8 @@ namespace Poz1.LogicProver.Model.Core
 
         public override List<VariableTerminal> FreeVariables => Formula.FreeVariables;
 
+        public override List<Terminal> Variables => Formula.Variables;
+
         public UnaryFormula(Formula formula, string connective, WorldIndex index) : base(index)
         {
             Formula = formula;

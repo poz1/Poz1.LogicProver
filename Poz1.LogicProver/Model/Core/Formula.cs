@@ -10,16 +10,17 @@ namespace Poz1.LogicProver.Model.Core
         public abstract void ChangeWorldIndex(WorldIndex value);
 
         public abstract List<VariableTerminal> FreeVariables { get; }
+        public abstract List<Terminal> Variables { get; }
 
         public Substitution Unify(Formula formula)
         {
             var mgu = new MostGeneralUnifier();
 
-            var itemsCount = FreeVariables.Count < formula.FreeVariables.Count ? FreeVariables.Count : formula.FreeVariables.Count;
+            var itemsCount = Variables.Count < formula.Variables.Count ? Variables.Count : formula.Variables.Count;
 
             for (int i = 0; i < itemsCount; i++)
             {
-                mgu.AddEquation(FreeVariables[i], formula.FreeVariables[i]);
+                mgu.AddEquation(Variables[i], formula.Variables[i]);
             }
 
             return mgu.Compute();
