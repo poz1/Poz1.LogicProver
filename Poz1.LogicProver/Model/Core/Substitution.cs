@@ -7,11 +7,11 @@ namespace Poz1.LogicProver.Model.Core
 {
     public class Substitution 
     {
-        Dictionary<LogicElement, LogicElement> Elements;
+        Dictionary<ILogicElement, ILogicElement> Elements;
 
         public Substitution()
         {
-            Elements = new Dictionary<LogicElement, LogicElement>();
+            Elements = new Dictionary<ILogicElement, ILogicElement>();
         }
 
         public Substitution(params ILogicElement[] elements) : this()
@@ -33,10 +33,10 @@ namespace Poz1.LogicProver.Model.Core
             }
         }
 
-        public List<LogicElement> Domain { get => Elements.Keys.ToList(); }
-        public List<LogicElement> Range { get => Elements.Values.ToList(); }
+        public List<ILogicElement> Domain { get => Elements.Keys.ToList(); }
+        public List<ILogicElement> Range { get => Elements.Values.ToList(); }
 
-        public LogicElement GetValue(LogicElement item)
+        public ILogicElement GetValue(ILogicElement item)
         {
             return Elements[item];
         }
@@ -45,13 +45,15 @@ namespace Poz1.LogicProver.Model.Core
 
         public void Add(ILogicElement x, ILogicElement y)
         {
-            Add(x.ToLogicElement(), y.ToLogicElement());
+            Elements.Add(y, x);
+
+            //Add(x.ToLogicElement(), y.ToLogicElement());
         }
 
-        public void Add(LogicElement x, LogicElement y)
-        {
-            Elements.Add(y, x);
-        }
+        //public void Add(LogicElement x, LogicElement y)
+        //{
+        //    Elements.Add(y, x);
+        //}
 
         public override string ToString()
         {

@@ -21,30 +21,16 @@ namespace Poz1.LogicProver.Model.Core
         {
             return this;
         }
-
-        public abstract void Substitute(LogicElement item, LogicElement logicElement);
     }
 
     public class Constant: LogicElement
     {
         public Constant(string name) : base(name) { }
-
-        public override void Substitute(LogicElement item, LogicElement logicElement)
-        {
-            if (Name == item.Name)
-                Name = logicElement.Name;
-        }
     }
 
     public class Variable: LogicElement
     {
         public Variable(string name) : base(name) { }
-
-        public override void Substitute(LogicElement item, LogicElement logicElement)
-        {
-            if (Name == item.Name)
-                Name = logicElement.Name;
-        }
     }
 
     public class Function<T>: LogicElement where T:ILogicElement
@@ -57,7 +43,7 @@ namespace Poz1.LogicProver.Model.Core
             Parameters.AddRange(parameters);
         }
 
-        public override void Substitute(LogicElement item, LogicElement logicElement)
+        public void Substitute(ILogicElement item, ILogicElement logicElement)
         {
             var newParams = new List<T>(Parameters);
 
@@ -71,13 +57,10 @@ namespace Poz1.LogicProver.Model.Core
                 else if (param is LogicElement originalPar)
                     originalParam = originalPar;
 
-                if (originalParam.Name == item.Name)
-                    newParams[Parameters.IndexOf(param)] = (T)(ILogicElement)logicElement;
+                if (originalParam.Name == item.ToLogicElement().Name)
+                    newParams[Parameters.IndexOf(param)] = (T)logicElement;
 
-                //if (param is LogicElement element)
-                //    element.Substitute(item, logicElement);
-                //else if (param is ILogicElement logicBox)
-                //    logicBox.ToLogicElement().Substitute(item, logicElement);
+                Parameters = newParams;
             }
         }
 

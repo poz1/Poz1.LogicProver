@@ -34,7 +34,7 @@ namespace Poz1.LogicProver.Model.Solver
             resolutionRule = new R1(relation);
 
             // These are applied as long as sequents have unreduced formulas
-            rules.AddRange(new List<IInferenceRule>() { new R2(), new R3(), new R4(), new R5(), new R6(), new R7(WorldNamer), new R8(WorldNamer), new R9(TermNamer), new R10() });
+            rules.AddRange(new List<IInferenceRule>() { new R2(), new R3(), new R4(), new R5(), new R6(), new R7(WorldNamer), new R8(WorldNamer), new R9(TermNamer), new R10(TermNamer) });
         }
 
         public void Solve(Formula formula)

@@ -4,7 +4,7 @@ namespace Poz1.LogicProver.Model.Core
 {
     public class AtomicFormula : Formula
     {
-        public Terminal Terminal { get; }
+        public Terminal Terminal { get; private set; }
         public int Arity => Terminal is FunctionTerminal functionTerminal ? functionTerminal.Arity : 0;
 
         public override List<VariableTerminal> FreeVariables => ComputeFreeVariables();
@@ -56,12 +56,12 @@ namespace Poz1.LogicProver.Model.Core
         {
             foreach(var item in substitution.Domain)
             {
-                if(!(Terminal is FunctionTerminal) && Terminal.BaseElement.Name == item.Name)
-                    Terminal.BaseElement = substitution.GetValue(item);
+                if(!(Terminal is FunctionTerminal) && Terminal.BaseElement.Name == item.ToLogicElement().Name)
+                    Terminal = (Terminal)substitution.GetValue(item);
 
                 else if (Terminal is FunctionTerminal function)
                 {
-                    function.BaseElement.Substitute(item, substitution.GetValue(item));
+                    ((Function<Terminal>)function.BaseElement).Substitute(item, substitution.GetValue(item));
                 }
             }
         }
