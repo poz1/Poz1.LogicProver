@@ -47,7 +47,7 @@ namespace Poz1.LogicProver.Model.Core
         }
     }
 
-    public class Function<T>: LogicElement
+    public class Function<T>: LogicElement where T:ILogicElement
     {
         public List<T> Parameters = new List<T>();
         public int Arity => Parameters.Count;
@@ -59,15 +59,25 @@ namespace Poz1.LogicProver.Model.Core
 
         public override void Substitute(LogicElement item, LogicElement logicElement)
         {
-            if (Name == item.Name)
-                Name = logicElement.Name;
+            var newParams = new List<T>(Parameters);
 
             foreach (var param in Parameters)
             {
-                if (param is LogicElement element)
-                    element.Substitute(item, logicElement);
-                else if (param is ILogicElement logicBox)
-                    logicBox.ToLogicElement().Substitute(item, logicElement);
+                LogicElement originalParam = null;
+
+                if (param is ILogicElement originalParamBox)
+                    originalParam = originalParamBox.ToLogicElement();
+
+                else if (param is LogicElement originalPar)
+                    originalParam = originalPar;
+
+                if (originalParam.Name == item.Name)
+                    newParams[Parameters.IndexOf(param)] = (T)(ILogicElement)logicElement;
+
+                //if (param is LogicElement element)
+                //    element.Substitute(item, logicElement);
+                //else if (param is ILogicElement logicBox)
+                //    logicBox.ToLogicElement().Substitute(item, logicElement);
             }
         }
 

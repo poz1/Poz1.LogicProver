@@ -11,8 +11,8 @@ namespace Poz1.LogicProver.Model.Core
         public List<WorldSymbol> Symbols = new List<WorldSymbol>();
 
         public WorldIndex ParentIndex { get; private set; }
-        public WorldSymbol EndSymbol => Symbols.First();
-        public WorldSymbol StartSymbol => Symbols.Last();
+        public WorldSymbol EndSymbol => Symbols.Last();
+        public WorldSymbol StartSymbol => Symbols.First();
 
         public WorldIndex(WorldSymbol symbol)
         {
@@ -29,6 +29,7 @@ namespace Poz1.LogicProver.Model.Core
         {
             symbol.ParentSymbol = EndSymbol;
             Symbols.Add(symbol);
+            ParentIndex = new WorldIndex(symbol.ParentSymbol);
         }
 
         public WorldIndex Clone()
@@ -41,12 +42,12 @@ namespace Poz1.LogicProver.Model.Core
         public override string ToString()
         {
             var builder = new StringBuilder();
-            builder.Append(Symbols[0]);
+            builder.Append(EndSymbol);
 
-            for(int i = Symbols.Count; i > 0; i--)
+            for(int i = Symbols.Count - 2; i >= 0; i--)
             {
                 builder.Append(":");
-                builder.Append(Symbols[i - 1]);
+                builder.Append(Symbols[i]);
             }
 
             return builder.ToString();

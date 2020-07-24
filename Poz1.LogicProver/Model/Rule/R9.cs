@@ -32,7 +32,7 @@ namespace Poz1.LogicProver.Model.Rule
             {
                 var skolemVariables = new List<Terminal>(formula.WorldIndex.Symbols.Select(x => x.ToTerminal()));
                 skolemVariables.AddRange(formula.FreeVariables);
-                a = new FunctionTerminal(termNamer.GetNewFunction(), formula.FreeVariables.Select(x => (Terminal)x).ToList()); 
+                a = new FunctionTerminal(termNamer.GetNewFunction(), skolemVariables); 
             }
 
             formula.ApplySubstitution(new Substitution(a, implicationFormula.Variable));

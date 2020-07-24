@@ -14,6 +14,8 @@ namespace Poz1.LogicProver.Model.Core
         {
             return BaseElement;
         }
+
+        public abstract WorldSymbol ToWorldSymbol();
     }
 
     public abstract class Terminal<T> : Terminal where T : LogicElement
@@ -36,6 +38,11 @@ namespace Poz1.LogicProver.Model.Core
         }
 
         public override List<VariableTerminal> FreeVariables { get => new List<VariableTerminal>(); }
+
+        public override WorldSymbol ToWorldSymbol()
+        {
+            return new ConstantWorldSymbol(BaseElement.Name);
+        }
     }
 
     public class VariableTerminal : Terminal<Variable>
@@ -45,6 +52,11 @@ namespace Poz1.LogicProver.Model.Core
         }
 
         public override List<VariableTerminal> FreeVariables { get => new List<VariableTerminal>() { this }; }
+
+        public override WorldSymbol ToWorldSymbol()
+        {
+            return new VariableWorldSymbol(BaseElement.Name);
+        }
     }
 
     public class FunctionTerminal : Terminal<Function<Terminal>>
@@ -69,7 +81,11 @@ namespace Poz1.LogicProver.Model.Core
         {
         }
 
-
+        public override WorldSymbol ToWorldSymbol()
+        {
+            return new FunctionWorldSymbol(BaseElement.Name,
+                ((Function<Terminal>)BaseElement).Parameters.Select(x => x.ToWorldSymbol()).ToList());
+        }
 
         private List<VariableTerminal> ComputeVariables()
         {

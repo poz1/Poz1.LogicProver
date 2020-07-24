@@ -1,4 +1,5 @@
 ﻿using Poz1.LogicProver.Model.Core;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Poz1.LogicProver.Model.Rule
@@ -25,9 +26,12 @@ namespace Poz1.LogicProver.Model.Rule
 
             if (formula.WorldIndex.IsGround && formula.FreeVariables.Count == 0)
                 formula.WorldIndex.AddSymbol(new ConstantWorldSymbol(worldNamer.GetNewWorldConstant()));
-            //else
-            //    formula.WorldIndex.Symbols.Add(new FunctionWorldSymbol("skolem function with blabla"));
-
+            else
+            {
+                var skolemVariables = new List<WorldSymbol>(formula.WorldIndex.Symbols);
+                skolemVariables.AddRange(formula.FreeVariables.Select(x => x.ToWorldSymbol()));
+                formula.WorldIndex.Symbols.Add(new FunctionWorldSymbol(worldNamer.GetNewWorldFunction(), skolemVariables));
+            }
             sequent.RightHandSide.Formulas.Remove(implicationFormula);
             sequent.RightHandSide.Formulas.Add(formula);
 

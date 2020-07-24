@@ -43,8 +43,6 @@ namespace Poz1.LogicProver.Model.Core
 
         public bool IsPure { get => !Range.Any(x => Domain.Contains(x)); }
 
-        //Apply
-
         public void Add(ILogicElement x, ILogicElement y)
         {
             Add(x.ToLogicElement(), y.ToLogicElement());
@@ -52,7 +50,7 @@ namespace Poz1.LogicProver.Model.Core
 
         public void Add(LogicElement x, LogicElement y)
         {
-            Elements.Add(x, y);
+            Elements.Add(y, x);
         }
 
         public override string ToString()

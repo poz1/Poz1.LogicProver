@@ -34,6 +34,8 @@ namespace Poz1.LogicProver.Model.Rule
                 {
                     relation.AddWorldIndex(formulaQ.WorldIndex);
 
+                    var y = formulaP.WorldIndex.ToString();
+
                     var unification = formulaP.MUnify(relation, formulaQ);
                     if (unification == null)
                         continue;
