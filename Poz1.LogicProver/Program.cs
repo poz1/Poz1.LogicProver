@@ -72,13 +72,13 @@ namespace Poz1.LogicProver
             //var wi1 = new WorldIndex(new WorldSymbol("f(w)", new WorldSymbol("w", baseWorld)));
             var baseIndex = new WorldIndex(baseWorld);
 
-            //var relation = new AccessibilityRelation(
-            //  new List<IRelationProperty>()
-            //  {
-            //        new SerialProperty()
-            //  },
+            var relation = new AccessibilityRelation(
+              new List<IRelationProperty>()
+              {
+                    new SerialProperty()
+              }
             //  new List<WorldIndex>() { wi1, wi2 }
-            //);
+            );
 
             //var t = relation.WorldUnify(wi1, wi2);
             var atomicFormula = new AtomicFormula(new ConstantTerminal("p"), baseIndex);
@@ -97,7 +97,7 @@ namespace Poz1.LogicProver
               BinaryConnective.Implication, baseIndex);
 
             Console.WriteLine(formulaEX8.ToWorldString());
-            var solver = new LogicSolver();
+            var solver = new LogicSolver(relation);
             solver.Solve(formulaEX8);
         }
     }

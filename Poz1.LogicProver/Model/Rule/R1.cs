@@ -17,27 +17,23 @@ namespace Poz1.LogicProver.Model.Rule
 
         public List<Sequent> Apply(Sequent leftS, Sequent rightS)
         {
-            //var baseWorld = new WorldSymbol("0");
-            //var wi1 = new WorldIndex(new WorldSymbol("f(w)", new WorldSymbol("w", baseWorld)));
-            //var wi2 = new WorldIndex(new WorldSymbol("w1", baseWorld));
-
-            //var relation = new AccessibilityRelation(
-            //   new List<IRelationProperty>()
-            //   {
-            //        new SerialProperty()
-            //   }
-            //   //,
-            //   //new List<WorldIndex>() { wi1, wi2 }
-            // );
-
-
             var ps = leftS.LeftHandSide.Formulas;
             var qs = rightS.RightHandSide.Formulas;
 
-            foreach(var formulaP in ps)
+            if ((leftS.LeftHandSide.Count == 0 && leftS.RightHandSide.Count != 0) &&
+                (rightS.RightHandSide.Count == 0 && rightS.LeftHandSide.Count != 0))
             {
+                ps = rightS.LeftHandSide.Formulas;
+                qs = leftS.RightHandSide.Formulas;
+            }
+
+            foreach (var formulaP in ps)
+            {
+                relation.AddWorldIndex(formulaP.WorldIndex);
                 foreach (var formulaQ in qs)
                 {
+                    relation.AddWorldIndex(formulaQ.WorldIndex);
+
                     var unification = formulaP.MUnify(relation, formulaQ);
                     if (unification == null)
                         continue;

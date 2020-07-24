@@ -7,7 +7,7 @@ namespace Poz1.LogicProver.Model.Core
     public abstract class WorldSymbol : ILogicElement
     {
         internal LogicElement BaseElement { get; set; }
-        public WorldSymbol<LogicElement> ParentSymbol { get; }
+        public WorldSymbol ParentSymbol { get; internal set; }
         public abstract bool IsGround { get; }
 
         LogicElement ILogicElement.ToLogicElement()

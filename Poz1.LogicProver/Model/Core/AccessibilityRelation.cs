@@ -10,7 +10,7 @@ namespace Poz1.LogicProver.Model.Core
 
         protected readonly List<IRelationProperty> properties = new List<IRelationProperty>();
 
-        private WorldSymbol baseWorld;
+        public WorldSymbol BaseWorld { get; set; }
 
         public AccessibilityRelation() {
             Relations = new Dictionary<WorldSymbol, List<WorldSymbol>>();
@@ -35,7 +35,7 @@ namespace Poz1.LogicProver.Model.Core
         public Substitution WorldUnify(WorldIndex i, WorldIndex j)
         {
             //By convention "0" is the actual world
-            if (i.StartSymbol != baseWorld || j.StartSymbol != baseWorld)
+            if (i.StartSymbol != BaseWorld || j.StartSymbol != BaseWorld)
                 return null;
 
             if (i.EndSymbol.IsGround && j.EndSymbol.IsGround)

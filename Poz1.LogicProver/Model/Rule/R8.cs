@@ -25,7 +25,7 @@ namespace Poz1.LogicProver.Model.Rule
 
             var formula = implicationFormula.Formula.Clone();
 
-            formula.WorldIndex.Symbols.Add(new VariableWorldSymbol(worldNamer.GetNewWorldVariable()));
+            formula.WorldIndex.AddSymbol(new VariableWorldSymbol(worldNamer.GetNewWorldVariable()));
             sequent.LeftHandSide.Formulas.Add(formula);
 
             sequent.Justification = "R8 (" + sequent.Name + ")";

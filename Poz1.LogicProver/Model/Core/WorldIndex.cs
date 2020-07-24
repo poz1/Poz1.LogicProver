@@ -25,6 +25,12 @@ namespace Poz1.LogicProver.Model.Core
             }
         }
 
+        public void AddSymbol(WorldSymbol symbol)
+        {
+            symbol.ParentSymbol = EndSymbol;
+            Symbols.Add(symbol);
+        }
+
         public WorldIndex Clone()
         {
             var clone = (WorldIndex)MemberwiseClone();
