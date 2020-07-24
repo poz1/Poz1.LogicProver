@@ -10,8 +10,8 @@ namespace Poz1.LogicProver.Model.Solver
     {
         public bool LogEnabled { get; set; }
 
-        public IWorldNamer WorldNamer { get; set; }
-        public ITermNamer TermNamer { get; set; }
+        public static IWorldService WorldService = new SimpleWorldNamer();
+        public static ITermService TermNamer = new SimpleTermService();
 
         private ConstantWorldSymbol baseWorld;
 
@@ -25,16 +25,14 @@ namespace Poz1.LogicProver.Model.Solver
 
             this.relation = relation;
 
-            WorldNamer = new SimpleWorldNamer();
-            TermNamer = new SimpleTermNamer();
-            baseWorld = new ConstantWorldSymbol(WorldNamer.GetNewWorldConstant());
+            baseWorld = WorldService.GetNewWorldConstant();
             relation.BaseWorld = baseWorld;
 
             //Only used on reduced sequents
             resolutionRule = new R1(relation);
 
             // These are applied as long as sequents have unreduced formulas
-            rules.AddRange(new List<IInferenceRule>() { new R2(), new R3(), new R4(), new R5(), new R6(), new R7(WorldNamer), new R8(WorldNamer), new R9(TermNamer), new R10(TermNamer) });
+            rules.AddRange(new List<IInferenceRule>() { new R2(), new R3(), new R4(), new R5(), new R6(), new R7(WorldService), new R8(WorldService), new R9(TermNamer), new R10(TermNamer) });
         }
 
         public void Solve(Formula formula)

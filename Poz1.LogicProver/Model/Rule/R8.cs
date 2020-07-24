@@ -1,12 +1,13 @@
 ﻿using Poz1.LogicProver.Model.Core;
+using Poz1.LogicProver.Model.Solver;
 using System.Linq;
 
 namespace Poz1.LogicProver.Model.Rule
 {
     public class R8 : IInferenceRule
     {
-        private readonly IWorldNamer worldNamer;
-        public R8(IWorldNamer worldNamer)
+        private readonly IWorldService worldNamer;
+        public R8(IWorldService worldNamer)
         {
             this.worldNamer = worldNamer;
         }
@@ -25,7 +26,8 @@ namespace Poz1.LogicProver.Model.Rule
 
             var formula = implicationFormula.Formula.Clone();
 
-            formula.WorldIndex.AddSymbol(new VariableWorldSymbol(worldNamer.GetNewWorldVariable()));
+            
+            formula.WorldIndex.AddSymbol(LogicSolver.WorldService.GetNewWorldVariable());
             sequent.LeftHandSide.Formulas.Add(formula);
 
             sequent.Justification = "R8 (" + sequent.Name + ")";

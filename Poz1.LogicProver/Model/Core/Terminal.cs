@@ -16,6 +16,13 @@ namespace Poz1.LogicProver.Model.Core
         }
 
         public abstract WorldSymbol ToWorldSymbol();
+
+        internal Terminal Clone()
+        {
+            var clone = (Terminal)MemberwiseClone();
+            clone.BaseElement = BaseElement.Clone();
+            return clone;
+        }
     }
 
     public abstract class Terminal<T> : Terminal where T : LogicElement

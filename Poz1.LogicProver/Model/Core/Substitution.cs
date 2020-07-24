@@ -62,6 +62,7 @@ namespace Poz1.LogicProver.Model.Core
 
         internal void Compose(Substitution substitutions)
         {
+            if(substitutions != null)
             foreach(var item in substitutions.Elements.Keys)
             {
                 if (Elements.ContainsKey(item))

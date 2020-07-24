@@ -4,49 +4,65 @@ using System.Text;
 
 namespace Poz1.LogicProver.Model.Core
 {
-    public class SimpleWorldNamer : IWorldNamer
+    public class SimpleWorldNamer : IWorldService
     {
-        public List<String> WorldConstantsNames = new List<string>() { "0", "1", "2", "3", "4", "5", "6" };
-        public List<String> WorldVariablesNames = new List<string>() { "v", "w", "x", "y", "z", "p", "q", "r" };
-        public List<String> WorldFunctionsNames = new List<string>() { "f", "g", "h", "i", "s", "t", "l", "m", "n", "o" };
+        public List<string> WorldConstantsNames = new List<string>() { "0", "1", "2", "3", "4", "5", "6" };
+        public List<string> WorldVariablesNames = new List<string>() { "v", "w", "x", "y", "z", "p", "q", "r" };
+        public List<string> WorldFunctionsNames = new List<string>() { "f", "g", "h", "i", "s", "t", "l", "m", "n", "o" };
 
         private int WorldVariablesCount = 0;
         private int WorldConstantsCount = 0;
         private int WorldFunctionsCount = 0;
 
-        public string GetNewWorldConstant()
+        public ConstantWorldSymbol GetNewWorldConstant()
         {
             WorldConstantsCount++;
             if (WorldConstantsCount < WorldConstantsNames.Count)
-                return WorldConstantsNames[WorldConstantsCount - 1];
+                return new ConstantWorldSymbol(WorldConstantsNames[WorldConstantsCount - 1]);
             
             else
             {
-                return WorldConstantsNames[(WorldConstantsCount - 1) % WorldConstantsNames.Count] + (WorldConstantsCount - 1) / WorldConstantsNames.Count;
+                return new ConstantWorldSymbol(WorldConstantsNames[(WorldConstantsCount - 1) % WorldConstantsNames.Count] 
+                    + (WorldConstantsCount - 1) / WorldConstantsNames.Count);
             }
         }
 
-        public string GetNewWorldFunction()
+        public FunctionWorldSymbol GetNewWorldFunction()
         {
             WorldFunctionsCount++;
             if (WorldFunctionsCount < WorldFunctionsNames.Count)
-                return WorldFunctionsNames[WorldFunctionsCount - 1];
+                return new FunctionWorldSymbol( WorldFunctionsNames[WorldFunctionsCount - 1]);
 
             else
             {
-                return WorldFunctionsNames[(WorldFunctionsCount - 1) % WorldFunctionsNames.Count] + (WorldFunctionsCount - 1) / WorldFunctionsNames.Count;
+                return new FunctionWorldSymbol(WorldFunctionsNames[(WorldFunctionsCount - 1) % WorldFunctionsNames.Count] 
+                    + (WorldFunctionsCount - 1) / WorldFunctionsNames.Count);
             }
         }
 
-        public string GetNewWorldVariable()
+        public VariableWorldSymbol GetNewWorldVariable()
         {
             WorldVariablesCount++;
             if (WorldVariablesCount < WorldVariablesNames.Count)
-                return WorldVariablesNames[WorldVariablesCount - 1];
+                return new VariableWorldSymbol(WorldVariablesNames[WorldVariablesCount - 1]);
 
             else
             {
-                return WorldVariablesNames[(WorldVariablesCount - 1) % WorldVariablesNames.Count] + (WorldVariablesCount - 1) / WorldVariablesNames.Count;
+                return new VariableWorldSymbol(WorldVariablesNames[(WorldVariablesCount - 1) % WorldVariablesNames.Count] 
+                    + (WorldVariablesCount - 1) / WorldVariablesNames.Count);
+            }
+        }
+
+        public FunctionWorldSymbol GetNewWorldFunction(List<WorldSymbol> parameters)
+        {
+            WorldFunctionsCount++;
+            if (WorldFunctionsCount < WorldFunctionsNames.Count)
+                return new FunctionWorldSymbol(WorldFunctionsNames[WorldFunctionsCount - 1], parameters);
+
+            else
+            {
+                return new FunctionWorldSymbol(WorldFunctionsNames[(WorldFunctionsCount - 1) % WorldFunctionsNames.Count]
+                    + (WorldFunctionsCount - 1) / WorldFunctionsNames.Count, parameters);
             }
         }
     }

@@ -46,7 +46,8 @@ namespace Poz1.LogicProver.Model.Core
 
         public override Formula Clone()
         {
-            var clone = (Formula)MemberwiseClone();
+            var clone = (AtomicFormula)MemberwiseClone();
+            clone.Terminal = Terminal.Clone();
             clone.WorldIndex = WorldIndex.Clone();
             clone.ChangeWorldIndex(clone.WorldIndex);
             return clone;

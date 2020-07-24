@@ -6,8 +6,8 @@ namespace Poz1.LogicProver.Model.Rule
 {
     public class R9 : IInferenceRule
     {
-        private readonly ITermNamer termNamer;
-        public R9(ITermNamer termNamer)
+        private readonly ITermService termNamer;
+        public R9(ITermService termNamer)
         {
             this.termNamer = termNamer;
         }
@@ -27,12 +27,12 @@ namespace Poz1.LogicProver.Model.Rule
             Terminal a;
 
             if (implicationFormula.Formula.FreeVariables.Count == 0 && implicationFormula.WorldIndex.IsGround)
-                a = new ConstantTerminal(termNamer.GetNewConstant());
+                a = termNamer.GetNewConstant();
             else
             {
                 var skolemVariables = new List<Terminal>(formula.WorldIndex.Symbols.Select(x => x.ToTerminal()));
                 skolemVariables.AddRange(formula.FreeVariables);
-                a = new FunctionTerminal(termNamer.GetNewFunction(), skolemVariables); 
+                a = termNamer.GetNewFunction(skolemVariables); 
             }
 
             formula.ApplySubstitution(new Substitution(a, implicationFormula.Variable));

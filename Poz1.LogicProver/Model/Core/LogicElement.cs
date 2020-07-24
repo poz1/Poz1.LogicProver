@@ -21,6 +21,11 @@ namespace Poz1.LogicProver.Model.Core
         {
             return this;
         }
+
+        public LogicElement Clone()
+        {
+            return (LogicElement)MemberwiseClone();
+        }
     }
 
     public class Constant: LogicElement

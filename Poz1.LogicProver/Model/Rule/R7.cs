@@ -1,4 +1,5 @@
 ﻿using Poz1.LogicProver.Model.Core;
+using Poz1.LogicProver.Model.Solver;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -6,8 +7,8 @@ namespace Poz1.LogicProver.Model.Rule
 {
     public class R7 : IInferenceRule
     {
-        private readonly IWorldNamer worldNamer;
-        public R7(IWorldNamer worldNamer)
+        private readonly IWorldService worldNamer;
+        public R7(IWorldService worldNamer)
         {
             this.worldNamer = worldNamer;
         }
@@ -25,12 +26,12 @@ namespace Poz1.LogicProver.Model.Rule
             var formula = implicationFormula.Formula.Clone();
 
             if (formula.WorldIndex.IsGround && formula.FreeVariables.Count == 0)
-                formula.WorldIndex.AddSymbol(new ConstantWorldSymbol(worldNamer.GetNewWorldConstant()));
+                formula.WorldIndex.AddSymbol(LogicSolver.WorldService.GetNewWorldConstant());
             else
             {
                 var skolemVariables = new List<WorldSymbol>(formula.WorldIndex.Symbols);
                 skolemVariables.AddRange(formula.FreeVariables.Select(x => x.ToWorldSymbol()));
-                formula.WorldIndex.Symbols.Add(new FunctionWorldSymbol(worldNamer.GetNewWorldFunction(), skolemVariables));
+                formula.WorldIndex.Symbols.Add(LogicSolver.WorldService.GetNewWorldFunction(skolemVariables));
             }
             sequent.RightHandSide.Formulas.Remove(implicationFormula);
             sequent.RightHandSide.Formulas.Add(formula);
