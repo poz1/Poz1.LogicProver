@@ -26,6 +26,11 @@ namespace Poz1.LogicProver.Model.Core
             Connective = connective;
         }
 
+        public override void ApplySubstitution(Substitution substitution)
+        {
+            Formula.ApplySubstitution(substitution);
+        }
+
         public override string ToString()
         {
             var stringBuilder = new StringBuilder();

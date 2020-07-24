@@ -36,6 +36,11 @@ namespace Poz1.LogicProver.Model.Core
         public List<LogicElement> Domain { get => Elements.Keys.ToList(); }
         public List<LogicElement> Range { get => Elements.Values.ToList(); }
 
+        public LogicElement GetValue(LogicElement item)
+        {
+            return Elements[item];
+        }
+
         public bool IsPure { get => !Range.Any(x => Domain.Contains(x)); }
 
         //Apply

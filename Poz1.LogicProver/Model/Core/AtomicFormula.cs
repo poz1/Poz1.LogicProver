@@ -51,5 +51,13 @@ namespace Poz1.LogicProver.Model.Core
             clone.ChangeWorldIndex(clone.WorldIndex);
             return clone;
         }
+
+        public override void ApplySubstitution(Substitution substitution)
+        {
+            foreach(var item in substitution.Domain)
+            {
+                Terminal.BaseElement.Substitute(item, substitution.GetValue(item));
+            }
+        }
     }
 }

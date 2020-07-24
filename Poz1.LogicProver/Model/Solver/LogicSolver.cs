@@ -20,14 +20,18 @@ namespace Poz1.LogicProver.Model.Solver
 
         private readonly List<string> Log = new List<string>();
 
-        public LogicSolver() {
+        readonly AccessibilityRelation relation;
+
+        public LogicSolver(AccessibilityRelation relation) {
+
+            this.relation = relation;
 
             WorldNamer = new SimpleWorldNamer();
             TermNamer = new SimpleTermNamer();
             baseWorld = new ConstantWorldSymbol(WorldNamer.GetNewWorldConstant());
 
             //Only used on reduced sequents
-            resolutionRule = new R1();
+            resolutionRule = new R1(relation);
 
             // These are applied as long as sequents have unreduced formulas
             rules.AddRange(new List<IInferenceRule>() { new R2(), new R3(), new R4(), new R5(), new R6(), new R7(WorldNamer), new R8(WorldNamer), new R9(TermNamer), new R10() });
@@ -62,10 +66,12 @@ namespace Poz1.LogicProver.Model.Solver
                         Log.Add(result.ToString());
                         Console.WriteLine(result);
 
-                        if(result.IsReduced)
+                        if (result.IsReduced) 
                             sequentList.Add(result);
                     }
                 });
+
+                resolutionRule.Apply(sequentList[0], sequentList[1]);
             }
         }
     }

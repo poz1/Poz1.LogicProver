@@ -5,7 +5,7 @@ using System.Text;
 namespace Poz1.LogicProver.Model.Core
 {
     public abstract class LogicElement : ILogicElement {
-        public string Name { get; }
+        public string Name { get; protected set; }
 
         public LogicElement(string name)
         {
@@ -21,16 +21,30 @@ namespace Poz1.LogicProver.Model.Core
         {
             return this;
         }
+
+        public abstract void Substitute(LogicElement item, LogicElement logicElement);
     }
 
     public class Constant: LogicElement
     {
         public Constant(string name) : base(name) { }
+
+        public override void Substitute(LogicElement item, LogicElement logicElement)
+        {
+            if (Name == item.Name)
+                Name = logicElement.Name;
+        }
     }
 
     public class Variable: LogicElement
     {
         public Variable(string name) : base(name) { }
+
+        public override void Substitute(LogicElement item, LogicElement logicElement)
+        {
+            if (Name == item.Name)
+                Name = logicElement.Name;
+        }
     }
 
     public class Function<T>: LogicElement
@@ -41,6 +55,20 @@ namespace Poz1.LogicProver.Model.Core
         public Function(string name, IList<T> parameters) : base(name)
         {
             Parameters.AddRange(parameters);
+        }
+
+        public override void Substitute(LogicElement item, LogicElement logicElement)
+        {
+            if (Name == item.Name)
+                Name = logicElement.Name;
+
+            foreach (var param in Parameters)
+            {
+                if (param is LogicElement element)
+                    element.Substitute(item, logicElement);
+                else if (param is ILogicElement logicBox)
+                    logicBox.ToLogicElement().Substitute(item, logicElement);
+            }
         }
 
         public override string ToString()

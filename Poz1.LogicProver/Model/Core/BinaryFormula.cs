@@ -44,6 +44,12 @@ namespace Poz1.LogicProver.Model.Core
             return vars;
         }
 
+        public override void ApplySubstitution(Substitution substitution)
+        {
+            LHSFormula.ApplySubstitution(substitution);
+            RHSFormula.ApplySubstitution(substitution);
+        }
+
         public override string ToString()
         {
             var stringBuilder = new StringBuilder();

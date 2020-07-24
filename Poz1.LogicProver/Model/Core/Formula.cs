@@ -37,7 +37,7 @@ namespace Poz1.LogicProver.Model.Core
             return unif;
         }
 
-        public void ApplySubstitution(Substitution substitution) { }
+        public abstract void ApplySubstitution(Substitution substitution);
 
         public Formula(WorldIndex index)
         {
