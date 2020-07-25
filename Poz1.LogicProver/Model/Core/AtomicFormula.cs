@@ -67,6 +67,8 @@ namespace Poz1.LogicProver.Model.Core
                     ((Function<Terminal>)function.BaseElement).Substitute(item, substitution.GetValue(item));
                 }
             }
+
+            WorldIndex.ApplySubstitution(substitution);
         }
     }
 }

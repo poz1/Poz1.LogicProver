@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
@@ -51,6 +52,26 @@ namespace Poz1.LogicProver.Model.Core
             }
 
             return builder.ToString();
+        }
+
+        internal void ApplySubstitution(Substitution substitution)
+        {
+            var newSymbols = new List<WorldSymbol>(Symbols);
+            foreach (var item in substitution.Domain)
+            {
+                foreach (var symbol in Symbols)
+                {
+                    if (!(symbol is FunctionWorldSymbol) && symbol.BaseElement.Name == item.ToLogicElement().Name)
+                        newSymbols[Symbols.IndexOf(symbol)] = (WorldSymbol)substitution.GetValue(item);
+
+                    else if (symbol is FunctionWorldSymbol function)
+                    {
+                        ((Function<WorldSymbol>)function.BaseElement).Substitute(item, substitution.GetValue(item));
+                    }
+                }
+            }
+
+            Symbols = newSymbols;
         }
     }
 }

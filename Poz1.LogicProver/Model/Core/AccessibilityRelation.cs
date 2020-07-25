@@ -35,7 +35,7 @@ namespace Poz1.LogicProver.Model.Core
         public Substitution WorldUnify(WorldIndex i, WorldIndex j)
         {
             //By convention "0" is the actual world
-            if (i.StartSymbol != BaseWorld || j.StartSymbol != BaseWorld)
+            if (i.StartSymbol.Equals(BaseWorld) || j.StartSymbol.Equals(BaseWorld))
                 return null;
 
             if (i.EndSymbol.IsGround && j.EndSymbol.IsGround)

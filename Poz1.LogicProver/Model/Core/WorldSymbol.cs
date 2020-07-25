@@ -63,6 +63,13 @@ namespace Poz1.LogicProver.Model.Core
             return BaseElement.Name;
         }
 
+        public override bool Equals(object obj)
+        {
+            if (obj is WorldSymbol symbol && symbol.BaseElement.Name == BaseElement.Name)
+                return true;
+
+            return false;
+        }
         public override Terminal ToTerminal()
         {
             return new  VariableTerminal(BaseElement.Name);
