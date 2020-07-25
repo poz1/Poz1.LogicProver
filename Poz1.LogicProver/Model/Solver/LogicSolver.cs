@@ -35,7 +35,7 @@ namespace Poz1.LogicProver.Model.Solver
             rules.AddRange(new List<IInferenceRule>() { new R2(), new R3(), new R4(), new R5(), new R6(), new R7(WorldService), new R8(WorldService), new R9(TermNamer), new R10(TermNamer) });
         }
 
-        public void Solve(Formula formula)
+        public bool Solve(Formula formula)
         {
             var initialSequent = new Sequent(formula);
 
@@ -70,6 +70,14 @@ namespace Poz1.LogicProver.Model.Solver
                 });
             }
             var res = resolutionRule.Apply(sequentList[0], sequentList[1]);
+
+            if (res == null)
+                return false;
+
+            else if (res[0].IsEmpty)
+                return true;
+
+            return false;
 
         }
     }

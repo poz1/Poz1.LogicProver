@@ -1,14 +1,12 @@
 ﻿using Poz1.LogicProver.Model.Core;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Poz1.LogicProver.Model.Rule
 {
     // R1: If S,|p|i <- T and S' <- |q|j, T' and |p|i and |q|j m-unify with unification σ then Sσ U S'σ <- Tσ U T'σ
     public class R1 : IResolutionRule
     {
-        AccessibilityRelation relation;
+        readonly AccessibilityRelation relation;
 
         public R1(AccessibilityRelation relation)
         {
@@ -29,8 +27,6 @@ namespace Poz1.LogicProver.Model.Rule
                 ps = rightS.LeftHandSide.Formulas;
                 qs = leftS.RightHandSide.Formulas;
             }
-
-            
 
             foreach (var formulaP in ps)
             {

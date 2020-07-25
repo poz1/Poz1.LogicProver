@@ -1,6 +1,7 @@
 ﻿using Poz1.LogicProver.Model.Core;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 
 namespace Poz1.LogicProver.Model.Core
 {
@@ -80,7 +81,7 @@ namespace Poz1.LogicProver.Model.Core
     {
         public int Arity => ((Function<WorldSymbol>)BaseElement).Parameters.Count();
 
-        public override bool IsGround => throw new System.NotImplementedException();
+        public override bool IsGround => false ;
 
         public FunctionWorldSymbol(string value, IList<WorldSymbol> parameters) :
             base(new Function<WorldSymbol>(value, (List<WorldSymbol>)parameters))

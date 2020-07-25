@@ -38,6 +38,7 @@ namespace Poz1.LogicProver.Model.Core
             Connective = connective;
         }
 
+
         private List<Terminal> ComputeVariables()
         {
             var vars = new List<Terminal>();

@@ -92,9 +92,9 @@ namespace Poz1.LogicProver
             var variable = LogicSolver.TermNamer.GetNewVariable();
             var atomicFormula8 = new AtomicFormula(LogicSolver.TermNamer.GetNewFunction(new List<Terminal>() { variable }), baseIndex);
             var formulaEX8 = new BinaryFormula(
-             new QuantifierFormula( new UnaryFormula(atomicFormula8, UnaryConnective.Necessity, baseIndex), variable, QuantifierConnective.ForAll, baseIndex),
-              new UnaryFormula(new QuantifierFormula(atomicFormula8, variable,  QuantifierConnective.ForAll, baseIndex), UnaryConnective.Necessity, baseIndex),
-              BinaryConnective.Implication, baseIndex);
+                new QuantifierFormula( new UnaryFormula(atomicFormula8, UnaryConnective.Necessity, baseIndex), variable, QuantifierConnective.ForAll, baseIndex),
+                new UnaryFormula(new QuantifierFormula(atomicFormula8, variable,  QuantifierConnective.ForAll, baseIndex), UnaryConnective.Necessity, baseIndex),
+                BinaryConnective.Implication, baseIndex);
 
             Console.WriteLine(formulaEX8.ToWorldString());
             var solver = new LogicSolver(relation);
