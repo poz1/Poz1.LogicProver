@@ -17,6 +17,9 @@ namespace Poz1.LogicProver.Model.Rule
 
         public List<Sequent> Apply(Sequent leftS, Sequent rightS)
         {
+            leftS = leftS.Clone();
+            rightS = rightS.Clone();
+
             var ps = leftS.LeftHandSide.Formulas;
             var qs = rightS.RightHandSide.Formulas;
 
@@ -27,14 +30,14 @@ namespace Poz1.LogicProver.Model.Rule
                 qs = leftS.RightHandSide.Formulas;
             }
 
+            
+
             foreach (var formulaP in ps)
             {
                 relation.AddWorldIndex(formulaP.WorldIndex);
                 foreach (var formulaQ in qs)
                 {
                     relation.AddWorldIndex(formulaQ.WorldIndex);
-
-                    var y = formulaP.WorldIndex.ToString();
 
                     var unification = formulaP.MUnify(relation, formulaQ);
                     if (unification == null)
@@ -53,6 +56,9 @@ namespace Poz1.LogicProver.Model.Rule
 
                     result.RightHandSide.Formulas.AddRange(leftS.RightHandSide.Formulas);
                     result.RightHandSide.Formulas.AddRange(rightS.RightHandSide.Formulas);
+
+                    result.LeftHandSide.Formulas.Remove(formulaP);
+                    result.RightHandSide.Formulas.Remove(formulaQ);
 
                     return new List<Sequent>() { result };
                 }
