@@ -70,5 +70,10 @@ namespace Poz1.LogicProver.Model.Core
 
             WorldIndex.ApplySubstitution(substitution);
         }
+
+        internal override Formula Simplify()
+        {
+            return this;
+        }
     }
 }

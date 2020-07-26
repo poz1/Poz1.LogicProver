@@ -56,5 +56,21 @@ namespace Poz1.LogicProver.Model.Core
             clone.ChangeWorldIndex(clone.WorldIndex);
             return clone;
         }
+
+        internal override Formula Simplify()
+        {
+            Formula = Formula.Simplify();
+
+            return Connective switch
+            {
+                // ◊A = ~ ◻ ~ A
+                UnaryConnective.Possibility => new UnaryFormula(
+                                                    new UnaryFormula(
+                                                          new UnaryFormula(Formula, UnaryConnective.Negation, Formula.WorldIndex),
+                                                    UnaryConnective.Necessity, WorldIndex),
+                                               UnaryConnective.Negation, WorldIndex),
+                _ => this,
+            };
+        }
     }
 }

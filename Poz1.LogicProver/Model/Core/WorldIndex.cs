@@ -62,7 +62,13 @@ namespace Poz1.LogicProver.Model.Core
                 foreach (var symbol in Symbols)
                 {
                     if (!(symbol is FunctionWorldSymbol) && symbol.BaseElement.Name == item.ToLogicElement().Name)
-                        newSymbols[Symbols.IndexOf(symbol)] = (WorldSymbol)substitution.GetValue(item);
+                    {
+                        var newSymbol = substitution.GetValue(item);
+                        if (newSymbol is WorldSymbol worldSymbol)
+                            newSymbols[Symbols.IndexOf(symbol)] = worldSymbol;
+                        else if (newSymbol is Terminal terminalSymbol)
+                            newSymbols[Symbols.IndexOf(symbol)] = terminalSymbol.ToWorldSymbol();
+                    }
 
                     else if (symbol is FunctionWorldSymbol function)
                     {

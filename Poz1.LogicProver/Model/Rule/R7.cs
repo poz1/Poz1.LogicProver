@@ -31,7 +31,7 @@ namespace Poz1.LogicProver.Model.Rule
             {
                 var skolemVariables = new List<WorldSymbol>(formula.WorldIndex.Symbols);
                 skolemVariables.AddRange(formula.FreeVariables.Select(x => x.ToWorldSymbol()));
-                formula.WorldIndex.Symbols.Add(LogicSolver.WorldService.GetNewWorldFunction(skolemVariables));
+                formula.WorldIndex.AddSymbol(LogicSolver.WorldService.GetNewWorldFunction(skolemVariables));
             }
             sequent.RightHandSide.Formulas.Remove(implicationFormula);
             sequent.RightHandSide.Formulas.Add(formula);

@@ -2,22 +2,22 @@
 {
     public static class UnaryConnective
     {
-        public static string Negation = "~";
-        public static string Necessity = "◻";
-        public static string Possibility = "◊";
+        public const string Negation = "~";
+        public const string Necessity = "◻";
+        public const string Possibility = "◊";
     }
 
     public static class BinaryConnective
     {
-        public static string Conjunction = "∧";
-        public static string Disjunction = "∨";
-        public static string Implication = "→";
-        public static string Equivalence = "=";
+        public const string Conjunction = "∧";
+        public const string Disjunction = "∨";
+        public const string Implication = "→";
+        public const string BiConditional = "↔";
     }
 
     public static class QuantifierConnective
     {
-        public static string Exist = "∃";
-        public static string ForAll = "∀";
+        public const string Exist = "∃";
+        public const string ForAll = "∀";
     }
 }

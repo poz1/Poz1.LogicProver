@@ -49,6 +49,8 @@ namespace Poz1.LogicProver.Model.Core
         {
         }
 
+        internal abstract Formula Simplify();
+
         public string ToWorldString()
         {
             return "|" + ToString() + "|" + WorldIndex.ToString();

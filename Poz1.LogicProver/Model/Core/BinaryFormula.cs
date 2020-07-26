@@ -88,5 +88,45 @@ namespace Poz1.LogicProver.Model.Core
             clone.ChangeWorldIndex(clone.WorldIndex);
             return clone;
         }
+
+        internal override Formula Simplify()
+        {
+            RHSFormula = RHSFormula.Simplify();
+            LHSFormula = LHSFormula.Simplify();
+
+            switch (Connective)
+            {
+                // A ∧ B = ~ ( A → ~ B )
+                case BinaryConnective.Conjunction:
+                    return new UnaryFormula(
+                        new BinaryFormula(
+                            LHSFormula,
+                            new UnaryFormula(RHSFormula, UnaryConnective.Negation, RHSFormula.WorldIndex), 
+                            BinaryConnective.Implication, WorldIndex),
+                        UnaryConnective.Negation, WorldIndex);
+
+                // A ∨ B = ~ A → B
+                case BinaryConnective.Disjunction:
+                    return new BinaryFormula(
+                             new UnaryFormula(LHSFormula, UnaryConnective.Negation, LHSFormula.WorldIndex),
+                             RHSFormula,
+                            BinaryConnective.Implication, WorldIndex);
+
+                // A ↔ B = ~ ((A → B) → ~ ( B → A))
+                case BinaryConnective.BiConditional:
+                    return new UnaryFormula(
+                        new BinaryFormula(
+                            new BinaryFormula(LHSFormula, RHSFormula, BinaryConnective.Implication, WorldIndex), 
+                            new UnaryFormula(
+                                new BinaryFormula(RHSFormula, LHSFormula, BinaryConnective.Implication, WorldIndex), 
+                            UnaryConnective.Negation, WorldIndex), 
+                         BinaryConnective.Implication, WorldIndex),
+                    UnaryConnective.Negation, WorldIndex);
+
+                default:
+                    return this;
+            }
+        }
     }
 }
+

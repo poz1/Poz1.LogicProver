@@ -91,6 +91,9 @@ namespace Poz1.LogicProver.Model.Core
 
         public bool Contains(WorldSymbol x, WorldSymbol y)
         {
+            if (x == null || y == null)
+                return false;
+
             return Relations[x].Contains(y);
         }
     }

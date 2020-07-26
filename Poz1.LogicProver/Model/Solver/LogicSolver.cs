@@ -37,6 +37,7 @@ namespace Poz1.LogicProver.Model.Solver
 
         public bool Solve(Formula formula)
         {
+            formula.Simplify();
             var initialSequent = new Sequent(formula);
 
             var queue = new Queue<Sequent>() ;

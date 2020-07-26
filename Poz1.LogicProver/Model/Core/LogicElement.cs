@@ -22,7 +22,7 @@ namespace Poz1.LogicProver.Model.Core
             return this;
         }
 
-        public LogicElement Clone()
+        public virtual LogicElement Clone()
         {
             return (LogicElement)MemberwiseClone();
         }
@@ -86,6 +86,13 @@ namespace Poz1.LogicProver.Model.Core
 
             stringBuilder.Append(')');
             return stringBuilder.ToString();
+        }
+
+        public override LogicElement Clone()
+        {
+            var clone = (Function<T>)MemberwiseClone();
+            clone.Parameters = new List<T>(Parameters);
+            return clone;
         }
     }
 }

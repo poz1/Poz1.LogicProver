@@ -20,7 +20,7 @@ namespace Poz1.LogicProver.Model.Core
 
         public abstract WorldSymbol ToWorldSymbol();
 
-        internal Terminal Clone()
+        public Terminal Clone()
         {
             var clone = (Terminal)MemberwiseClone();
             clone.BaseElement = BaseElement.Clone();
@@ -83,6 +83,11 @@ namespace Poz1.LogicProver.Model.Core
 
         public IEnumerable<Terminal> Parameters { get => ((Function<Terminal>)BaseElement).Parameters; }
 
+        public void AddParameters(params Terminal[] terminals)
+        {
+            ((Function<Terminal>)BaseElement).Parameters.AddRange(terminals);
+        }
+
         public FunctionTerminal(string value, IList<Terminal> parameters) : 
             base(new Function<Terminal>(value, (List<Terminal>)parameters))
         {
@@ -123,5 +128,7 @@ namespace Poz1.LogicProver.Model.Core
             }
             return vars;
         }
+
+        
     }
 }
