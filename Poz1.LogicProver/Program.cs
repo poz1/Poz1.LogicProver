@@ -51,6 +51,26 @@ namespace Poz1.LogicProver
 
             #endregion
 
+            //Example9
+            #region test2
+
+            //var baseWorld = LogicSolver.WorldService.GetNewWorldConstant();
+            //var baseIndex = new WorldIndex(baseWorld);
+
+            //var relation = new AccessibilityRelation(new List<IRelationProperty>() {
+            //    new SerialProperty(),
+            //    new TransitiveProperty()
+            //});
+
+            //var variable = LogicSolver.TermNamer.GetNewVariable();
+            //var atomicFormula = new AtomicFormula(LogicSolver.TermNamer.GetNewFunction(new List<Terminal>() { variable }), baseIndex);
+            //var formula = new BinaryFormula(
+            //    new UnaryFormula(new QuantifierFormula(atomicFormula, variable, QuantifierConnective.ForAll, baseIndex), UnaryConnective.Necessity, baseIndex),
+            //    new QuantifierFormula(new UnaryFormula(atomicFormula, UnaryConnective.Necessity, baseIndex), variable, QuantifierConnective.ForAll, baseIndex),
+            //    BinaryConnective.Implication, baseIndex);
+
+            #endregion
+
             Console.WriteLine();
             Console.WriteLine("Formula: " + formula.ToWorldString());
             var solver = new LogicSolver(relation);

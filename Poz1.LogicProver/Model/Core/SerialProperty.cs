@@ -22,7 +22,7 @@ namespace Poz1.LogicProver.Model.Core
 
                 if (relation.Contains(w.ParentSymbol, n)) {
                     var sub = new Substitution();
-                    sub.Add(w, n);
+                    sub.Add(n, w);
                     return sub;
                 }
 
@@ -33,16 +33,16 @@ namespace Poz1.LogicProver.Model.Core
             {
                 //(i)
                 if (relation.Contains(i.EndSymbol.ParentSymbol, j.EndSymbol) || relation.Contains(j.EndSymbol.ParentSymbol, i.EndSymbol))
-                    return new Substitution(j.EndSymbol, i.EndSymbol);
+                    return new Substitution(  i.EndSymbol, j.EndSymbol  );
                 //(ii)
                 else
                 {
-                    var parentUnification = relation.WorldUnify( j.ParentIndex, i.ParentIndex);
+                    var parentUnification = relation.WorldUnify(i.ParentIndex, j.ParentIndex);
                     if (parentUnification == null)
                         return null;
                     else
                     {
-                        new Substitution(j.EndSymbol, i.EndSymbol).Compose(parentUnification);
+                        new Substitution( i.EndSymbol, j.EndSymbol ).Compose(parentUnification);
                         return parentUnification;
                     }
                 }
