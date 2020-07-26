@@ -2,6 +2,7 @@
 using Poz1.LogicProver.Model.Solver;
 using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Poz1.LogicProver
 {
@@ -9,96 +10,54 @@ namespace Poz1.LogicProver
     {
         static void Main(string[] args)
         {
+            Console.OutputEncoding = new UnicodeEncoding();
             Console.WriteLine("Hello World!");
 
-            //var t1 = new FunctionTerminal()
-            //{
-            //    Value = "Q",
-            //    Parameters = new List<Terminal>()
-            //    {
-            //        new ConstantTerminal() { Value = "a" },
-            //        new FunctionTerminal()
-            //        {
-            //            Value = "g",
-            //            Parameters = new List<Terminal>()
-            //            {
-            //                new VariableTerminal() { Value = "x" },
-            //                new ConstantTerminal() { Value = "a" }
-            //            }
-            //        },
-            //        new FunctionTerminal()
-            //        {
-            //            Value = "f",
-            //            Parameters = new List<Terminal>()
-            //            {
-            //                new VariableTerminal() { Value = "y" }
-            //            }
-            //        }
-            //    }
-            //};
-
-            //var t2 = new FunctionTerminal()
-            //{
-            //    Value = "Q",
-            //    Parameters = new List<Terminal>()
-            //    {
-            //        new ConstantTerminal() { Value = "a" },
-            //        new FunctionTerminal()
-            //        {
-            //            Value = "g",
-            //            Parameters = new List<Terminal>()
-            //            {
-            //                new FunctionTerminal()
-            //                {
-            //                    Value = "f",
-            //                    Parameters = new List<Terminal>()
-            //                    {
-            //                        new ConstantTerminal() { Value = "b" }
-            //                    }
-            //                },
-            //                new ConstantTerminal() { Value = "a" }
-            //            }
-            //        },
-            //        new VariableTerminal() { Value = "x" }
-            //    }
-            //};
-
-            //var unifier = new MostGeneralUnifier();
-            //unifier.AddEquation(t1, t2);
-
-            //var lol = unifier.Compute();
+            #region test8
 
             var baseWorld = new ConstantWorldSymbol("0");
-            //var wi1 = new WorldIndex(new WorldSymbol("f(w)", new WorldSymbol("w", baseWorld)));
             var baseIndex = new WorldIndex(baseWorld);
 
-            var relation = new AccessibilityRelation(
-              new List<IRelationProperty>()
-              {
+            var relation = new AccessibilityRelation(new List<IRelationProperty>()  {
                     new SerialProperty()
-              }
-            //  new List<WorldIndex>() { wi1, wi2 }
-            );
-
-            //var t = relation.WorldUnify(wi1, wi2);
-            var atomicFormula = new AtomicFormula(new ConstantTerminal("p"), baseIndex);
-            var formulaEX1 = new BinaryFormula(
-                new UnaryFormula(atomicFormula, UnaryConnective.Necessity, baseIndex),
-                new UnaryFormula(
-                    new UnaryFormula(atomicFormula, UnaryConnective.Necessity, baseIndex), UnaryConnective.Necessity, baseIndex),
-                BinaryConnective.Implication, baseIndex);
+            });
 
 
             var variable = LogicSolver.TermNamer.GetNewVariable();
-            var atomicFormula8 = new AtomicFormula(LogicSolver.TermNamer.GetNewFunction(new List<Terminal>() { variable }), baseIndex);
-            var formulaEX8 = new BinaryFormula(
-                new QuantifierFormula( new UnaryFormula(atomicFormula8, UnaryConnective.Necessity, baseIndex), variable, QuantifierConnective.ForAll, baseIndex),
-                new UnaryFormula(new QuantifierFormula(atomicFormula8, variable,  QuantifierConnective.ForAll, baseIndex), UnaryConnective.Necessity, baseIndex),
+            var atomicFormula = new AtomicFormula(LogicSolver.TermNamer.GetNewFunction(new List<Terminal>() { variable }), baseIndex);
+            var formula = new BinaryFormula(
+                new QuantifierFormula(new UnaryFormula(atomicFormula, UnaryConnective.Necessity, baseIndex), variable, QuantifierConnective.ForAll, baseIndex),
+                new UnaryFormula(new QuantifierFormula(atomicFormula, variable, QuantifierConnective.ForAll, baseIndex), UnaryConnective.Necessity, baseIndex),
                 BinaryConnective.Implication, baseIndex);
 
-            Console.WriteLine(formulaEX8.ToWorldString());
+            #endregion
+
+            #region test1
+
+            //var baseWorld = LogicSolver.WorldService.GetNewWorldConstant();
+            //var baseIndex = new WorldIndex(baseWorld);
+
+            //var relation = new AccessibilityRelation(new List<IRelationProperty>() {
+            //    new SerialProperty(),
+            //    new TransitiveProperty()
+            //});
+
+            //var variable = LogicSolver.TermNamer.GetNewVariable();
+            //var baseFormula = new AtomicFormula(variable, baseIndex);
+            //var formula = new BinaryFormula(
+            //    new UnaryFormula(baseFormula, UnaryConnective.Necessity, baseIndex),
+            //    new UnaryFormula(new UnaryFormula(baseFormula, UnaryConnective.Necessity, baseIndex), UnaryConnective.Necessity, baseIndex),
+            //    BinaryConnective.Implication, baseIndex);
+
+            #endregion
+
+            Console.WriteLine();
+            Console.WriteLine("Formula: " + formula.ToWorldString());
             var solver = new LogicSolver(relation);
-            solver.Solve(formulaEX8);
+            var result = solver.Solve(formula);
+
+            Console.WriteLine("Proof found: " + result);
+
         }
     }
 }

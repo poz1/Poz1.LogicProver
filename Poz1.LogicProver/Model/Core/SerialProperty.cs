@@ -27,32 +27,6 @@ namespace Poz1.LogicProver.Model.Core
                 }
 
                 return null;
-
-                //var possibleUnifications = relation.Relations.Where(x => x.Value.Contains(n) && x.Value.Contains(w)).Select(x => x.Key);
-
-                //var MGU = new MostGeneralUnifier();
-
-                //foreach (var pos in possibleUnifications)
-                //{
-                //    MGU.AddEquation(new VariableTerminal() { Value = w.ParentSymbol.Symbol }, new ConstantTerminal() { Value = pos.Symbol });
-
-                //    var unification = MGU.Unify(new List<Equation<Terminal>>()
-                //    {
-                //        new Equation<Terminal>(new VariableTerminal() { Value = w.ParentSymbol.Symbol }, new ConstantTerminal() { Value = pos.Symbol })
-                //    });
-
-                //    if (unification != null)
-                //    {
-                //        //Need to merge subs
-                //        //var result = new Substitution<WorldSymbol>() { { n, w } }.Compose(unification);
-                //        return null;
-                //    }
-                //    MGU.Clear();
-                //    //Must be true
-                //    //if (relation.Contains(s[0].Value, n))
-                //    //    return new Substitution<WorldSymbol>() { { n, w } };
-
-                //}
             }
             //2c -> both are world variables
             else

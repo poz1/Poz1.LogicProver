@@ -35,7 +35,7 @@ namespace Poz1.LogicProver.Model.Rule
                 a = termNamer.GetNewFunction(skolemVariables); 
             }
 
-            formula.ApplySubstitution(new Substitution(a, implicationFormula.Variable));
+            formula.ApplySubstitution(new Substitution(implicationFormula.Variable, a));
 
             sequent.RightHandSide.Formulas.Remove(implicationFormula);
             sequent.RightHandSide.Formulas.Add(formula);

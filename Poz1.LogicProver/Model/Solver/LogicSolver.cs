@@ -13,7 +13,7 @@ namespace Poz1.LogicProver.Model.Solver
         public static IWorldService WorldService = new SimpleWorldNamer();
         public static ITermService TermNamer = new SimpleTermService();
 
-        private ConstantWorldSymbol baseWorld;
+        private readonly ConstantWorldSymbol baseWorld;
 
         private readonly IResolutionRule resolutionRule;
         private readonly List<IInferenceRule> rules = new List<IInferenceRule>();
@@ -46,7 +46,11 @@ namespace Poz1.LogicProver.Model.Solver
             initialSequent.Name = sequentCounter.ToString();
             sequentCounter++;
 
-            queue.Enqueue(initialSequent);
+            Console.WriteLine();
+            Console.WriteLine(initialSequent.Name + " :|: " + initialSequent);
+            Console.WriteLine();
+
+           queue.Enqueue(initialSequent);
             var sequentList = new List<Sequent>();
 
             while (queue.Count != 0) {
@@ -63,23 +67,33 @@ namespace Poz1.LogicProver.Model.Solver
                         queue.Enqueue(result);
 
                         Log.Add(result.ToString());
-                        Console.WriteLine(result);
+                        Console.WriteLine(result.Name + " :|: " + result);
 
                         if (result.IsReduced) 
                             sequentList.Add(result);
                     }
                 });
             }
-            var res = resolutionRule.Apply(sequentList[0], sequentList[1]);
 
-            if (res == null)
+
+            try
+            {
+                var res = resolutionRule.Apply(sequentList[0], sequentList[1]);
+                Console.WriteLine();
+
+                if (res == null)
+                    return false;
+
+                else if (res[0].IsEmpty)
+                {
+                    Console.WriteLine("Found Proof: " + res[0].Name);
+                    return true;
+                }
                 return false;
-
-            else if (res[0].IsEmpty)
-                return true;
-
-            return false;
-
+            } catch
+            {
+                return false;
+            }
         }
     }
 }

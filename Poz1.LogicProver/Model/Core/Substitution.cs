@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
+using System.Text;
 
 namespace Poz1.LogicProver.Model.Core
 {
@@ -45,19 +47,26 @@ namespace Poz1.LogicProver.Model.Core
 
         public void Add(ILogicElement x, ILogicElement y)
         {
-            Elements.Add(y, x);
-
-            //Add(x.ToLogicElement(), y.ToLogicElement());
+            Elements.Add(x, y);
         }
-
-        //public void Add(LogicElement x, LogicElement y)
-        //{
-        //    Elements.Add(y, x);
-        //}
 
         public override string ToString()
         {
-            return base.ToString();
+            var sb = new StringBuilder();
+            sb.Append("{");
+
+            var keys = Elements.Keys;
+            var vals = Elements.Values;
+
+            for (int i = 0; i < Elements.Count; i++)
+            {
+                sb.Append(keys.ElementAt(i) + "/" + vals.ElementAt(i));
+                if(i != Elements.Count - 1)
+                    sb.Append(", ");
+            }
+
+            sb.Append("}");
+            return sb.ToString();
         }
 
         internal void Compose(Substitution substitutions)

@@ -27,7 +27,7 @@ namespace Poz1.LogicProver.Model.Rule
 
             var formula = implicationFormula.Formula.Clone();
 
-            formula.ApplySubstitution(new Substitution(LogicSolver.TermNamer.GetNewVariable(), implicationFormula.Variable));
+            formula.ApplySubstitution(new Substitution( implicationFormula.Variable, LogicSolver.TermNamer.GetNewVariable()));
 
             sequent.LeftHandSide.Formulas.Remove(implicationFormula);
             sequent.LeftHandSide.Formulas.Add(formula);

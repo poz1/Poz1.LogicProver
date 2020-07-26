@@ -14,6 +14,12 @@ namespace Poz1.LogicProver.Model.Rule
         }
 
         public List<Sequent> Apply(Sequent leftS, Sequent rightS)
+        { 
+            return Apply(leftS, rightS, true);
+        }
+
+
+        public List<Sequent> Apply(Sequent leftS, Sequent rightS, bool recurse = true)
         {
             leftS = leftS.Clone();
             rightS = rightS.Clone();
@@ -21,12 +27,12 @@ namespace Poz1.LogicProver.Model.Rule
             var ps = leftS.LeftHandSide.Formulas;
             var qs = rightS.RightHandSide.Formulas;
 
-            if ((leftS.LeftHandSide.Count == 0 && leftS.RightHandSide.Count != 0) &&
-                (rightS.RightHandSide.Count == 0 && rightS.LeftHandSide.Count != 0))
-            {
-                ps = rightS.LeftHandSide.Formulas;
-                qs = leftS.RightHandSide.Formulas;
-            }
+            //if ((leftS.LeftHandSide.Count == 0 && leftS.RightHandSide.Count != 0) &&
+            //    (rightS.RightHandSide.Count == 0 && rightS.LeftHandSide.Count != 0))
+            //{
+            //    ps = rightS.LeftHandSide.Formulas;
+            //    qs = leftS.RightHandSide.Formulas;
+            //}
 
             foreach (var formulaP in ps)
             {
@@ -56,9 +62,13 @@ namespace Poz1.LogicProver.Model.Rule
                     result.LeftHandSide.Formulas.Remove(formulaP);
                     result.RightHandSide.Formulas.Remove(formulaQ);
 
+                    result.Name = "R1 (" + leftS.Name + ", " + rightS.Name + ") with " + unification.ToString();
                     return new List<Sequent>() { result };
                 }
             }
+
+            if (recurse)
+                return Apply(rightS, leftS, false);
 
             return null;
         }
