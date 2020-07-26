@@ -15,39 +15,39 @@ namespace Poz1.LogicProver
 
             #region test8
 
-            var baseWorld = new ConstantWorldSymbol("0");
-            var baseIndex = new WorldIndex(baseWorld);
+            //var baseWorld = new ConstantWorldSymbol("0");
+            //var baseIndex = new WorldIndex(baseWorld);
 
-            var relation = new AccessibilityRelation(new List<IRelationProperty>()  {
-                    new SerialProperty()
-            });
+            //var relation = new AccessibilityRelation(new List<IRelationProperty>()  {
+            //        new SerialProperty()
+            //});
 
 
-            var variable = LogicSolver.TermNamer.GetNewVariable();
-            var atomicFormula = new AtomicFormula(LogicSolver.TermNamer.GetNewFunction(new List<Terminal>() { variable }), baseIndex);
-            var formula = new BinaryFormula(
-                new QuantifierFormula(new UnaryFormula(atomicFormula, UnaryConnective.Necessity, baseIndex), variable, QuantifierConnective.ForAll, baseIndex),
-                new UnaryFormula(new QuantifierFormula(atomicFormula, variable, QuantifierConnective.ForAll, baseIndex), UnaryConnective.Necessity, baseIndex),
-                BinaryConnective.Implication, baseIndex);
+            //var variable = LogicSolver.TermNamer.GetNewVariable();
+            //var atomicFormula = new AtomicFormula(LogicSolver.TermNamer.GetNewFunction(new List<Terminal>() { variable }), baseIndex);
+            //var formula = new BinaryFormula(
+            //    new QuantifierFormula(new UnaryFormula(atomicFormula, UnaryConnective.Necessity, baseIndex), variable, QuantifierConnective.ForAll, baseIndex),
+            //    new UnaryFormula(new QuantifierFormula(atomicFormula, variable, QuantifierConnective.ForAll, baseIndex), UnaryConnective.Necessity, baseIndex),
+            //    BinaryConnective.Implication, baseIndex);
 
             #endregion
 
             #region test1
 
-            //var baseWorld = LogicSolver.WorldService.GetNewWorldConstant();
-            //var baseIndex = new WorldIndex(baseWorld);
+            var baseWorld = LogicSolver.WorldService.GetNewWorldConstant();
+            var baseIndex = new WorldIndex(baseWorld);
 
-            //var relation = new AccessibilityRelation(new List<IRelationProperty>() {
-            //    new SerialProperty(),
-            //    new TransitiveProperty()
-            //});
+            var relation = new AccessibilityRelation(new List<IRelationProperty>() {
+                new SerialProperty(),
+                new TransitiveProperty()
+            });
 
-            //var variable = LogicSolver.TermNamer.GetNewVariable();
-            //var baseFormula = new AtomicFormula(variable, baseIndex);
-            //var formula = new BinaryFormula(
-            //    new UnaryFormula(baseFormula, UnaryConnective.Necessity, baseIndex),
-            //    new UnaryFormula(new UnaryFormula(baseFormula, UnaryConnective.Necessity, baseIndex), UnaryConnective.Necessity, baseIndex),
-            //    BinaryConnective.Implication, baseIndex);
+            var variable = LogicSolver.TermNamer.GetNewVariable();
+            var baseFormula = new AtomicFormula(variable, baseIndex);
+            var formula = new BinaryFormula(
+                new UnaryFormula(baseFormula, UnaryConnective.Necessity, baseIndex),
+                new UnaryFormula(new UnaryFormula(baseFormula, UnaryConnective.Necessity, baseIndex), UnaryConnective.Necessity, baseIndex),
+                BinaryConnective.Implication, baseIndex);
 
             #endregion
 
